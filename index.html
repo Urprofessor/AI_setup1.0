@@ -1,0 +1,1916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#FCEFF1">
+<title>Momcozy Air One</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    color: #1A1A1A;
+    overscroll-behavior: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  body {
+    background: #FCEFF1;
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow: hidden;
+  }
+  #app {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    position: relative;
+    overflow: hidden;
+    background: #FCEFF1;
+  }
+
+  /* Page container */
+  .page {
+    position: absolute;
+    inset: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    display: none;
+    background: #FCEFF1;
+  }
+  .page.active { display: block; }
+
+  /* Status bar (fake) */
+  .status-bar {
+    height: 44px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 24px 0 28px;
+    font-size: 17px;
+    font-weight: 600;
+    color: #000;
+    flex-shrink: 0;
+    padding-top: env(safe-area-inset-top);
+    box-sizing: content-box;
+  }
+  .status-bar .right { display: flex; gap: 6px; align-items: center; }
+  .status-icon { width: 17px; height: 11px; }
+
+  /* Common buttons */
+  .btn-primary {
+    background: #4A0612;
+    color: #fff;
+    border: none;
+    border-radius: 100px;
+    padding: 18px;
+    font-size: 17px;
+    font-weight: 600;
+    width: 100%;
+    font-family: inherit;
+    cursor: pointer;
+    transition: opacity .2s;
+  }
+  .btn-primary:active { opacity: 0.8; }
+  .btn-secondary {
+    background: #FCEFF1;
+    color: #4A0612;
+    border: 1.5px solid #4A0612;
+    border-radius: 100px;
+    padding: 16px;
+    font-size: 17px;
+    font-weight: 600;
+    width: 100%;
+    font-family: inherit;
+    cursor: pointer;
+  }
+  .btn-secondary:active { background: #F5E0E3; }
+
+  /* === WELCOME PAGE === */
+  #welcome {
+    background: linear-gradient(180deg, #F8C3CD 0%, #FCEFF1 55%);
+  }
+  #welcome .content {
+    padding: 0 28px 32px;
+    min-height: calc(100vh - 44px);
+    min-height: calc(100dvh - 44px);
+    display: flex;
+    flex-direction: column;
+  }
+  .skip-btn {
+    position: absolute;
+    top: calc(44px + env(safe-area-inset-top) + 12px);
+    right: 20px;
+    background: rgba(255,255,255,0.55);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: none;
+    color: #1A1A1A;
+    padding: 10px 22px;
+    border-radius: 100px;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    z-index: 5;
+  }
+  .welcome-hero {
+    text-align: center;
+    margin-top: 60px;
+    margin-bottom: 28px;
+  }
+  .hero-illustration {
+    width: 160px;
+    height: 160px;
+    margin: 0 auto;
+  }
+  .welcome-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 600;
+    color: #2B0007;
+    margin: 8px 0 14px;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+  }
+  .welcome-subtitle {
+    color: #2B0007;
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 0 16px 32px;
+    font-weight: 400;
+  }
+  .phases {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 0 12px;
+    position: relative;
+  }
+  .phase {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    position: relative;
+    padding-bottom: 32px;
+  }
+  .phase:last-child { padding-bottom: 0; }
+  .phase-number {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #4A0612;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 500;
+    flex-shrink: 0;
+    z-index: 2;
+    position: relative;
+  }
+  .phase:not(:last-child) .phase-number::after {
+    content: '';
+    position: absolute;
+    top: 36px;
+    left: 50%;
+    width: 1.5px;
+    height: 64px;
+    background: #4A0612;
+    transform: translateX(-50%);
+  }
+  .phase-content { flex: 1; padding-top: 4px; }
+  .phase-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1A1A1A;
+    margin: 0 0 4px;
+  }
+  .phase-desc {
+    font-size: 14px;
+    color: #1A1A1A;
+    margin: 0 0 4px;
+    line-height: 1.4;
+  }
+  .phase-time {
+    font-size: 13px;
+    color: #888;
+    margin: 0;
+  }
+  .welcome-cta {
+    margin-top: 28px;
+    padding: 0 4px;
+  }
+
+  /* === STEP PAGE === */
+  #step {
+    background: #FCEFF1;
+    display: none;
+    flex-direction: column;
+  }
+  #step.active { display: flex; }
+  .step-header {
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    height: 56px;
+    flex-shrink: 0;
+  }
+  .step-close {
+    position: absolute;
+    left: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.7);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .step-title {
+    flex: 1;
+    text-align: center;
+    font-size: 17px;
+    font-weight: 600;
+    color: #4A0612;
+  }
+  .step-progress {
+    padding: 8px 24px 16px;
+    flex-shrink: 0;
+  }
+  .step-progress-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #4A0612;
+    margin-bottom: 8px;
+  }
+  .step-progress-bar {
+    display: flex;
+    gap: 4px;
+  }
+  .step-progress-bar > div {
+    flex: 1;
+    height: 3px;
+    border-radius: 2px;
+    background: #F5C8CE;
+  }
+  .step-progress-bar > div.done { background: #4A0612; }
+  .step-progress-bar > div.current { background: #4A0612; }
+
+  .step-video {
+    position: relative;
+    margin: 0 0 16px;
+    background: #E8C5C9;
+    height: 220px;
+    overflow: hidden;
+  }
+  .step-video-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #E8C5C9 0%, #D9A8AE 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .video-text-overlay {
+    position: absolute;
+    top: 16px;
+    left: 0;
+    color: #4A0612;
+    font-size: 22px;
+    font-weight: 700;
+    font-family: 'Playfair Display', serif;
+  }
+  .video-text-overlay-sub {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    color: #4A0612;
+    font-size: 12px;
+  }
+  .video-play-btn {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.35);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1.5px solid rgba(255,255,255,0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .video-expand {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    background: rgba(255,255,255,0.0);
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    z-index: 3;
+  }
+  .video-label {
+    position: absolute;
+    bottom: 14px;
+    left: 12px;
+    background: rgba(74, 6, 18, 0.65);
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+  .video-progress-line {
+    position: absolute;
+    bottom: 0; left: 0;
+    height: 3px;
+    width: 18%;
+    background: #E8909C;
+  }
+
+  .step-card {
+    background: #fff;
+    border-radius: 20px;
+    margin: 0 16px 16px;
+    padding: 24px 22px;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+  }
+  .step-card-num {
+    font-size: 14px;
+    color: #999;
+    margin-bottom: 4px;
+  }
+  .step-card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: #1A1A1A;
+    margin: 0 0 6px;
+    line-height: 1.2;
+  }
+  .step-card-subtitle {
+    font-size: 15px;
+    color: #888;
+    margin: 0 0 20px;
+  }
+  .accordion {
+    border-top: 1px solid #F0E5E7;
+  }
+  .accordion-item {
+    border-bottom: 1px solid #F0E5E7;
+  }
+  .accordion-item:last-child { border-bottom: none; }
+  .accordion-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0;
+    cursor: pointer;
+    gap: 12px;
+  }
+  .accordion-head-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #1A1A1A;
+  }
+  .accordion-icon {
+    width: 22px;
+    height: 22px;
+    color: #888;
+    flex-shrink: 0;
+  }
+  .accordion-chevron {
+    width: 18px;
+    height: 18px;
+    color: #888;
+    transition: transform .3s;
+  }
+  .accordion-item.open .accordion-chevron { transform: rotate(180deg); }
+  .accordion-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .3s ease, padding .3s ease;
+    font-size: 14px;
+    color: #555;
+    line-height: 1.55;
+  }
+  .accordion-item.open .accordion-body {
+    max-height: 600px;
+    padding: 0 0 16px;
+  }
+  .accordion-body-img {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: #EAEAEA;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #BBB;
+  }
+
+  .step-footer {
+    padding: 12px 20px calc(20px + env(safe-area-inset-bottom));
+    display: flex;
+    gap: 12px;
+    background: linear-gradient(180deg, rgba(252,239,241,0) 0%, #FCEFF1 30%);
+    flex-shrink: 0;
+  }
+  .btn-back {
+    background: #fff;
+    color: #1A2746;
+    border: 1px solid #E0D5D7;
+    border-radius: 100px;
+    padding: 16px 32px;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    min-width: 110px;
+  }
+  .step-footer .btn-primary { flex: 1; padding: 16px; font-size: 16px; }
+
+  /* === DIALOGS === */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 50;
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity .25s;
+  }
+  .overlay.show {
+    display: flex;
+    opacity: 1;
+  }
+  .overlay-center {
+    align-items: center;
+    background: rgba(0,0,0,0.4);
+  }
+  .sheet {
+    background: linear-gradient(180deg, #FBE8EC 0%, #FCEFF1 100%);
+    width: 100%;
+    border-radius: 28px 28px 0 0;
+    padding: 48px 28px calc(36px + env(safe-area-inset-bottom));
+    transform: translateY(100%);
+    transition: transform .3s cubic-bezier(.32,.72,0,1);
+    text-align: center;
+    max-width: 500px;
+  }
+  .overlay.show .sheet { transform: translateY(0); }
+  .sheet-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: #1A1A1A;
+    margin: 0 0 12px;
+  }
+  .sheet-subtitle {
+    color: #888;
+    font-size: 17px;
+    margin: 0 0 36px;
+  }
+  .sheet-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* === iOS-style center alert === */
+  .alert {
+    background: rgba(245, 245, 245, 0.96);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 14px;
+    width: 270px;
+    overflow: hidden;
+    transform: scale(0.92);
+    opacity: 0;
+    transition: transform .2s, opacity .2s;
+  }
+  .overlay.show .alert { transform: scale(1); opacity: 1; }
+  .alert-content {
+    padding: 20px 16px 18px;
+    text-align: center;
+  }
+  .alert-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: #000;
+    margin: 0 0 6px;
+  }
+  .alert-msg {
+    font-size: 13px;
+    color: #000;
+    line-height: 1.35;
+    margin: 0;
+  }
+  .alert-actions {
+    display: flex;
+    border-top: 0.5px solid rgba(0,0,0,0.2);
+  }
+  .alert-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 11px;
+    font-size: 17px;
+    color: #007AFF;
+    font-family: inherit;
+    cursor: pointer;
+  }
+  .alert-btn + .alert-btn { border-left: 0.5px solid rgba(0,0,0,0.2); }
+  .alert-btn.bold { font-weight: 600; }
+
+  /* === VIDEO FULLSCREEN === */
+  #video-fs {
+    background: #1A1A1A;
+    z-index: 30;
+  }
+  #video-fs.active { display: flex; align-items: center; justify-content: center; flex-direction: column; }
+  .vfs-content {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    background: linear-gradient(135deg, #E8C5C9 0%, #D9A8AE 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .vfs-step-pill {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #fff;
+    padding: 6px 18px;
+    border-radius: 100px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 3;
+  }
+  .vfs-collapse {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    background: none;
+    border: none;
+    color: #fff;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    z-index: 3;
+  }
+  .vfs-text-overlay {
+    position: absolute;
+    top: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #4A0612;
+    text-align: center;
+    width: 90%;
+  }
+  .vfs-text-overlay h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    margin: 0 0 8px;
+    font-weight: 700;
+  }
+  .vfs-text-overlay p {
+    font-size: 14px;
+    margin: 0;
+  }
+  .vfs-play-btn {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.25);
+    border: 2px solid rgba(255,255,255,0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    cursor: pointer;
+  }
+  .vfs-nav {
+    position: absolute;
+    bottom: 90px;
+    left: 0; right: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 24px;
+    z-index: 3;
+  }
+  .vfs-nav-btn {
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 100px;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .vfs-nav-btn.hidden { visibility: hidden; }
+  .vfs-progress {
+    position: absolute;
+    bottom: 50px;
+    left: 0; right: 0;
+    padding: 0 24px;
+  }
+  .vfs-progress-bar {
+    height: 3px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .vfs-progress-bar > div {
+    height: 100%;
+    width: 35%;
+    background: #E24B4A;
+  }
+  .vfs-controls {
+    position: absolute;
+    bottom: 16px;
+    left: 0; right: 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0 24px;
+    color: #fff;
+  }
+  .vfs-controls svg { width: 22px; height: 22px; cursor: pointer; }
+  .vfs-controls .time { margin-left: 4px; font-size: 13px; opacity: 0.9; }
+
+  /* === COMPLETE PAGE === */
+  #complete {
+    background: linear-gradient(180deg, #F8C3CD 0%, #FCEFF1 50%, #FFFFFF 100%);
+  }
+  #complete .content {
+    padding: 16px 28px calc(40px + env(safe-area-inset-bottom));
+    min-height: calc(100vh - 44px);
+    min-height: calc(100dvh - 44px);
+    display: flex;
+    flex-direction: column;
+  }
+  .complete-hero {
+    text-align: center;
+    margin-top: 40px;
+  }
+  .complete-illu {
+    width: 180px;
+    height: 160px;
+    margin: 0 auto 16px;
+  }
+  .complete-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: #2B0007;
+    margin: 0 0 16px;
+  }
+  .complete-sub {
+    color: #2B0007;
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 0 8px 36px;
+  }
+  .complete-cta-wrap { padding: 0 4px; }
+  .help-section {
+    margin-top: 60px;
+    padding: 0 8px;
+  }
+  .help-title {
+    text-align: center;
+    font-size: 15px;
+    color: #4A0612;
+    margin-bottom: 24px;
+  }
+  .help-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 24px;
+    padding: 0 4px;
+  }
+  .help-icon {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    color: #4A0612;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .help-text { flex: 1; }
+  .help-text h4 {
+    margin: 0 0 4px;
+    font-size: 18px;
+    color: #4A0612;
+    font-weight: 600;
+  }
+  .help-text p {
+    margin: 0;
+    font-size: 14px;
+    color: #4A0612;
+    opacity: 0.7;
+  }
+
+  /* === DEVICE CONTROL PAGE === */
+  #control { background: #FBE8EC; }
+  #control .content {
+    padding: 0 16px calc(20px + env(safe-area-inset-bottom));
+  }
+  .page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    padding: 0 8px;
+  }
+  .page-header-left, .page-header-right {
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+  .page-header-title {
+    flex: 1; text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+    color: #1A1A1A;
+  }
+  .alert-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .alert-card .alert-icon {
+    width: 36px; height: 36px; flex-shrink: 0;
+  }
+  .alert-card-text { flex: 1; }
+  .alert-card-text h5 { margin: 0 0 2px; font-size: 15px; font-weight: 600; }
+  .alert-card-text p { margin: 0; font-size: 13px; color: #E89A2A; font-weight: 500; }
+  .alert-card-text p strong { color: #C57500; }
+  .device-display {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    padding: 0 8px 12px;
+  }
+  .device-unit { flex: 1; text-align: center; max-width: 160px; }
+  .device-pump {
+    width: 100%;
+    aspect-ratio: 1;
+    background: radial-gradient(circle at 30% 30%, #F5C5CC, #E8939F);
+    border-radius: 50%;
+    position: relative;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .device-side-label {
+    position: absolute;
+    top: 18%;
+    background: #FCEFF1;
+    padding: 4px 14px;
+    border-radius: 100px;
+    color: #4A0612;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .device-time {
+    position: absolute;
+    bottom: 18%;
+    color: #4A0612;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .device-bat {
+    font-size: 13px;
+    color: #888;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .sync-btn {
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #E89AA4;
+    color: #fff;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .tabs {
+    display: flex;
+    gap: 24px;
+    padding: 0 4px;
+    margin-bottom: 16px;
+  }
+  .tab {
+    font-size: 18px;
+    font-weight: 600;
+    color: #BBB;
+    cursor: pointer;
+    padding-bottom: 4px;
+    position: relative;
+  }
+  .tab.active {
+    color: #1A1A1A;
+  }
+  .tab.active::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 18px;
+    height: 3px;
+    background: #4A0612;
+    border-radius: 2px;
+  }
+  .control-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 16px 18px;
+    margin-bottom: 12px;
+  }
+  .cc-head {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 14px;
+  }
+  .cc-title { font-size: 22px; font-weight: 700; }
+  .cc-action { color: #999; font-size: 14px; display: flex; align-items: center; gap: 4px; }
+  .cc-info {
+    display: flex; justify-content: space-between;
+    font-size: 14px; color: #555;
+    margin-bottom: 8px;
+  }
+  .cc-bar {
+    display: flex; gap: 4px;
+  }
+  .cc-bar > div {
+    flex: 1; height: 8px; border-radius: 4px;
+    background: #FBE8EC;
+  }
+  .cc-bar > div.fill1 { background: #C95A6B; }
+  .cc-bar > div.fill2 { background: #FCEFF1; }
+  .small-controls {
+    display: flex;
+    gap: 12px;
+  }
+  .small-controls > div {
+    flex: 1;
+    background: #fff;
+    border-radius: 20px;
+    padding: 14px;
+  }
+  .sc-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .sc-power {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: #FBE8EC; display: flex; align-items: center; justify-content: center;
+    color: #4A0612;
+  }
+  .sc-power.off { background: #F0F0F0; color: #999; }
+  .sc-name { font-size: 14px; font-weight: 500; }
+  .sc-value { margin-top: 12px; text-align: center; font-size: 22px; font-weight: 600; }
+  .sc-value-off { margin-top: 12px; text-align: center; font-size: 16px; color: #999; }
+  .sc-temp-controls { display: flex; align-items: center; justify-content: center; gap: 14px; }
+  .sc-temp-controls span { font-size: 22px; font-weight: 700; }
+
+  /* === SETTINGS PAGE === */
+  #settings { background: #F4F4F6; }
+  #settings .content { padding: 0 16px calc(20px + env(safe-area-inset-bottom)); }
+  .settings-pump-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 16px;
+    margin-bottom: 14px;
+  }
+  .settings-pump-display {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    padding: 8px 0 16px;
+  }
+  .pump-thumb {
+    width: 90px; height: 90px;
+    background: radial-gradient(circle at 30% 30%, #F5C5CC, #E8939F);
+    border-radius: 50%;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .pump-thumb.dim { opacity: 0.4; }
+  .pump-thumb-label {
+    position: absolute; top: 14%;
+    background: #FCEFF1; padding: 2px 10px; border-radius: 100px;
+    font-size: 11px; color: #4A0612; font-weight: 600;
+  }
+  .lr-toggle {
+    background: #F4F4F6;
+    border-radius: 100px;
+    display: flex;
+    padding: 4px;
+  }
+  .lr-toggle > div {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 100px;
+    cursor: pointer;
+    color: #999;
+  }
+  .lr-toggle > div.active {
+    background: #B8666F;
+    color: #fff;
+  }
+  .quick-actions {
+    background: #fff;
+    border-radius: 20px;
+    display: flex;
+    margin-bottom: 14px;
+  }
+  .qa-item {
+    flex: 1;
+    text-align: center;
+    padding: 16px 8px;
+    position: relative;
+    cursor: pointer;
+  }
+  .qa-item + .qa-item::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 16px; bottom: 16px;
+    width: 1px; background: #EAEAEA;
+  }
+  .qa-icon { width: 32px; height: 32px; margin: 0 auto 8px; color: #1A1A1A; }
+  .qa-label { font-size: 14px; font-weight: 500; }
+  .qa-item.with-dot .qa-icon { position: relative; }
+  .qa-item.with-dot .qa-icon::after {
+    content: '';
+    position: absolute;
+    top: -2px; right: -2px;
+    width: 8px; height: 8px;
+    background: #E24B4A;
+    border-radius: 50%;
+  }
+  .setting-row {
+    background: #fff;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 15px;
+  }
+  .setting-row + .setting-row { border-top: 1px solid #F4F4F6; }
+  .setting-group {
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+  .setting-value { color: #999; font-size: 15px; display: flex; align-items: center; gap: 8px; }
+  .copy-btn { color: #C57081; }
+  .toggle {
+    width: 50px; height: 30px; border-radius: 100px;
+    background: #34C759; position: relative; cursor: pointer;
+  }
+  .toggle::after {
+    content: ''; position: absolute; top: 2px; left: 22px;
+    width: 26px; height: 26px; background: #fff; border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+  .delete-row { color: #E24B4A; text-align: center; padding: 16px; font-weight: 500; background: #fff; border-radius: 20px; cursor: pointer; }
+
+  /* === TIPS PAGE === */
+  #tips {
+    background: linear-gradient(180deg, #F0AEB8 0%, #FCEFF1 40%);
+  }
+  #tips .content { padding: 0 24px calc(40px + env(safe-area-inset-bottom)); }
+  .tips-back {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: none;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+  .tips-hero { text-align: center; padding: 8px 0 20px; }
+  .tips-illu { width: 120px; height: 100px; margin: 0 auto 18px; }
+  .tips-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: #2B0007;
+    margin: 0;
+  }
+  .tip-card {
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 18px;
+    padding: 18px 20px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    transition: transform .1s;
+  }
+  .tip-card:active { transform: scale(0.98); }
+  .tip-icon { width: 36px; height: 36px; flex-shrink: 0; color: #1A1A1A; }
+  .tip-text { flex: 1; }
+  .tip-text h4 { margin: 0 0 2px; font-size: 17px; font-weight: 600; color: #1A1A1A; }
+  .tip-text p { margin: 0; font-size: 13px; color: #888; line-height: 1.45; }
+  .tip-chevron { color: #999; width: 16px; height: 16px; }
+
+  /* === TIPS STEP PAGE === */
+  #tipsStep { background: #FCEFF1; }
+  #tipsStep .content { padding: 0; }
+  .tipsstep-header {
+    padding: 8px 16px 0;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    height: 56px;
+  }
+  .tipsstep-back {
+    position: absolute; left: 16px;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(20px);
+    border: none;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+  .tipsstep-title {
+    font-size: 17px; font-weight: 600; color: #4A0612;
+  }
+  .tipsstep-card {
+    background: #fff;
+    border-radius: 20px;
+    margin: 8px 16px 16px;
+    padding: 24px 22px;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+  }
+  .tipsstep-card .step-card-title {
+    margin-bottom: 16px;
+  }
+  .tipsstep-pagination {
+    display: flex; justify-content: center; gap: 8px;
+    padding: 32px 0 16px;
+  }
+  .tipsstep-pagination > div {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(74,6,18,0.2);
+    cursor: pointer;
+  }
+  .tipsstep-pagination > div.active {
+    background: #4A0612;
+  }
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- =========== WELCOME PAGE =========== -->
+<div class="page active" id="welcome">
+  <div class="status-bar">
+    <span>9:41</span>
+    <span class="right">
+      <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="6" width="2" height="5" rx="0.5"/><rect x="4" y="4" width="2" height="7" rx="0.5"/><rect x="8" y="2" width="2" height="9" rx="0.5"/><rect x="12" y="0" width="2" height="11" rx="0.5"/></svg>
+      <svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor"><path d="M7.5 2c2.1 0 4.1.8 5.5 2.3l-1 1A6 6 0 0 0 7.5 3.3a6 6 0 0 0-4.5 2L2 4.3A8 8 0 0 1 7.5 2zm0 3c1.3 0 2.5.5 3.4 1.4l-1 1A4 4 0 0 0 7.5 6.3a4 4 0 0 0-2.4.9l-1-1A5 5 0 0 1 7.5 5zm0 3c.7 0 1.3.3 1.8.7L7.5 11 5.7 8.7A2.5 2.5 0 0 1 7.5 8z"/></svg>
+      <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3" stroke="currentColor"/><rect x="2" y="2" width="18" height="8" rx="1.5" fill="currentColor"/><rect x="22" y="4" width="1.5" height="4" rx="0.5" fill="currentColor"/></svg>
+    </span>
+  </div>
+  <button class="skip-btn" onclick="openSkipDialog()">Skip</button>
+  <div class="content">
+    <div class="welcome-hero">
+      <svg class="hero-illustration" viewBox="0 0 160 160">
+        <defs>
+          <linearGradient id="welcoG" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#FFB5C9"/>
+            <stop offset="50%" stop-color="#F8C28D"/>
+            <stop offset="100%" stop-color="#FFB85C"/>
+          </linearGradient>
+        </defs>
+        <path d="M40 50 Q60 30 100 35 L120 50 L115 95 Q90 110 60 105 Z" fill="url(#welcoG)" opacity="0.85"/>
+        <path d="M30 95 Q35 80 50 75 Q70 70 85 80 Q95 90 90 100 Q80 115 60 115 Q40 115 30 95Z" stroke="#2B0007" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M85 80 Q95 60 110 55" stroke="#2B0007" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M115 60 Q120 70 118 80" stroke="#2B0007" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <circle cx="75" cy="55" r="3" fill="#FFFFFF" opacity="0.95"/>
+        <path d="M70 50 L75 55 L80 50 M75 50 L75 60" stroke="#FFF" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <h1 class="welcome-title">Welcome to Air One</h1>
+      <p class="welcome-subtitle">Set up in 3 phases around 4min and pump right the first time.</p>
+    </div>
+    <div class="phases">
+      <div class="phase">
+        <div class="phase-number">1</div>
+        <div class="phase-content">
+          <h3 class="phase-title">Unboxing</h3>
+          <p class="phase-desc">Open the box and get to know your parts</p>
+          <p class="phase-time">20s</p>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-number">2</div>
+        <div class="phase-content">
+          <h3 class="phase-title">Clean & Assemble</h3>
+          <p class="phase-desc">Wash, dry, and put your pump together</p>
+          <p class="phase-time">1min20s</p>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-number">3</div>
+        <div class="phase-content">
+          <h3 class="phase-title">First Use</h3>
+          <p class="phase-desc">Wear it and start your first session</p>
+          <p class="phase-time">2min10s</p>
+        </div>
+      </div>
+    </div>
+    <div class="welcome-cta">
+      <button class="btn-primary" onclick="goStep(1)">Get started</button>
+    </div>
+  </div>
+</div>
+
+<!-- =========== STEP PAGE =========== -->
+<div class="page" id="step">
+  <div class="status-bar">
+    <span>9:41</span>
+    <span class="right">
+      <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="6" width="2" height="5" rx="0.5"/><rect x="4" y="4" width="2" height="7" rx="0.5"/><rect x="8" y="2" width="2" height="9" rx="0.5"/><rect x="12" y="0" width="2" height="11" rx="0.5"/></svg>
+      <svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor"><path d="M7.5 2c2.1 0 4.1.8 5.5 2.3l-1 1A6 6 0 0 0 7.5 3.3a6 6 0 0 0-4.5 2L2 4.3A8 8 0 0 1 7.5 2zm0 3c1.3 0 2.5.5 3.4 1.4l-1 1A4 4 0 0 0 7.5 6.3a4 4 0 0 0-2.4.9l-1-1A5 5 0 0 1 7.5 5zm0 3c.7 0 1.3.3 1.8.7L7.5 11 5.7 8.7A2.5 2.5 0 0 1 7.5 8z"/></svg>
+      <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3" stroke="currentColor"/><rect x="2" y="2" width="18" height="8" rx="1.5" fill="currentColor"/><rect x="22" y="4" width="1.5" height="4" rx="0.5" fill="currentColor"/></svg>
+    </span>
+  </div>
+  <div class="step-header">
+    <button class="step-close" onclick="openBackDialog()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <span class="step-title">Air One Setup</span>
+  </div>
+  <div class="step-progress">
+    <div class="step-progress-label" id="stepProgressLabel">1 of 7</div>
+    <div class="step-progress-bar" id="stepProgressBar"></div>
+  </div>
+  <div class="step-video" onclick="openVideoFullscreen()">
+    <div class="step-video-placeholder">
+      <div style="position: absolute; top: 14px; left: -30px; right: 0; padding-left: 20px;">
+        <div style="color: #4A0612; font-size: 20px; font-weight: 700; font-family: 'Playfair Display', serif;">ssemble to Clean</div>
+        <div style="color: #4A0612; font-size: 11px; margin-top: 2px;">the first use and after each use,<br/>mble the pump for cleaning.</div>
+      </div>
+      <div class="video-play-btn" onclick="event.stopPropagation();">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+      <button class="video-expand" onclick="event.stopPropagation(); openVideoFullscreen();">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 9V3h6M21 9V3h-6M3 15v6h6M21 15v6h-6"/></svg>
+      </button>
+      <div class="video-label">How-to video · 15s</div>
+      <div class="video-progress-line"></div>
+    </div>
+  </div>
+  <div class="step-card">
+    <div class="step-card-num" id="stepCardNum">Step 1</div>
+    <h2 class="step-card-title" id="stepCardTitle">Unbox & Inspect</h2>
+    <p class="step-card-subtitle" id="stepCardSubtitle">Confirm all accessories are included</p>
+    <div class="accordion">
+      <div class="accordion-item" onclick="toggleAccordion(this)">
+        <div class="accordion-head">
+          <div class="accordion-head-left">
+            <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 2-2.5 2.5-2.5 4.5M12 17v.01"/></svg>
+            <span>How to do it</span>
+          </div>
+          <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="accordion-body">
+          <div class="accordion-body-img">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+          </div>
+          <div id="howToText">Parts overview: main unit, collection cups, flanges, membranes, valves, power cable, etc. Use the checklist to verify each item.</div>
+        </div>
+      </div>
+      <div class="accordion-item" onclick="toggleAccordion(this)">
+        <div class="accordion-head">
+          <div class="accordion-head-left">
+            <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L2 22h20L12 2z"/><path d="M12 9v5M12 18v.01"/></svg>
+            <span>What to watch out for</span>
+          </div>
+          <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="accordion-body">
+          <div id="watchOutText">Missing or damaged parts? contact customer support and have your order number and proof of purchase ready.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="step-footer">
+    <button class="btn-back" id="stepBackBtn" onclick="prevStep()">Back</button>
+    <button class="btn-primary" id="stepNextBtn" onclick="nextStep()">Next</button>
+  </div>
+</div>
+
+<!-- =========== VIDEO FULLSCREEN =========== -->
+<div class="page" id="video-fs">
+  <div class="vfs-content">
+    <div class="vfs-step-pill">
+      <span id="vfsCount">1/7</span>
+      <span style="opacity:0.5">|</span>
+      <span id="vfsStepText">Step 1</span>
+    </div>
+    <button class="vfs-collapse" onclick="closeVideoFullscreen()">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 3v6H3M15 3v6h6M9 21v-6H3M15 21v-6h6"/></svg>
+    </button>
+    <div class="vfs-text-overlay">
+      <h2 id="vfsTitle">Assemble the Breast Pump</h2>
+      <p id="vfsSub">6. Connect the milk collector assembly to the main unit, ensuring the flange or insert is the correct size and properly fitted.</p>
+    </div>
+    <div class="vfs-play-btn">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
+    </div>
+    <div class="vfs-nav">
+      <button class="vfs-nav-btn" id="vfsBackBtn" onclick="prevStep(true)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+        Last Step
+      </button>
+      <button class="vfs-nav-btn" id="vfsNextBtn" onclick="nextStep(true)">
+        <span id="vfsNextLabel">Next Step</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </div>
+    <div class="vfs-progress">
+      <div class="vfs-progress-bar"><div></div></div>
+    </div>
+    <div class="vfs-controls">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3z"/></svg>
+      <span class="time">5:07 / 15:28</span>
+    </div>
+  </div>
+</div>
+
+<!-- =========== COMPLETE PAGE =========== -->
+<div class="page" id="complete">
+  <div class="status-bar">
+    <span>9:41</span>
+    <span class="right">
+      <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="6" width="2" height="5" rx="0.5"/><rect x="4" y="4" width="2" height="7" rx="0.5"/><rect x="8" y="2" width="2" height="9" rx="0.5"/><rect x="12" y="0" width="2" height="11" rx="0.5"/></svg>
+      <svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor"><path d="M7.5 2c2.1 0 4.1.8 5.5 2.3l-1 1A6 6 0 0 0 7.5 3.3a6 6 0 0 0-4.5 2L2 4.3A8 8 0 0 1 7.5 2zm0 3c1.3 0 2.5.5 3.4 1.4l-1 1A4 4 0 0 0 7.5 6.3a4 4 0 0 0-2.4.9l-1-1A5 5 0 0 1 7.5 5zm0 3c.7 0 1.3.3 1.8.7L7.5 11 5.7 8.7A2.5 2.5 0 0 1 7.5 8z"/></svg>
+      <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3" stroke="currentColor"/><rect x="2" y="2" width="18" height="8" rx="1.5" fill="currentColor"/><rect x="22" y="4" width="1.5" height="4" rx="0.5" fill="currentColor"/></svg>
+    </span>
+  </div>
+  <div class="content">
+    <div class="complete-hero">
+      <svg class="complete-illu" viewBox="0 0 180 160">
+        <ellipse cx="50" cy="80" rx="40" ry="20" fill="#FFA8B6" opacity="0.6"/>
+        <ellipse cx="120" cy="85" rx="35" ry="18" fill="#FFA8B6" opacity="0.6"/>
+        <path d="M45 70 Q50 50 65 55 Q75 60 70 85 Q65 100 50 100 Q40 95 45 70" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M75 55 Q80 40 85 50" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M85 50 Q90 35 95 50" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M95 50 Q100 38 105 52" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M105 52 Q110 60 105 75 Q100 95 90 100 Q80 100 78 85" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M115 50 Q120 35 125 50" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M125 50 Q130 38 135 50 Q140 60 135 75 Q130 95 120 100 Q110 100 110 85" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M80 30 L84 18 L88 30 L92 18 L96 30" stroke="#9888EE" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <h1 class="complete-title">You're all set!</h1>
+      <p class="complete-sub">Your <strong>Air One</strong> is set up and ready.<br/>Start your first pumping session.</p>
+    </div>
+    <div class="complete-cta-wrap">
+      <button class="btn-primary" onclick="navigate('control')">Start using Air One</button>
+    </div>
+    <div class="help-section">
+      <p class="help-title">Help is always available when you need it</p>
+      <div class="help-item">
+        <div class="help-icon">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/><circle cx="9" cy="12" r="0.8" fill="currentColor"/><circle cx="12" cy="12" r="0.8" fill="currentColor"/><circle cx="15" cy="12" r="0.8" fill="currentColor"/></svg>
+        </div>
+        <div class="help-text">
+          <h4>Cozy Assistant</h4>
+          <p>Device » Cozy Assistant entry</p>
+        </div>
+      </div>
+      <div class="help-item">
+        <div class="help-icon">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </div>
+        <div class="help-text">
+          <h4>Clean & Assemble</h4>
+          <p>Device page - How to use your Pump?</p>
+        </div>
+      </div>
+      <div class="help-item">
+        <div class="help-icon">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <div class="help-text">
+          <h4>Contact support</h4>
+          <p>support@momcozy.com</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========== DEVICE CONTROL PAGE =========== -->
+<div class="page" id="control">
+  <div class="status-bar">
+    <span>9:41</span>
+    <span class="right">
+      <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="6" width="2" height="5" rx="0.5"/><rect x="4" y="4" width="2" height="7" rx="0.5"/><rect x="8" y="2" width="2" height="9" rx="0.5"/><rect x="12" y="0" width="2" height="11" rx="0.5"/></svg>
+      <svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor"><path d="M7.5 2c2.1 0 4.1.8 5.5 2.3l-1 1A6 6 0 0 0 7.5 3.3a6 6 0 0 0-4.5 2L2 4.3A8 8 0 0 1 7.5 2zm0 3c1.3 0 2.5.5 3.4 1.4l-1 1A4 4 0 0 0 7.5 6.3a4 4 0 0 0-2.4.9l-1-1A5 5 0 0 1 7.5 5zm0 3c.7 0 1.3.3 1.8.7L7.5 11 5.7 8.7A2.5 2.5 0 0 1 7.5 8z"/></svg>
+      <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3" stroke="currentColor"/><rect x="2" y="2" width="18" height="8" rx="1.5" fill="currentColor"/><rect x="22" y="4" width="1.5" height="4" rx="0.5" fill="currentColor"/></svg>
+    </span>
+  </div>
+  <div class="page-header">
+    <div class="page-header-left" onclick="navigate('welcome')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg>
+    </div>
+    <div class="page-header-title">Breast Pump Control</div>
+    <div class="page-header-right" onclick="navigate('settings')">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l2 4 4 1-3 3 1 4-4-2-4 2 1-4-3-3 4-1z" stroke-linejoin="round"/></svg>
+    </div>
+  </div>
+  <div class="content">
+    <div class="alert-card">
+      <div class="alert-icon">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="#444" stroke="none"><circle cx="12" cy="12" r="11" fill="#1A1A1A"/><circle cx="12" cy="17" r="1.2" fill="#fff"/><rect x="11" y="7" width="2" height="7" rx="1" fill="#fff"/></svg>
+      </div>
+      <div class="alert-card-text">
+        <h5>Flange Inserts expiring soon</h5>
+        <p><strong>10% Rem.</strong> &nbsp;|&nbsp; 19h Est.</p>
+      </div>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#BBB" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    </div>
+    <div class="device-display">
+      <div class="device-unit">
+        <div class="device-pump">
+          <div class="device-side-label">L</div>
+          <div class="device-time">13:30</div>
+        </div>
+        <div class="device-bat">80% <svg width="20" height="11" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3" stroke="#888"/><rect x="2" y="2" width="14" height="8" rx="1.5" fill="#888"/><rect x="22" y="4" width="1.5" height="4" rx="0.5" fill="#888"/></svg></div>
+      </div>
+      <div class="device-unit">
+        <div class="device-pump">
+          <div class="device-side-label">R</div>
+          <div class="device-time">13:30</div>
+        </div>
+        <div class="device-bat">80% <svg width="20" height="11" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3" stroke="#888"/><rect x="2" y="2" width="14" height="8" rx="1.5" fill="#888"/><rect x="22" y="4" width="1.5" height="4" rx="0.5" fill="#888"/></svg></div>
+      </div>
+    </div>
+    <button class="sync-btn">Sync
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+    </button>
+    <div class="tabs">
+      <div class="tab active">Left</div>
+      <div class="tab">Right</div>
+    </div>
+    <div class="control-card">
+      <div class="cc-head">
+        <div class="cc-title">Milk Boost</div>
+        <div class="cc-action">Switch Mode <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+      </div>
+      <div class="cc-info">
+        <span>Phase 1: Lactation Mode</span>
+        <span>18:16 / 30:00</span>
+      </div>
+      <div class="cc-bar">
+        <div class="fill1"></div>
+        <div></div>
+        <div class="fill2"></div>
+      </div>
+    </div>
+    <div class="small-controls">
+      <div>
+        <div class="sc-head">
+          <span class="sc-name"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="vertical-align:-3px"><path d="M12 2s-4 5-4 9a4 4 0 0 0 8 0c0-4-4-9-4-9z"/></svg> Heating</span>
+          <span class="sc-power"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2v8M5 7a8 8 0 1 0 14 0"/></svg></span>
+        </div>
+        <div class="sc-temp-controls">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+          <span>39°C</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+      </div>
+      <div>
+        <div class="sc-head">
+          <span class="sc-name"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="vertical-align:-3px"><path d="M3 12c2-4 4-4 6 0s4 4 6 0 4-4 6 0"/></svg> Vibrate</span>
+          <span class="sc-power off"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2v8M5 7a8 8 0 1 0 14 0"/></svg></span>
+        </div>
+        <div class="sc-value-off">OFF</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========== SETTINGS PAGE =========== -->
+<div class="page" id="settings">
+  <div class="status-bar">
+    <span>9:41</span>
+    <span class="right">
+      <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="6" width="2" height="5" rx="0.5"/><rect x="4" y="4" width="2" height="7" rx="0.5"/><rect x="8" y="2" width="2" height="9" rx="0.5"/><rect x="12" y="0" width="2" height="11" rx="0.5"/></svg>
+      <svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor"><path d="M7.5 2c2.1 0 4.1.8 5.5 2.3l-1 1A6 6 0 0 0 7.5 3.3a6 6 0 0 0-4.5 2L2 4.3A8 8 0 0 1 7.5 2zm0 3c1.3 0 2.5.5 3.4 1.4l-1 1A4 4 0 0 0 7.5 6.3a4 4 0 0 0-2.4.9l-1-1A5 5 0 0 1 7.5 5zm0 3c.7 0 1.3.3 1.8.7L7.5 11 5.7 8.7A2.5 2.5 0 0 1 7.5 8z"/></svg>
+      <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3" stroke="currentColor"/><rect x="2" y="2" width="18" height="8" rx="1.5" fill="currentColor"/><rect x="22" y="4" width="1.5" height="4" rx="0.5" fill="currentColor"/></svg>
+    </span>
+  </div>
+  <div class="page-header">
+    <div class="page-header-left" onclick="navigate('control')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg>
+    </div>
+    <div class="page-header-title">Manage Device</div>
+    <div class="page-header-right"></div>
+  </div>
+  <div class="content">
+    <div class="settings-pump-card">
+      <div class="settings-pump-display">
+        <div class="pump-thumb"><div class="pump-thumb-label">L</div></div>
+        <div class="pump-thumb dim"><div class="pump-thumb-label">R</div></div>
+      </div>
+      <div class="lr-toggle">
+        <div class="active">Left</div>
+        <div>Right</div>
+      </div>
+    </div>
+    <div class="quick-actions">
+      <div class="qa-item" onclick="handleHowToUse()">
+        <div class="qa-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M10 9v6l5-3z" fill="currentColor"/></svg>
+        </div>
+        <div class="qa-label">How to Use</div>
+      </div>
+      <div class="qa-item">
+        <div class="qa-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/><circle cx="12" cy="11" r="0.8" fill="currentColor"/></svg>
+        </div>
+        <div class="qa-label">Safe Tips</div>
+      </div>
+      <div class="qa-item with-dot">
+        <div class="qa-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#E24B4A" stroke-width="1.5"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 2-2.5 2.5-2.5 4.5M12 17v.01"/></svg>
+        </div>
+        <div class="qa-label" style="color:#E24B4A">Chat with Us</div>
+      </div>
+    </div>
+    <div class="setting-group">
+      <div class="setting-row">
+        <span>Spit-up Reminder</span>
+        <div class="toggle"></div>
+      </div>
+    </div>
+    <div class="setting-group">
+      <div class="setting-row"><span>Device Name</span><span class="setting-value">M9-123</span></div>
+      <div class="setting-row"><span>SN</span><span class="setting-value">FGHJKL09060 <svg class="copy-btn" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span></div>
+      <div class="setting-row"><span>MAC</span><span class="setting-value">DF:45:D5:56:E9:5D <svg class="copy-btn" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span></div>
+      <div class="setting-row"><span>Current Version</span><span class="setting-value">V2.0.0</span></div>
+    </div>
+    <div class="setting-group">
+      <div class="setting-row"><span>Check for Updates</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#BBB" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+      <div class="setting-row"><span>Restore Factory Settings</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#BBB" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div>
+    </div>
+    <div class="delete-row">Delete Device</div>
+  </div>
+</div>
+
+<!-- =========== TIPS PAGE =========== -->
+<div class="page" id="tips">
+  <div class="status-bar">
+    <span>9:41</span>
+    <span class="right">
+      <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="6" width="2" height="5" rx="0.5"/><rect x="4" y="4" width="2" height="7" rx="0.5"/><rect x="8" y="2" width="2" height="9" rx="0.5"/><rect x="12" y="0" width="2" height="11" rx="0.5"/></svg>
+      <svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor"><path d="M7.5 2c2.1 0 4.1.8 5.5 2.3l-1 1A6 6 0 0 0 7.5 3.3a6 6 0 0 0-4.5 2L2 4.3A8 8 0 0 1 7.5 2zm0 3c1.3 0 2.5.5 3.4 1.4l-1 1A4 4 0 0 0 7.5 6.3a4 4 0 0 0-2.4.9l-1-1A5 5 0 0 1 7.5 5zm0 3c.7 0 1.3.3 1.8.7L7.5 11 5.7 8.7A2.5 2.5 0 0 1 7.5 8z"/></svg>
+      <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3" stroke="currentColor"/><rect x="2" y="2" width="18" height="8" rx="1.5" fill="currentColor"/><rect x="22" y="4" width="1.5" height="4" rx="0.5" fill="currentColor"/></svg>
+    </span>
+  </div>
+  <div style="padding: 12px 20px 0;">
+    <button class="tips-back" onclick="navigate('settings')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+  </div>
+  <div class="content">
+    <div class="tips-hero">
+      <svg class="tips-illu" viewBox="0 0 140 100">
+        <defs>
+          <linearGradient id="tipsG" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#FFB5C9"/>
+            <stop offset="50%" stop-color="#F8C28D"/>
+            <stop offset="100%" stop-color="#FFB85C"/>
+          </linearGradient>
+        </defs>
+        <path d="M30 30 L80 25 L85 65 L40 70 Z" fill="url(#tipsG)" opacity="0.9"/>
+        <path d="M25 60 Q30 50 45 50 Q60 50 70 60 Q75 70 60 75 Q40 75 25 60" stroke="#1A1A1A" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <path d="M70 55 Q80 40 95 35" stroke="#1A1A1A" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <path d="M50 40 L54 32 L58 40 M54 32 L54 45" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <h1 class="tips-title">Get the most from Air One</h1>
+    </div>
+    <div class="tip-card" onclick="openTipStep(0)">
+      <div class="tip-icon">
+        <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="18" r="3"/><circle cx="25" cy="11" r="3"/><circle cx="25" cy="25" r="3"/><path d="M13.5 16.5l9-4.5M13.5 19.5l9 4.5"/></svg>
+      </div>
+      <div class="tip-text">
+        <h4>Unbox & Inspect</h4>
+        <p>Air One has 8 components. Tap each one to learn its name before you start.</p>
+      </div>
+      <svg class="tip-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18l6-6-6-6"/></svg>
+    </div>
+    <div class="tip-card" onclick="openTipStep(1)">
+      <div class="tip-icon">
+        <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 4c-4 6-8 10-8 16a8 8 0 0 0 16 0c0-6-4-10-8-16z"/><path d="M14 18l8 8M22 18l-8 8"/></svg>
+      </div>
+      <div class="tip-text">
+        <h4>Disassemble Parts</h4>
+        <p>The flange, milk collector, diaphragm, and valve are washable.</p>
+      </div>
+      <svg class="tip-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18l6-6-6-6"/></svg>
+    </div>
+    <div class="tip-card" onclick="openTipStep(2)">
+      <div class="tip-icon">
+        <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 4c-4 6-8 10-8 16a8 8 0 0 0 16 0c0-6-4-10-8-16z"/><path d="M14 20l3 3 5-5"/></svg>
+      </div>
+      <div class="tip-text">
+        <h4>Choose Your Flange Size</h4>
+        <p>Wash all washable parts with mild soap and warm water.</p>
+      </div>
+      <svg class="tip-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18l6-6-6-6"/></svg>
+    </div>
+    <div class="tip-card" onclick="openTipStep(3)">
+      <div class="tip-icon">
+        <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="18" cy="18" r="10"/><circle cx="18" cy="18" r="4"/><path d="M18 4v6M18 26v6M4 18h6M26 18h6"/></svg>
+      </div>
+      <div class="tip-text">
+        <h4>Clean & Sanitize</h4>
+        <p>Measure your nipple diameter and match it to a flange size.</p>
+      </div>
+      <svg class="tip-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18l6-6-6-6"/></svg>
+    </div>
+    <div class="tip-card" onclick="openTipStep(4)">
+      <div class="tip-icon">
+        <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6" y="10" width="24" height="6" rx="1"/><rect x="6" y="18" width="24" height="6" rx="1"/><rect x="6" y="26" width="24" height="4" rx="1"/></svg>
+      </div>
+      <div class="tip-text">
+        <h4>Assemble the Pump</h4>
+        <p>Install the valve, assemble the milk collector, attach the diaphragm, connect the motor.</p>
+      </div>
+      <svg class="tip-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18l6-6-6-6"/></svg>
+    </div>
+    <div class="tip-card" onclick="openTipStep(5)">
+      <div class="tip-icon">
+        <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 4l-12 5v9c0 7 5 12 12 14 7-2 12-7 12-14V9z"/><path d="M13 18l4 4 8-8"/></svg>
+      </div>
+      <div class="tip-text">
+        <h4>Fit Check & Latch</h4>
+        <p>Press the assembled pump to your palm and turn it on.</p>
+      </div>
+      <svg class="tip-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18l6-6-6-6"/></svg>
+    </div>
+    <div class="tip-card" onclick="openTipStep(6)">
+      <div class="tip-icon">
+        <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="11" width="22" height="14" rx="2"/><rect x="27" y="15" width="3" height="6" rx="1"/><path d="M14 14l-3 5h4l-2 3" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="tip-text">
+        <h4>Start Your First Session</h4>
+        <p>Air One has 8 components. Tap each one to learn its name before you start.</p>
+      </div>
+      <svg class="tip-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18l6-6-6-6"/></svg>
+    </div>
+  </div>
+</div>
+
+<!-- =========== TIPS STEP PAGE =========== -->
+<div class="page" id="tipsStep">
+  <div class="status-bar">
+    <span>9:41</span>
+    <span class="right">
+      <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="6" width="2" height="5" rx="0.5"/><rect x="4" y="4" width="2" height="7" rx="0.5"/><rect x="8" y="2" width="2" height="9" rx="0.5"/><rect x="12" y="0" width="2" height="11" rx="0.5"/></svg>
+      <svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor"><path d="M7.5 2c2.1 0 4.1.8 5.5 2.3l-1 1A6 6 0 0 0 7.5 3.3a6 6 0 0 0-4.5 2L2 4.3A8 8 0 0 1 7.5 2zm0 3c1.3 0 2.5.5 3.4 1.4l-1 1A4 4 0 0 0 7.5 6.3a4 4 0 0 0-2.4.9l-1-1A5 5 0 0 1 7.5 5zm0 3c.7 0 1.3.3 1.8.7L7.5 11 5.7 8.7A2.5 2.5 0 0 1 7.5 8z"/></svg>
+      <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3" stroke="currentColor"/><rect x="2" y="2" width="18" height="8" rx="1.5" fill="currentColor"/><rect x="22" y="4" width="1.5" height="4" rx="0.5" fill="currentColor"/></svg>
+    </span>
+  </div>
+  <div class="tipsstep-header">
+    <button class="tipsstep-back" onclick="navigate('settings')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="tipsstep-title">Air One Tips</div>
+  </div>
+  <div class="step-video">
+    <div class="step-video-placeholder">
+      <div style="position: absolute; top: 14px; left: -30px; right: 0; padding-left: 20px;">
+        <div style="color: #4A0612; font-size: 20px; font-weight: 700; font-family: 'Playfair Display', serif;">ssemble to Clean</div>
+        <div style="color: #4A0612; font-size: 11px; margin-top: 2px;">the first use and after each use,<br/>mble the pump for cleaning.</div>
+      </div>
+      <div class="video-play-btn">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+      <button class="video-expand">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M3 9V3h6M21 9V3h-6M3 15v6h6M21 15v6h-6"/></svg>
+      </button>
+      <div class="video-label">How-to video · 15s</div>
+      <div class="video-progress-line"></div>
+    </div>
+  </div>
+  <div class="tipsstep-card">
+    <h2 class="step-card-title" id="tipsStepTitle">Unbox & Inspect</h2>
+    <p class="step-card-subtitle" id="tipsStepSubtitle">Confirm all accessories are included</p>
+    <div class="accordion">
+      <div class="accordion-item" onclick="toggleAccordion(this)">
+        <div class="accordion-head">
+          <div class="accordion-head-left">
+            <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 2-2.5 2.5-2.5 4.5M12 17v.01"/></svg>
+            <span>How to do it</span>
+          </div>
+          <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="accordion-body">
+          <div class="accordion-body-img"></div>
+          <div id="tipsHowToText">Parts overview: main unit, collection cups, flanges, membranes, valves, power cable, etc.</div>
+        </div>
+      </div>
+      <div class="accordion-item" onclick="toggleAccordion(this)">
+        <div class="accordion-head">
+          <div class="accordion-head-left">
+            <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L2 22h20L12 2z"/><path d="M12 9v5M12 18v.01"/></svg>
+            <span>What to watch out for</span>
+          </div>
+          <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="accordion-body">
+          <div id="tipsWatchOutText">Missing or damaged parts? contact customer support.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tipsstep-pagination" id="tipsStepPagination"></div>
+</div>
+
+<!-- =========== OVERLAYS =========== -->
+<div class="overlay overlay-center" id="skipOverlay">
+  <div class="alert">
+    <div class="alert-content">
+      <div class="alert-title">"Momcozy" Wants to Use "google.com" to Sign In</div>
+      <p class="alert-msg">This allows the app and website to share information about you.</p>
+    </div>
+    <div class="alert-actions">
+      <button class="alert-btn" onclick="closeSkipDialog()">Cancel</button>
+      <button class="alert-btn bold" onclick="confirmSkip()">Continue</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="backOverlay">
+  <div class="sheet">
+    <h2 class="sheet-title">Leaving Setup?</h2>
+    <p class="sheet-subtitle" id="backDialogSub">You're on Step 1 of 7.</p>
+    <div class="sheet-actions">
+      <button class="btn-primary" onclick="closeBackDialog()">Continue Setup</button>
+      <button class="btn-secondary" onclick="exitToControl()">Exit for now</button>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+// ====== STATE ======
+const STEPS = [
+  { num: 1, title: 'Unbox & Inspect', subtitle: 'Confirm all accessories are included',
+    howTo: 'Parts overview: main unit, collection cups, flanges, membranes, valves, power cable, etc. Use the checklist to verify each item.',
+    watch: 'Missing or damaged parts? contact customer support and have your order number and proof of purchase ready.',
+    videoTitle: 'Unbox & Inspect', videoSub: '1. Open the box carefully and lay out all parts. Verify each accessory against the checklist before continuing.' },
+  { num: 2, title: 'Disassemble Parts', subtitle: 'Remove parts in the correct order',
+    howTo: 'Detach the flange, milk collector, diaphragm, and valve from the main unit in the correct sequence.',
+    watch: 'Do not force any parts. If something is stuck, refer to the video guide.',
+    videoTitle: 'Disassemble Parts', videoSub: '2. Detach the flange, milk collector, diaphragm, and valve in the order shown.' },
+  { num: 3, title: 'Choose Your Flange Size', subtitle: 'Measure and match',
+    howTo: 'Measure your nipple diameter and choose the flange size that matches.',
+    watch: 'Wrong size may cause discomfort or reduce milk output.',
+    videoTitle: 'Choose Your Flange Size', videoSub: '3. Measure and match the flange size correctly.' },
+  { num: 4, title: 'Clean & Sanitize', subtitle: 'Wash all washable parts',
+    howTo: 'Wash all washable parts with mild soap and warm water. Sanitize before first use.',
+    watch: 'Do not use harsh chemicals or dishwasher detergent.',
+    videoTitle: 'Clean & Sanitize', videoSub: '4. Wash all parts thoroughly and let them air-dry.' },
+  { num: 5, title: 'Assemble the Pump', subtitle: 'Put parts together',
+    howTo: 'Install the valve, assemble the milk collector, attach the diaphragm, connect the motor.',
+    watch: 'Ensure all seals are tight to avoid air leaks.',
+    videoTitle: 'Assemble the Breast Pump', videoSub: '6. Connect the milk collector assembly to the main unit, ensuring the flange or insert is the correct size and properly fitted.' },
+  { num: 6, title: 'Fit Check & Latch', subtitle: 'Press to your palm and turn it on',
+    howTo: 'Press the assembled pump to your palm and turn it on to test suction.',
+    watch: 'No suction? Recheck the valve and diaphragm orientation.',
+    videoTitle: 'Fit Check & Latch', videoSub: '7. Press the pump to your palm and turn it on to verify suction.' },
+  { num: 7, title: 'Start Your First Session', subtitle: 'Begin pumping',
+    howTo: 'Wear it, connect via app, and start pumping. The first session will help calibrate.',
+    watch: 'Stay relaxed for the best output.',
+    videoTitle: 'Start Your First Session', videoSub: '8. Wear the pump comfortably and begin your first session.' }
+];
+
+let currentStep = 1;
+let setupCompleted = false; // becomes true only when user clicks Finish on step 7
+let isVideoFs = false;
+
+// ====== NAV ======
+function navigate(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (id !== 'video-fs') isVideoFs = false;
+  window.scrollTo(0, 0);
+  const page = document.getElementById(id);
+  if (page) page.scrollTop = 0;
+}
+
+function goStep(n) {
+  currentStep = n;
+  renderStep();
+  navigate('step');
+}
+
+function renderStep() {
+  const s = STEPS[currentStep - 1];
+  document.getElementById('stepProgressLabel').textContent = `${currentStep} of 7`;
+  const bar = document.getElementById('stepProgressBar');
+  bar.innerHTML = '';
+  for (let i = 0; i < 7; i++) {
+    const div = document.createElement('div');
+    if (i < currentStep) div.classList.add('done');
+    bar.appendChild(div);
+  }
+  document.getElementById('stepCardNum').textContent = `Step ${s.num}`;
+  document.getElementById('stepCardTitle').textContent = s.title;
+  document.getElementById('stepCardSubtitle').textContent = s.subtitle;
+  document.getElementById('howToText').textContent = s.howTo;
+  document.getElementById('watchOutText').textContent = s.watch;
+
+  document.getElementById('stepBackBtn').style.display = currentStep === 1 ? 'none' : 'block';
+  document.getElementById('stepNextBtn').textContent = currentStep === 7 ? 'Finish' : 'Next';
+
+  // collapse all accordions
+  document.querySelectorAll('#step .accordion-item').forEach(it => it.classList.remove('open'));
+}
+
+function renderVideoFs() {
+  const s = STEPS[currentStep - 1];
+  document.getElementById('vfsCount').textContent = `${currentStep}/7`;
+  document.getElementById('vfsStepText').textContent = `Step ${currentStep}`;
+  document.getElementById('vfsTitle').textContent = s.videoTitle;
+  document.getElementById('vfsSub').textContent = s.videoSub;
+  document.getElementById('vfsBackBtn').classList.toggle('hidden', currentStep === 1);
+  document.getElementById('vfsNextLabel').textContent = currentStep === 7 ? 'Finish' : 'Next Step';
+}
+
+function nextStep(fromFs) {
+  if (currentStep === 7) {
+    setupCompleted = true;
+    navigate('complete');
+    return;
+  }
+  currentStep++;
+  if (fromFs) {
+    renderVideoFs();
+    renderStep();
+  } else {
+    renderStep();
+  }
+}
+function prevStep(fromFs) {
+  if (currentStep === 1) return;
+  currentStep--;
+  if (fromFs) {
+    renderVideoFs();
+    renderStep();
+  } else {
+    renderStep();
+  }
+}
+
+function openVideoFullscreen() {
+  isVideoFs = true;
+  renderVideoFs();
+  navigate('video-fs');
+}
+function closeVideoFullscreen() {
+  isVideoFs = false;
+  navigate('step');
+}
+
+// ====== DIALOGS ======
+function openSkipDialog() {
+  document.getElementById('skipOverlay').classList.add('show');
+}
+function closeSkipDialog() {
+  document.getElementById('skipOverlay').classList.remove('show');
+}
+function confirmSkip() {
+  closeSkipDialog();
+  setTimeout(() => navigate('control'), 200);
+}
+
+function openBackDialog() {
+  document.getElementById('backDialogSub').textContent = `You're on Step ${currentStep} of 7.`;
+  document.getElementById('backOverlay').classList.add('show');
+}
+function closeBackDialog() {
+  document.getElementById('backOverlay').classList.remove('show');
+}
+function exitToControl() {
+  closeBackDialog();
+  // setupCompleted remains false (this counts as mid-exit)
+  setTimeout(() => navigate('control'), 300);
+}
+
+// ====== ACCORDION ======
+function toggleAccordion(el) {
+  el.classList.toggle('open');
+}
+
+// ====== TIPS ======
+function handleHowToUse() {
+  if (setupCompleted) {
+    renderTips();
+    navigate('tips');
+  } else {
+    // mid-exit: go back to where they left off
+    renderStep();
+    navigate('step');
+  }
+}
+
+function renderTips() {
+  // tips page is already in DOM; no state needed
+}
+
+function openTipStep(idx) {
+  const s = STEPS[idx];
+  document.getElementById('tipsStepTitle').textContent = s.title;
+  document.getElementById('tipsStepSubtitle').textContent = s.subtitle;
+  document.getElementById('tipsHowToText').textContent = s.howTo;
+  document.getElementById('tipsWatchOutText').textContent = s.watch;
+  // pagination
+  const pag = document.getElementById('tipsStepPagination');
+  pag.innerHTML = '';
+  for (let i = 0; i < 7; i++) {
+    const dot = document.createElement('div');
+    if (i === idx) dot.classList.add('active');
+    dot.onclick = () => openTipStep(i);
+    pag.appendChild(dot);
+  }
+  document.querySelectorAll('#tipsStep .accordion-item').forEach(it => it.classList.remove('open'));
+  navigate('tipsStep');
+}
+
+// init
+renderStep();
+</script>
+</body>
+</html>

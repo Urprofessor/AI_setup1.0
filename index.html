@@ -217,8 +217,11 @@
     background: #FCEFF1;
     display: none;
     flex-direction: column;
+    height: 100%;
+    overflow: hidden;
   }
   #step.active { display: flex; }
+  #step .status-bar { flex-shrink: 0; }
   .step-header {
     padding: 0 20px;
     display: flex;
@@ -272,12 +275,22 @@
 
   .step-video {
     position: relative;
-    margin: 0 0 16px;
+    margin: 0 0 0;
     background: #000;
     height: 220px;
     overflow: hidden;
     cursor: pointer;
+    flex-shrink: 0;
   }
+  .step-scroll {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding-top: 16px;
+    min-height: 0;
+  }
+  #tipsStep .step-scroll { padding-top: 8px; }
   .step-video video {
     width: 100%;
     height: 100%;
@@ -435,8 +448,9 @@
     padding: 12px 20px calc(20px + env(safe-area-inset-bottom));
     display: flex;
     gap: 12px;
-    background: linear-gradient(180deg, rgba(252,239,241,0) 0%, #FCEFF1 30%);
+    background: #FCEFF1;
     flex-shrink: 0;
+    border-top: 1px solid #F0E0E3;
   }
   .btn-back {
     background: #fff;
@@ -549,26 +563,40 @@
 
   /* === VIDEO FULLSCREEN === */
   #video-fs {
-    background: #1A1A1A;
+    background: #000;
     z-index: 30;
   }
-  #video-fs.active { display: flex; align-items: center; justify-content: center; flex-direction: column; }
+  #video-fs.active { display: block; }
   .vfs-content {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    height: 100dvh;
+    position: absolute;
+    /* Rotate 90deg to simulate landscape on a portrait phone */
+    width: 100vh;
+    width: 100dvh;
+    height: 100vw;
+    height: 100dvw;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(90deg);
+    transform-origin: center center;
     background: #000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     overflow: hidden;
+  }
+  /* When the device is actually in landscape, do not rotate */
+  @media (orientation: landscape) {
+    .vfs-content {
+      width: 100vw;
+      width: 100dvw;
+      height: 100vh;
+      height: 100dvh;
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
   }
   .vfs-video {
     width: 100%;
     height: 100%;
     object-fit: contain;
     background: #000;
+    display: block;
   }
   .vfs-overlay {
     position: absolute;
@@ -1098,13 +1126,22 @@
   .tip-chevron { color: #999; width: 16px; height: 16px; }
 
   /* === TIPS STEP PAGE === */
-  #tipsStep { background: #FCEFF1; }
-  #tipsStep .content { padding: 0; }
+  #tipsStep {
+    background: #FCEFF1;
+    display: none;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+  }
+  #tipsStep.active { display: flex; }
+  #tipsStep .status-bar { flex-shrink: 0; }
+  #tipsStep .content { padding: 0; flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; }
   .tipsstep-header {
     padding: 8px 16px 0;
     position: relative;
     display: flex; align-items: center; justify-content: center;
     height: 56px;
+    flex-shrink: 0;
   }
   .tipsstep-back {
     position: absolute; left: 16px;
@@ -1119,6 +1156,7 @@
   .tipsstep-title {
     font-size: 17px; font-weight: 600; color: #4A0612;
   }
+  #tipsStep .step-video { flex-shrink: 0; }
   .tipsstep-card {
     background: #fff;
     border-radius: 20px;
@@ -1146,6 +1184,12 @@
 </head>
 <body>
 <div id="app">
+
+<!-- Preload videos (hidden, just to warm the browser cache) -->
+<div aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;left:-9999px;top:-9999px">
+  <video id="preloadOld" muted playsinline preload="auto" src="videos/demo-old.mp4"></video>
+  <video id="preloadNew" muted playsinline preload="auto" src="videos/demo-new.mp4"></video>
+</div>
 
 <!-- =========== WELCOME PAGE =========== -->
 <div class="page active" id="welcome">
@@ -1241,36 +1285,38 @@
     <div class="video-label">How-to video · <span id="stepVideoDuration">15s</span></div>
     <div class="video-progress-line" id="stepVideoProgress"></div>
   </div>
-  <div class="step-card">
-    <div class="step-card-num" id="stepCardNum">Step 1</div>
-    <h2 class="step-card-title" id="stepCardTitle">Unbox & Inspect</h2>
-    <p class="step-card-subtitle" id="stepCardSubtitle">Confirm all accessories are included</p>
-    <div class="accordion">
-      <div class="accordion-item" onclick="toggleAccordion(this)">
-        <div class="accordion-head">
-          <div class="accordion-head-left">
-            <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 2-2.5 2.5-2.5 4.5M12 17v.01"/></svg>
-            <span>How to do it</span>
+  <div class="step-scroll">
+    <div class="step-card">
+      <div class="step-card-num" id="stepCardNum">Step 1</div>
+      <h2 class="step-card-title" id="stepCardTitle">Unbox & Inspect</h2>
+      <p class="step-card-subtitle" id="stepCardSubtitle">Confirm all accessories are included</p>
+      <div class="accordion">
+        <div class="accordion-item" onclick="toggleAccordion(this)">
+          <div class="accordion-head">
+            <div class="accordion-head-left">
+              <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 2-2.5 2.5-2.5 4.5M12 17v.01"/></svg>
+              <span>How to do it</span>
+            </div>
+            <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
           </div>
-          <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-        </div>
-        <div class="accordion-body">
-          <div class="accordion-body-img">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+          <div class="accordion-body">
+            <div class="accordion-body-img">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+            </div>
+            <div id="howToText">Parts overview: main unit, collection cups, flanges, membranes, valves, power cable, etc. Use the checklist to verify each item.</div>
           </div>
-          <div id="howToText">Parts overview: main unit, collection cups, flanges, membranes, valves, power cable, etc. Use the checklist to verify each item.</div>
         </div>
-      </div>
-      <div class="accordion-item" onclick="toggleAccordion(this)">
-        <div class="accordion-head">
-          <div class="accordion-head-left">
-            <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L2 22h20L12 2z"/><path d="M12 9v5M12 18v.01"/></svg>
-            <span>What to watch out for</span>
+        <div class="accordion-item" onclick="toggleAccordion(this)">
+          <div class="accordion-head">
+            <div class="accordion-head-left">
+              <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L2 22h20L12 2z"/><path d="M12 9v5M12 18v.01"/></svg>
+              <span>What to watch out for</span>
+            </div>
+            <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
           </div>
-          <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-        </div>
-        <div class="accordion-body">
-          <div id="watchOutText">Missing or damaged parts? contact customer support and have your order number and proof of purchase ready.</div>
+          <div class="accordion-body">
+            <div id="watchOutText">Missing or damaged parts? contact customer support and have your order number and proof of purchase ready.</div>
+          </div>
         </div>
       </div>
     </div>
@@ -1681,6 +1727,7 @@
     <div class="video-label">How-to video · <span id="tipsVideoDuration">15s</span></div>
     <div class="video-progress-line" id="tipsVideoProgress"></div>
   </div>
+  <div class="step-scroll">
   <div class="tipsstep-card">
     <h2 class="step-card-title" id="tipsStepTitle">Unbox & Inspect</h2>
     <p class="step-card-subtitle" id="tipsStepSubtitle">Confirm all accessories are included</p>
@@ -1713,6 +1760,7 @@
     </div>
   </div>
   <div class="tipsstep-pagination" id="tipsStepPagination"></div>
+  </div>
 </div>
 
 <!-- =========== OVERLAYS =========== -->

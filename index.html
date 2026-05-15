@@ -306,20 +306,24 @@
   .video-play-btn.hidden { opacity: 0; pointer-events: none; }
   .video-expand {
     position: absolute;
-    top: 12px;
-    right: 12px;
-    width: 36px;
-    height: 36px;
-    background: rgba(0,0,0,0.3);
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    background: rgba(0,0,0,0.35);
     border-radius: 50%;
     border: none;
     color: #fff;
     cursor: pointer;
-    z-index: 3;
+    z-index: 10;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0;
+    -webkit-tap-highlight-color: rgba(255,255,255,0.2);
+    touch-action: manipulation;
   }
+  .video-expand:active { background: rgba(0,0,0,0.55); }
   .video-label {
     position: absolute;
     bottom: 14px;
@@ -1227,14 +1231,12 @@
     <div class="step-progress-bar" id="stepProgressBar"></div>
   </div>
   <div class="step-video" id="stepVideoBox">
-    <video id="stepVideo" playsinline preload="metadata" poster="">
-      <source src="videos/demo.mp4" type="video/mp4">
-    </video>
-    <div class="video-play-btn" id="stepPlayBtn">
+    <video id="stepVideo" playsinline muted loop preload="auto" autoplay></video>
+    <div class="video-play-btn hidden" id="stepPlayBtn">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
     </div>
-    <button class="video-expand" onclick="event.stopPropagation(); openVideoFullscreen();">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 9V3h6M21 9V3h-6M3 15v6h6M21 15v6h-6"/></svg>
+    <button class="video-expand" id="stepExpandBtn" type="button" aria-label="Fullscreen">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" pointer-events="none"><path d="M3 9V3h6M21 9V3h-6M3 15v6h6M21 15v6h-6"/></svg>
     </button>
     <div class="video-label">How-to video · <span id="stepVideoDuration">15s</span></div>
     <div class="video-progress-line" id="stepVideoProgress"></div>
@@ -1282,9 +1284,7 @@
 <!-- =========== VIDEO FULLSCREEN =========== -->
 <div class="page" id="video-fs">
   <div class="vfs-content">
-    <video class="vfs-video" id="vfsVideo" playsinline preload="metadata">
-      <source src="videos/demo.mp4" type="video/mp4">
-    </video>
+    <video class="vfs-video" id="vfsVideo" playsinline loop autoplay preload="auto"></video>
     <div class="vfs-overlay" id="vfsOverlay">
       <div class="vfs-step-pill">
         <span id="vfsCount">1/7</span>
@@ -1671,14 +1671,12 @@
     <div class="tipsstep-title">Air One Tips</div>
   </div>
   <div class="step-video" id="tipsVideoBox">
-    <video id="tipsVideo" playsinline preload="metadata">
-      <source src="videos/demo.mp4" type="video/mp4">
-    </video>
-    <div class="video-play-btn" id="tipsPlayBtn">
+    <video id="tipsVideo" playsinline muted loop preload="auto" autoplay></video>
+    <div class="video-play-btn hidden" id="tipsPlayBtn">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
     </div>
-    <button class="video-expand" id="tipsExpandBtn">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 9V3h6M21 9V3h-6M3 15v6h6M21 15v6h-6"/></svg>
+    <button class="video-expand" id="tipsExpandBtn" type="button" aria-label="Fullscreen">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" pointer-events="none"><path d="M3 9V3h6M21 9V3h-6M3 15v6h6M21 15v6h-6"/></svg>
     </button>
     <div class="video-label">How-to video · <span id="tipsVideoDuration">15s</span></div>
     <div class="video-progress-line" id="tipsVideoProgress"></div>
@@ -1780,6 +1778,15 @@ const STEPS = [
 let currentStep = 1;
 let setupCompleted = false; // becomes true only when user clicks Finish on step 7
 let isVideoFs = false;
+let currentTipStepIdx = 0;
+
+// ====== VIDEO CONFIG ======
+// Step 1/3/5/7 use old video, Step 2/4/6 use new video
+const VIDEO_OLD = 'videos/demo-old.mp4';
+const VIDEO_NEW = 'videos/demo-new.mp4';
+function getStepVideoSrc(stepNum) {
+  return (stepNum % 2 === 1) ? VIDEO_OLD : VIDEO_NEW;
+}
 
 // ====== VIDEO REFS ======
 const stepVideo = document.getElementById('stepVideo');
@@ -1787,12 +1794,14 @@ const stepPlayBtn = document.getElementById('stepPlayBtn');
 const stepVideoProgress = document.getElementById('stepVideoProgress');
 const stepVideoBox = document.getElementById('stepVideoBox');
 const stepVideoDuration = document.getElementById('stepVideoDuration');
+const stepExpandBtn = document.getElementById('stepExpandBtn');
 
 const tipsVideo = document.getElementById('tipsVideo');
 const tipsPlayBtn = document.getElementById('tipsPlayBtn');
 const tipsVideoProgress = document.getElementById('tipsVideoProgress');
 const tipsVideoBox = document.getElementById('tipsVideoBox');
 const tipsVideoDuration = document.getElementById('tipsVideoDuration');
+const tipsExpandBtn = document.getElementById('tipsExpandBtn');
 
 const vfsVideo = document.getElementById('vfsVideo');
 const vfsPlayBtn = document.getElementById('vfsPlayBtn');
@@ -1816,19 +1825,36 @@ function formatTime(s) {
   return `${m}:${ss}`;
 }
 
-// === step inline video ===
+// Set video source if different, preserving autoplay state
+function setVideoSrc(video, src) {
+  if (!video) return;
+  // Compare ignoring origin
+  const current = (video.currentSrc || video.src || '').split('/').slice(-2).join('/');
+  const target = src.split('/').slice(-2).join('/');
+  if (current.endsWith(target)) return;
+  video.src = src;
+  video.load();
+}
+
+// === inline video player setup ===
 function setupInlineVideo(video, playBtn, progressEl, box, durationEl) {
   if (!video) return;
 
-  // Click on box (not buttons) toggles play
+  // Tap on box (but not on buttons) toggles play
   box.addEventListener('click', (e) => {
     if (e.target.closest('.video-expand')) return;
+    if (e.target.closest('.video-play-btn')) return;
+    togglePlay(video, playBtn);
+  });
+
+  // The play button itself
+  playBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
     togglePlay(video, playBtn);
   });
 
   video.addEventListener('play', () => {
     playBtn.classList.add('hidden');
-    playBtn.querySelector('svg').innerHTML = PAUSE_ICON;
   });
   video.addEventListener('pause', () => {
     playBtn.classList.remove('hidden');
@@ -1844,34 +1870,44 @@ function setupInlineVideo(video, playBtn, progressEl, box, durationEl) {
       durationEl.textContent = Math.round(video.duration) + 's';
     }
   });
-  video.addEventListener('ended', () => {
-    playBtn.classList.remove('hidden');
-    playBtn.querySelector('svg').innerHTML = PLAY_ICON;
-  });
+  // loop=true on the element handles ended; nothing needed here
 }
 
-function togglePlay(video, playBtn) {
-  if (video.paused) video.play(); else video.pause();
+function togglePlay(video) {
+  if (video.paused) {
+    video.play().catch(() => {});
+  } else {
+    video.pause();
+  }
 }
 
 setupInlineVideo(stepVideo, stepPlayBtn, stepVideoProgress, stepVideoBox, stepVideoDuration);
 setupInlineVideo(tipsVideo, tipsPlayBtn, tipsVideoProgress, tipsVideoBox, tipsVideoDuration);
 
-// Tips expand button (no inline handler because there is no fullscreen target for tips view yet)
-const tipsExpandBtn = document.getElementById('tipsExpandBtn');
+// Expand buttons (bind with addEventListener for reliability on iOS)
+if (stepExpandBtn) {
+  stepExpandBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    openVideoFullscreen(false);
+  });
+}
 if (tipsExpandBtn) {
   tipsExpandBtn.addEventListener('click', (e) => {
     e.stopPropagation();
-    // Reuse fullscreen for tips video too
+    e.preventDefault();
     openVideoFullscreen(true);
   });
 }
 
 // === fullscreen video ===
 if (vfsVideo) {
-  vfsPlayBtn.addEventListener('click', () => togglePlay(vfsVideo, null));
+  vfsPlayBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    togglePlay(vfsVideo);
+  });
 
-  vfsVideo.addEventListener('click', () => togglePlay(vfsVideo, null));
+  vfsVideo.addEventListener('click', () => togglePlay(vfsVideo));
 
   vfsVideo.addEventListener('play', () => {
     vfsPlayBtn.classList.add('hidden');
@@ -1879,11 +1915,6 @@ if (vfsVideo) {
     vfsCtrlPlay.innerHTML = PAUSE_ICON;
   });
   vfsVideo.addEventListener('pause', () => {
-    vfsPlayBtn.classList.remove('hidden');
-    vfsPlayIcon.innerHTML = PLAY_ICON;
-    vfsCtrlPlay.innerHTML = PLAY_ICON;
-  });
-  vfsVideo.addEventListener('ended', () => {
     vfsPlayBtn.classList.remove('hidden');
     vfsPlayIcon.innerHTML = PLAY_ICON;
     vfsCtrlPlay.innerHTML = PLAY_ICON;
@@ -1896,29 +1927,37 @@ if (vfsVideo) {
   });
   vfsVideo.addEventListener('loadedmetadata', () => {
     vfsTime.textContent = '0:00 / ' + formatTime(vfsVideo.duration);
+    // Default unmuted in fullscreen
+    vfsVolumeFill.style.width = (vfsVideo.volume * 100) + '%';
   });
 
-  vfsCtrlPlay.addEventListener('click', () => togglePlay(vfsVideo, null));
-  vfsCtrlForward.addEventListener('click', () => {
+  vfsCtrlPlay.addEventListener('click', (e) => {
+    e.stopPropagation();
+    togglePlay(vfsVideo);
+  });
+  vfsCtrlForward.addEventListener('click', (e) => {
+    e.stopPropagation();
     vfsVideo.currentTime = Math.min(vfsVideo.duration || 0, vfsVideo.currentTime + 10);
   });
-  vfsCtrlMute.addEventListener('click', () => {
+  vfsCtrlMute.addEventListener('click', (e) => {
+    e.stopPropagation();
     vfsVideo.muted = !vfsVideo.muted;
     vfsVolumeFill.style.width = vfsVideo.muted ? '0%' : (vfsVideo.volume * 100) + '%';
   });
 
   // Progress bar seek
   function seekFromEvent(e) {
+    e.stopPropagation();
     const rect = vfsProgressBar.getBoundingClientRect();
     const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
     const pct = Math.max(0, Math.min(1, x / rect.width));
     if (vfsVideo.duration) vfsVideo.currentTime = pct * vfsVideo.duration;
   }
   vfsProgressBar.addEventListener('click', seekFromEvent);
-  vfsProgressBar.addEventListener('touchstart', seekFromEvent);
 
   // Volume slider
   function volumeFromEvent(e) {
+    e.stopPropagation();
     const rect = vfsVolumeSlider.getBoundingClientRect();
     const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
     const pct = Math.max(0, Math.min(1, x / rect.width));
@@ -1927,7 +1966,6 @@ if (vfsVideo) {
     vfsVolumeFill.style.width = (pct * 100) + '%';
   }
   vfsVolumeSlider.addEventListener('click', volumeFromEvent);
-  vfsVolumeSlider.addEventListener('touchstart', volumeFromEvent);
 }
 
 // ====== NAV ======
@@ -1943,6 +1981,16 @@ function navigate(id) {
   window.scrollTo(0, 0);
   const page = document.getElementById(id);
   if (page) page.scrollTop = 0;
+
+  // Auto-play videos on relevant pages
+  if (id === 'step' && stepVideo) {
+    stepVideo.muted = true;
+    setTimeout(() => stepVideo.play().catch(() => {}), 50);
+  }
+  if (id === 'tipsStep' && tipsVideo) {
+    tipsVideo.muted = true;
+    setTimeout(() => tipsVideo.play().catch(() => {}), 50);
+  }
 }
 
 function goStep(n) {
@@ -1972,16 +2020,32 @@ function renderStep() {
 
   // collapse all accordions
   document.querySelectorAll('#step .accordion-item').forEach(it => it.classList.remove('open'));
+
+  // Update video source for this step
+  const videoSrc = getStepVideoSrc(currentStep);
+  setVideoSrc(stepVideo, videoSrc);
+  stepVideo.muted = true; // required for autoplay on mobile
+  stepVideo.play().catch(() => {});
 }
 
 function renderVideoFs() {
   const s = STEPS[currentStep - 1];
   document.getElementById('vfsCount').textContent = `${currentStep}/7`;
   document.getElementById('vfsStepText').textContent = `Step ${currentStep}`;
-  document.getElementById('vfsTitle').textContent = s.videoTitle;
-  document.getElementById('vfsSub').textContent = s.videoSub;
   document.getElementById('vfsBackBtn').classList.toggle('hidden', currentStep === 1);
   document.getElementById('vfsNextLabel').textContent = currentStep === 7 ? 'Finish' : 'Next Step';
+}
+
+function refreshFsVideoSource() {
+  if (!vfsVideo) return;
+  const src = getStepVideoSrc(currentStep);
+  setVideoSrc(vfsVideo, src);
+  vfsVideo.muted = false;
+  vfsVideo.loop = true;
+  vfsVideo.play().catch(() => {
+    vfsVideo.muted = true;
+    vfsVideo.play().catch(() => {});
+  });
 }
 
 function nextStep(fromFs) {
@@ -1994,6 +2058,7 @@ function nextStep(fromFs) {
   if (fromFs) {
     renderVideoFs();
     renderStep();
+    refreshFsVideoSource();
   } else {
     renderStep();
   }
@@ -2004,6 +2069,7 @@ function prevStep(fromFs) {
   if (fromFs) {
     renderVideoFs();
     renderStep();
+    refreshFsVideoSource();
   } else {
     renderStep();
   }
@@ -2012,32 +2078,54 @@ function prevStep(fromFs) {
 function openVideoFullscreen(fromTips) {
   isVideoFs = true;
   renderVideoFs();
-  // Sync currentTime from inline video to fullscreen
-  const sourceVideo = fromTips ? tipsVideo : stepVideo;
-  if (sourceVideo && vfsVideo) {
-    const wasPlaying = !sourceVideo.paused;
-    sourceVideo.pause();
-    try {
-      vfsVideo.currentTime = sourceVideo.currentTime || 0;
-    } catch(e) {}
-    if (wasPlaying) {
-      vfsVideo.play().catch(() => {});
-    }
+
+  // Pick video source based on context
+  let src;
+  if (fromTips) {
+    // Tips uses the currently selected tip's video (same parity rule, idx 0-based)
+    src = (currentTipStepIdx % 2 === 0) ? VIDEO_OLD : VIDEO_NEW;
+  } else {
+    src = getStepVideoSrc(currentStep);
   }
+
+  const sourceVideo = fromTips ? tipsVideo : stepVideo;
+  const startTime = sourceVideo ? (sourceVideo.currentTime || 0) : 0;
+
+  if (sourceVideo) sourceVideo.pause();
+
+  setVideoSrc(vfsVideo, src);
+  // In fullscreen we want sound (unmute), but on iOS unmute may require user gesture.
+  // Since this function is triggered by a click, this is allowed.
+  vfsVideo.muted = false;
+  vfsVideo.loop = true;
+
+  // Wait until video is ready to seek
+  const seekAndPlay = () => {
+    try { vfsVideo.currentTime = startTime; } catch(e) {}
+    vfsVideo.play().catch(() => {
+      // If unmuted play is blocked, fall back to muted
+      vfsVideo.muted = true;
+      vfsVideo.play().catch(() => {});
+    });
+  };
+  if (vfsVideo.readyState >= 1) {
+    seekAndPlay();
+  } else {
+    vfsVideo.addEventListener('loadedmetadata', seekAndPlay, { once: true });
+  }
+
   navigate('video-fs');
 }
+
 function closeVideoFullscreen() {
   isVideoFs = false;
-  // Sync currentTime back to step video
+  // Sync currentTime back to step video and resume
   if (stepVideo && vfsVideo) {
-    const wasPlaying = !vfsVideo.paused;
+    const t = vfsVideo.currentTime || 0;
     vfsVideo.pause();
-    try {
-      stepVideo.currentTime = vfsVideo.currentTime || 0;
-    } catch(e) {}
-    if (wasPlaying) {
-      stepVideo.play().catch(() => {});
-    }
+    try { stepVideo.currentTime = t; } catch(e) {}
+    stepVideo.muted = true;
+    stepVideo.play().catch(() => {});
   }
   navigate('step');
 }
@@ -2089,6 +2177,7 @@ function renderTips() {
 }
 
 function openTipStep(idx) {
+  currentTipStepIdx = idx;
   const s = STEPS[idx];
   document.getElementById('tipsStepTitle').textContent = s.title;
   document.getElementById('tipsStepSubtitle').textContent = s.subtitle;
@@ -2104,7 +2193,16 @@ function openTipStep(idx) {
     pag.appendChild(dot);
   }
   document.querySelectorAll('#tipsStep .accordion-item').forEach(it => it.classList.remove('open'));
+
+  // Update tips video source (0-based: idx 0 = old, idx 1 = new, ...)
+  const videoSrc = (idx % 2 === 0) ? VIDEO_OLD : VIDEO_NEW;
+  setVideoSrc(tipsVideo, videoSrc);
+  tipsVideo.muted = true;
+
   navigate('tipsStep');
+
+  // play after navigation
+  setTimeout(() => tipsVideo.play().catch(() => {}), 50);
 }
 
 // init

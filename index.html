@@ -835,23 +835,23 @@
   .device-pump {
     width: 100%;
     aspect-ratio: 1;
-    background: radial-gradient(circle at 30% 30%, #F5C5CC, #E8939F);
-    border-radius: 50%;
     position: relative;
     margin-bottom: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: visible;
   }
-  .device-side-label {
+  .device-pump img {
     position: absolute;
-    top: 18%;
-    background: #FCEFF1;
-    padding: 4px 14px;
-    border-radius: 100px;
-    color: #4A0612;
-    font-size: 14px;
-    font-weight: 600;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    z-index: 1;
+  }
+  .device-pump .device-time {
+    z-index: 2;
   }
   .device-time {
     position: absolute;
@@ -974,17 +974,19 @@
   }
   .pump-thumb {
     width: 90px; height: 90px;
-    background: radial-gradient(circle at 30% 30%, #F5C5CC, #E8939F);
-    border-radius: 50%;
     position: relative;
     display: flex; align-items: center; justify-content: center;
+    overflow: visible;
+  }
+  .pump-thumb img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    z-index: 1;
   }
   .pump-thumb.dim { opacity: 0.4; }
-  .pump-thumb-label {
-    position: absolute; top: 14%;
-    background: #FCEFF1; padding: 2px 10px; border-radius: 100px;
-    font-size: 11px; color: #4A0612; font-weight: 600;
-  }
   .lr-toggle {
     background: #F4F4F6;
     border-radius: 100px;
@@ -1178,21 +1180,7 @@
   <button class="skip-btn" onclick="openSkipDialog()">Skip</button>
   <div class="content">
     <div class="welcome-hero">
-      <svg class="hero-illustration" viewBox="0 0 160 160">
-        <defs>
-          <linearGradient id="welcoG" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#FFB5C9"/>
-            <stop offset="50%" stop-color="#F8C28D"/>
-            <stop offset="100%" stop-color="#FFB85C"/>
-          </linearGradient>
-        </defs>
-        <path d="M40 50 Q60 30 100 35 L120 50 L115 95 Q90 110 60 105 Z" fill="url(#welcoG)" opacity="0.85"/>
-        <path d="M30 95 Q35 80 50 75 Q70 70 85 80 Q95 90 90 100 Q80 115 60 115 Q40 115 30 95Z" stroke="#2B0007" stroke-width="2" fill="none" stroke-linecap="round"/>
-        <path d="M85 80 Q95 60 110 55" stroke="#2B0007" stroke-width="2" fill="none" stroke-linecap="round"/>
-        <path d="M115 60 Q120 70 118 80" stroke="#2B0007" stroke-width="2" fill="none" stroke-linecap="round"/>
-        <circle cx="75" cy="55" r="3" fill="#FFFFFF" opacity="0.95"/>
-        <path d="M70 50 L75 55 L80 50 M75 50 L75 60" stroke="#FFF" stroke-width="1.5" stroke-linecap="round"/>
-      </svg>
+      <img class="hero-illustration" src="images/welcome-hero.png" alt="Welcome" onerror="this.style.display='none'">
       <h1 class="welcome-title">Welcome to Air One</h1>
       <p class="welcome-subtitle">Set up in 3 phases around 4min and pump right the first time.</p>
     </div>
@@ -1357,18 +1345,7 @@
   </div>
   <div class="content">
     <div class="complete-hero">
-      <svg class="complete-illu" viewBox="0 0 180 160">
-        <ellipse cx="50" cy="80" rx="40" ry="20" fill="#FFA8B6" opacity="0.6"/>
-        <ellipse cx="120" cy="85" rx="35" ry="18" fill="#FFA8B6" opacity="0.6"/>
-        <path d="M45 70 Q50 50 65 55 Q75 60 70 85 Q65 100 50 100 Q40 95 45 70" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <path d="M75 55 Q80 40 85 50" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <path d="M85 50 Q90 35 95 50" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <path d="M95 50 Q100 38 105 52" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <path d="M105 52 Q110 60 105 75 Q100 95 90 100 Q80 100 78 85" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <path d="M115 50 Q120 35 125 50" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <path d="M125 50 Q130 38 135 50 Q140 60 135 75 Q130 95 120 100 Q110 100 110 85" stroke="#1A1A1A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <path d="M80 30 L84 18 L88 30 L92 18 L96 30" stroke="#9888EE" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
+      <img class="complete-illu" src="images/complete-hero.png" alt="You're all set" onerror="this.style.display='none'">
       <h1 class="complete-title">You're all set!</h1>
       <p class="complete-sub">Your <strong>Air One</strong> is set up and ready.<br/>Start your first pumping session.</p>
     </div>
@@ -1441,14 +1418,14 @@
     <div class="device-display">
       <div class="device-unit">
         <div class="device-pump">
-          <div class="device-side-label">L</div>
+          <img src="images/pump-left.png" alt="" onerror="this.style.display='none'">
           <div class="device-time">13:30</div>
         </div>
         <div class="device-bat">80% <svg width="20" height="11" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3" stroke="#888"/><rect x="2" y="2" width="14" height="8" rx="1.5" fill="#888"/><rect x="22" y="4" width="1.5" height="4" rx="0.5" fill="#888"/></svg></div>
       </div>
       <div class="device-unit">
         <div class="device-pump">
-          <div class="device-side-label">R</div>
+          <img src="images/pump-right.png" alt="" onerror="this.style.display='none'">
           <div class="device-time">13:30</div>
         </div>
         <div class="device-bat">80% <svg width="20" height="11" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3" stroke="#888"/><rect x="2" y="2" width="14" height="8" rx="1.5" fill="#888"/><rect x="22" y="4" width="1.5" height="4" rx="0.5" fill="#888"/></svg></div>
@@ -1519,8 +1496,8 @@
   <div class="content">
     <div class="settings-pump-card">
       <div class="settings-pump-display">
-        <div class="pump-thumb"><div class="pump-thumb-label">L</div></div>
-        <div class="pump-thumb dim"><div class="pump-thumb-label">R</div></div>
+        <div class="pump-thumb"><img src="images/pump-left.png" alt="" onerror="this.style.display='none'"></div>
+        <div class="pump-thumb dim"><img src="images/pump-right.png" alt="" onerror="this.style.display='none'"></div>
       </div>
       <div class="lr-toggle">
         <div class="active">Left</div>
@@ -1584,19 +1561,7 @@
   </div>
   <div class="content">
     <div class="tips-hero">
-      <svg class="tips-illu" viewBox="0 0 140 100">
-        <defs>
-          <linearGradient id="tipsG" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#FFB5C9"/>
-            <stop offset="50%" stop-color="#F8C28D"/>
-            <stop offset="100%" stop-color="#FFB85C"/>
-          </linearGradient>
-        </defs>
-        <path d="M30 30 L80 25 L85 65 L40 70 Z" fill="url(#tipsG)" opacity="0.9"/>
-        <path d="M25 60 Q30 50 45 50 Q60 50 70 60 Q75 70 60 75 Q40 75 25 60" stroke="#1A1A1A" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-        <path d="M70 55 Q80 40 95 35" stroke="#1A1A1A" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-        <path d="M50 40 L54 32 L58 40 M54 32 L54 45" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
-      </svg>
+      <img class="tips-illu" src="images/welcome-hero.png" alt="Air One tips" onerror="this.style.display='none'">
       <h1 class="tips-title">Get the most from Air One</h1>
     </div>
     <div class="tip-card" onclick="openTipStep(0)">

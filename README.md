@@ -57,11 +57,3 @@ python3 -m http.server 8000
 只有用户在 Step 7 点 Finish（无论横屏还是竖屏）走到 Complete 才算"完成 setup"。
 任何其他路径（Skip 弹窗 Continue / Back Dialog Exit for now）都算"中途退出"。
 
-## 文件结构
-
-```
-airone-demo/
-├── index.html       # 全部代码（HTML + CSS + JS 单文件）
-├── vercel.json      # Vercel 配置
-└── README.md
-```

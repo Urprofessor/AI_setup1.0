@@ -293,6 +293,17 @@
     overflow: hidden;
     cursor: pointer;
   }
+  .step-video::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.27);
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity .2s;
+  }
+  .step-video.is-paused::before { opacity: 1; }
   .step-video video {
     width: 100%;
     height: 100%;
@@ -313,9 +324,8 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    z-index: 2;
+    z-index: 3;
     transition: opacity .2s, transform .15s ease;
-    filter: drop-shadow(0 4px 16px rgba(0,0,0,0.25));
   }
   .video-play-btn img {
     width: 100%;
@@ -367,18 +377,6 @@
     background: #E8909C;
     z-index: 2;
     transition: width .1s linear;
-  }
-  .video-progress-line::after {
-    content: '';
-    position: absolute;
-    right: -8px;
-    top: 50%;
-    width: 16px;
-    height: 16px;
-    transform: translateY(-50%);
-    background: url('images/seekbar%20hero.png') center/contain no-repeat;
-    filter: drop-shadow(0 1px 3px rgba(0,0,0,0.35));
-    pointer-events: none;
   }
 
   .step-card {
@@ -601,6 +599,17 @@
     background: #000;
     overflow: hidden;
   }
+  .vfs-content::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.27);
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity .2s;
+  }
+  .vfs-content.is-paused::before { opacity: 1; }
   /* When the device is actually in landscape, do not rotate */
   @media (orientation: landscape) {
     .vfs-content {
@@ -668,8 +677,8 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    z-index: 3;
     transition: opacity .2s, transform .15s ease;
-    filter: drop-shadow(0 6px 20px rgba(0,0,0,0.35));
   }
   .vfs-play-btn img {
     width: 100%;
@@ -736,7 +745,6 @@
     height: 20px;
     transform: translateY(-50%);
     background: url('images/seekbar%20hero.png') center/contain no-repeat;
-    filter: drop-shadow(0 1px 4px rgba(0,0,0,0.45));
     pointer-events: none;
   }
   .vfs-controls {
@@ -1896,9 +1904,11 @@ function setupInlineVideo(video, playBtn, progressEl, box, durationEl) {
 
   video.addEventListener('play', () => {
     playBtn.classList.add('hidden');
+    box.classList.remove('is-paused');
   });
   video.addEventListener('pause', () => {
     playBtn.classList.remove('hidden');
+    box.classList.add('is-paused');
   });
   video.addEventListener('timeupdate', () => {
     if (video.duration) {
@@ -1952,10 +1962,12 @@ if (vfsVideo) {
   vfsVideo.addEventListener('play', () => {
     vfsPlayBtn.classList.add('hidden');
     vfsCtrlPlay.innerHTML = PAUSE_ICON;
+    vfsVideo.parentElement.classList.remove('is-paused');
   });
   vfsVideo.addEventListener('pause', () => {
     vfsPlayBtn.classList.remove('hidden');
     vfsCtrlPlay.innerHTML = PLAY_ICON;
+    vfsVideo.parentElement.classList.add('is-paused');
   });
   vfsVideo.addEventListener('timeupdate', () => {
     if (vfsVideo.duration) {

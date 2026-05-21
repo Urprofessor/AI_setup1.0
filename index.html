@@ -304,20 +304,28 @@
     position: absolute;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.35);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1.5px solid rgba(255,255,255,0.8);
+    width: 102px;
+    height: 96px;
+    background: transparent;
+    border: none;
+    padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     z-index: 2;
-    transition: opacity .2s;
+    transition: opacity .2s, transform .15s ease;
+    filter: drop-shadow(0 4px 16px rgba(0,0,0,0.25));
   }
+  .video-play-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+  .video-play-btn:active { transform: translate(-50%, -50%) scale(0.94); }
   .video-play-btn.hidden { opacity: 0; pointer-events: none; }
   .video-expand {
     position: absolute;
@@ -359,6 +367,18 @@
     background: #E8909C;
     z-index: 2;
     transition: width .1s linear;
+  }
+  .video-progress-line::after {
+    content: '';
+    position: absolute;
+    right: -8px;
+    top: 50%;
+    width: 16px;
+    height: 16px;
+    transform: translateY(-50%);
+    background: url('images/seekbar%20hero.png') center/contain no-repeat;
+    filter: drop-shadow(0 1px 3px rgba(0,0,0,0.35));
+    pointer-events: none;
   }
 
   .step-card {
@@ -639,19 +659,27 @@
     position: absolute;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.25);
-    border: 2px solid rgba(255,255,255,0.85);
+    width: 102px;
+    height: 96px;
+    background: transparent;
+    border: none;
+    padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
     cursor: pointer;
-    transition: opacity .2s;
+    transition: opacity .2s, transform .15s ease;
+    filter: drop-shadow(0 6px 20px rgba(0,0,0,0.35));
   }
+  .vfs-play-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+  .vfs-play-btn:active { transform: translate(-50%, -50%) scale(0.94); }
   .vfs-play-btn.hidden { opacity: 0; pointer-events: none; }
   .vfs-nav {
     position: absolute;
@@ -688,7 +716,6 @@
     height: 4px;
     background: rgba(255,255,255,0.3);
     border-radius: 2px;
-    overflow: hidden;
     cursor: pointer;
     position: relative;
   }
@@ -696,7 +723,21 @@
     height: 100%;
     width: 0%;
     background: #E24B4A;
+    border-radius: 2px;
     transition: width .1s linear;
+    position: relative;
+  }
+  .vfs-progress-bar-fill::after {
+    content: '';
+    position: absolute;
+    right: -10px;
+    top: 50%;
+    width: 20px;
+    height: 20px;
+    transform: translateY(-50%);
+    background: url('images/seekbar%20hero.png') center/contain no-repeat;
+    filter: drop-shadow(0 1px 4px rgba(0,0,0,0.45));
+    pointer-events: none;
   }
   .vfs-controls {
     position: absolute;
@@ -1258,7 +1299,7 @@
   <div class="step-video" id="stepVideoBox">
     <video id="stepVideo" playsinline muted loop preload="auto" autoplay></video>
     <div class="video-play-btn hidden" id="stepPlayBtn">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
+      <img src="images/pause%20hero.png" alt="Play" draggable="false">
     </div>
     <button class="video-expand" id="stepExpandBtn" type="button" aria-label="Fullscreen">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" pointer-events="none"><path d="M3 9V3h6M21 9V3h-6M3 15v6h6M21 15v6h-6"/></svg>
@@ -1318,7 +1359,7 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 3v6H3M15 3v6h6M9 21v-6H3M15 21v-6h6"/></svg>
       </button>
       <div class="vfs-play-btn" id="vfsPlayBtn">
-        <svg id="vfsPlayIcon" width="28" height="28" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
+        <img id="vfsPlayIcon" src="images/pause%20hero.png" alt="Play" draggable="false">
       </div>
       <div class="vfs-nav">
         <button class="vfs-nav-btn" id="vfsBackBtn" onclick="prevStep(true)">
@@ -1673,7 +1714,7 @@
   <div class="step-video" id="tipsVideoBox">
     <video id="tipsVideo" playsinline muted loop preload="auto" autoplay></video>
     <div class="video-play-btn hidden" id="tipsPlayBtn">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
+      <img src="images/pause%20hero.png" alt="Play" draggable="false">
     </div>
     <button class="video-expand" id="tipsExpandBtn" type="button" aria-label="Fullscreen">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" pointer-events="none"><path d="M3 9V3h6M21 9V3h-6M3 15v6h6M21 15v6h-6"/></svg>
@@ -1858,7 +1899,6 @@ function setupInlineVideo(video, playBtn, progressEl, box, durationEl) {
   });
   video.addEventListener('pause', () => {
     playBtn.classList.remove('hidden');
-    playBtn.querySelector('svg').innerHTML = PLAY_ICON;
   });
   video.addEventListener('timeupdate', () => {
     if (video.duration) {
@@ -1911,12 +1951,10 @@ if (vfsVideo) {
 
   vfsVideo.addEventListener('play', () => {
     vfsPlayBtn.classList.add('hidden');
-    vfsPlayIcon.innerHTML = PAUSE_ICON;
     vfsCtrlPlay.innerHTML = PAUSE_ICON;
   });
   vfsVideo.addEventListener('pause', () => {
     vfsPlayBtn.classList.remove('hidden');
-    vfsPlayIcon.innerHTML = PLAY_ICON;
     vfsCtrlPlay.innerHTML = PLAY_ICON;
   });
   vfsVideo.addEventListener('timeupdate', () => {

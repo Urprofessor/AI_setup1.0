@@ -538,37 +538,34 @@
   .carousel-dots {
     display: flex;
     justify-content: center;
-    margin-top: 4px;
-    height: 14px;
+    margin-top: 6px;
+    height: 16px;
   }
   .carousel-dots-inner {
     position: relative;
     display: flex;
     gap: 14px;
-    height: 10px;
+    height: 16px;
     align-items: center;
     filter: url(#gooey-indicator);
   }
   .carousel-dot {
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
     background: #4A0612;
     flex-shrink: 0;
     cursor: pointer;
-    opacity: 0.25;
-    transition: opacity 0.3s;
   }
-  .carousel-dot.active { opacity: 1; }
   .carousel-pill {
     position: absolute;
-    height: 10px;
+    height: 14px;
     background: #4A0612;
-    border-radius: 5px;
+    border-radius: 7px;
     pointer-events: none;
-    top: 0;
+    top: 1px;
     left: 0;
-    width: 10px;
+    width: 8px;
   }
   .carousel-pill.animate {
     transition: left 0.25s cubic-bezier(0.5, 0, 0.5, 1), width 0.25s cubic-bezier(0.5, 0, 0.5, 1);
@@ -1812,33 +1809,7 @@
   <div class="tipsstep-card">
     <h2 class="step-card-title" id="tipsStepTitle">Unbox & Inspect</h2>
     <p class="step-card-subtitle" id="tipsStepSubtitle">Confirm all accessories are included</p>
-    <div class="accordion">
-      <div class="accordion-item" onclick="toggleAccordion(this)">
-        <div class="accordion-head">
-          <div class="accordion-head-left">
-            <img class="accordion-icon" src="icon/%E9%97%AE%E5%8F%B7icon.png" alt="" draggable="false">
-            <span>How to do it</span>
-          </div>
-          <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-        </div>
-        <div class="accordion-body">
-          <div class="accordion-body-img"></div>
-          <div id="tipsHowToText">Parts overview: main unit, collection cups, flanges, membranes, valves, power cable, etc.</div>
-        </div>
-      </div>
-      <div class="accordion-item" onclick="toggleAccordion(this)">
-        <div class="accordion-head">
-          <div class="accordion-head-left">
-            <img class="accordion-icon" src="icon/%E6%84%9F%E5%8F%B9%E5%8F%B7icon.png" alt="" draggable="false">
-            <span>What to watch out for</span>
-          </div>
-          <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-        </div>
-        <div class="accordion-body">
-          <div id="tipsWatchOutText">Missing or damaged parts? contact customer support.</div>
-        </div>
-      </div>
-    </div>
+    <div class="accordion" id="tipsStepAccordion"></div>
   </div>
   <div class="tipsstep-pagination" id="tipsStepPagination"></div>
 </div>
@@ -2250,8 +2221,9 @@ function buildTipBody(tip) {
   return '';
 }
 
-function renderStepAccordion(tips) {
-  const container = document.getElementById('stepAccordion');
+function renderStepAccordion(tips, containerId = 'stepAccordion') {
+  const container = document.getElementById(containerId);
+  if (!container) return;
   container.innerHTML = '';
   (tips || []).forEach((tip, idx) => {
     const item = document.createElement('div');
@@ -2601,13 +2573,10 @@ function openTipStep(idx) {
   const s = STEPS[idx];
   document.getElementById('tipsStepTitle').textContent = s.title;
   document.getElementById('tipsStepSubtitle').textContent = s.subtitle;
-  // Fallback for the legacy 2-accordion tipsStep page: pull body text from new tips array
-  const tipTexts = (s.tips || []).map(t => {
-    if (t.type === 'carousel') return [t.sharedIntro || '', ...(t.slides || []).map(sl => sl.caption || '')].filter(Boolean).join(' ');
-    return t.body || '';
-  }).filter(Boolean);
-  document.getElementById('tipsHowToText').textContent = tipTexts[0] || '';
-  document.getElementById('tipsWatchOutText').textContent = tipTexts[tipTexts.length - 1] || tipTexts[0] || '';
+
+  // Mirror the step page's tips structure (supports image/text/carousel)
+  renderStepAccordion(s.tips, 'tipsStepAccordion');
+
   // pagination
   const pag = document.getElementById('tipsStepPagination');
   pag.innerHTML = '';
@@ -2617,7 +2586,6 @@ function openTipStep(idx) {
     dot.onclick = () => openTipStep(i);
     pag.appendChild(dot);
   }
-  document.querySelectorAll('#tipsStep .accordion-item').forEach(it => it.classList.remove('open'));
 
   // Update tips video source (0-based: idx 0 = old, idx 1 = new, ...)
   const videoSrc = (idx % 2 === 0) ? VIDEO_OLD : VIDEO_NEW;

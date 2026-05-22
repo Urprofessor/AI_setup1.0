@@ -479,6 +479,31 @@
     line-height: 1.55;
     white-space: pre-line;
   }
+  .accordion-body-warning {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-top: 12px;
+    padding: 10px 12px;
+    background: rgba(232, 121, 138, 0.10);
+    border-radius: 8px;
+  }
+  .accordion-body-warning .warning-icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    object-fit: contain;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+  .accordion-body-warning .warning-text {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.5;
+    white-space: pre-line;
+    flex: 1;
+  }
 
   /* ===== Carousel inside accordion ===== */
   .carousel {
@@ -1861,14 +1886,15 @@ const STEPS = [
     videoSub: '2. Measure your nipple diameter and match it to the correct flange size.',
     tips: [
       { type: 'image', icon: 'question', title: 'How to measure',
-        body: 'Use the included measuring tool. Place it across the base of your nipple (not the areola) right after a feed or pump, then read the closest millimeter mark.',
-        image: 'images/steps/02-measure-flange/tip-1.png' },
-      { type: 'image', icon: 'question', title: 'Pick your size',
-        body: 'Add 2-3mm to your measurement and match the result to a flange size from the included options. Air One ships with 17 / 19 / 21 / 24 mm flanges.',
-        image: 'images/steps/02-measure-flange/tip-2.png' },
-      { type: 'image', icon: 'question', title: 'When in doubt, try smaller',
-        body: 'If your measurement falls between two sizes, start with the smaller one. Comfort and full milk output are the signs you have the right fit.',
-        image: 'images/steps/02-measure-flange/tip-3.png' }
+        body: 'Use the included measuring tool to measure the base of your nipple — not the areola. Measure after stimulation when the nipple is fully extended for the most accurate result.',
+        image: 'images/steps/02-measure-flange/step2tips1.png' },
+      { type: 'image', icon: 'question', title: 'Sizing guide',
+        body: 'A correct fit allows the nipple to move freely in the tunnel without rubbing or pulling too much areola inside.',
+        image: 'images/steps/02-measure-flange/step2tips2.png' },
+      { type: 'image', icon: 'question', title: 'Choose your flange size',
+        body: 'Match your measurement to the closest flange insert size. If you are between sizes, start with the smaller option.',
+        warning: 'Your nipple size may change over time with regular pumping or different stages of breastfeeding. Re-measuring occasionally can help maintain a comfortable and effective fit.',
+        image: 'images/steps/02-measure-flange/step2tips3.png' }
     ]
   },
   {
@@ -2188,13 +2214,23 @@ function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 
+function buildWarning(text) {
+  if (!text) return '';
+  return `<div class="accordion-body-warning">
+    <img class="warning-icon" src="${ICON_SRC.alert}" alt="" draggable="false">
+    <div class="warning-text">${escapeHtml(text)}</div>
+  </div>`;
+}
+
 function buildTipBody(tip) {
   if (tip.type === 'image') {
     return `<div class="accordion-body-img"><img src="${tip.image}" alt="" draggable="false" onerror="this.style.display='none'"></div>
-            <div class="accordion-body-text">${escapeHtml(tip.body || '')}</div>`;
+            <div class="accordion-body-text">${escapeHtml(tip.body || '')}</div>
+            ${buildWarning(tip.warning)}`;
   }
   if (tip.type === 'text') {
-    return `<div class="accordion-body-text">${escapeHtml(tip.body || '')}</div>`;
+    return `<div class="accordion-body-text">${escapeHtml(tip.body || '')}</div>
+            ${buildWarning(tip.warning)}`;
   }
   if (tip.type === 'carousel') {
     const slides = (tip.slides || []).map(sl =>

@@ -554,6 +554,7 @@
     margin: 12px 0 10px;
     min-height: 1.5em;
     transition: opacity 0.2s;
+    white-space: pre-line;
   }
   .carousel-dots {
     display: flex;
@@ -1905,11 +1906,14 @@ const STEPS = [
     videoSub: '3. Detach the flange, milk collector, diaphragm, and valve in the order shown.',
     tips: [
       { type: 'carousel', icon: 'question', title: 'Disassembly sequence',
-        sharedIntro: '[Shared intro for swiping]',
+        sharedIntro: 'Follow the steps below to safely separate the washable parts from the motor unit before cleaning.',
         slides: [
-          { image: 'images/steps/03-disassemble/slide-1.png', caption: 'Pull the flange away from the milk collector.' },
-          { image: 'images/steps/03-disassemble/slide-2.png', caption: 'Pop off the diaphragm cap and lift out the silicone diaphragm.' },
-          { image: 'images/steps/03-disassemble/slide-3.png', caption: 'Remove the duckbill valve from inside the collector.' }
+          { image: 'images/steps/03-disassemble/step3tips1.png', caption: 'Detach the flange from the pump.' },
+          { image: 'images/steps/03-disassemble/step3tips2.png', caption: 'Separate the milk collector from the motor unit.' },
+          { image: 'images/steps/03-disassemble/step3tips3.png', caption: 'Press the release point to unlock the collector.' },
+          { image: 'images/steps/03-disassemble/step3tips4.png', caption: 'Lift out the silicone diaphragm.' },
+          { image: 'images/steps/03-disassemble/step3tips5.png', caption: 'Remove the duckbill valve.' },
+          { image: 'images/steps/03-disassemble/step3tips6.png', caption: 'Motor unit only — do not rinse or soak in water.\nWash all detachable silicone and collector parts after each use.' }
         ] }
     ]
   },

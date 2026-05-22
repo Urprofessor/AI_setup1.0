@@ -469,6 +469,109 @@
     align-items: center;
     justify-content: center;
     color: #BBB;
+    overflow: hidden;
+  }
+  .accordion-body-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+  .accordion-body-text {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.55;
+  }
+
+  /* ===== Carousel inside accordion ===== */
+  .carousel {
+    width: 100%;
+  }
+  .carousel-intro {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.55;
+    margin: 0 0 10px;
+  }
+  .carousel-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    border-radius: 8px;
+    background: #EAEAEA;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: pan-y;
+  }
+  .carousel-track {
+    display: flex;
+    height: 100%;
+    will-change: transform;
+  }
+  .carousel-track.animate {
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .carousel-slide {
+    flex: 0 0 100%;
+    height: 100%;
+    position: relative;
+  }
+  .carousel-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    pointer-events: none;
+    -webkit-user-drag: none;
+  }
+  .carousel-caption {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.5;
+    margin: 12px 0 10px;
+    min-height: 1.5em;
+    transition: opacity 0.2s;
+  }
+  .carousel-dots {
+    display: flex;
+    justify-content: center;
+    margin-top: 4px;
+    height: 14px;
+  }
+  .carousel-dots-inner {
+    position: relative;
+    display: flex;
+    gap: 14px;
+    height: 10px;
+    align-items: center;
+    filter: url(#gooey-indicator);
+  }
+  .carousel-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #4A0612;
+    flex-shrink: 0;
+    cursor: pointer;
+    opacity: 0.25;
+    transition: opacity 0.3s;
+  }
+  .carousel-dot.active { opacity: 1; }
+  .carousel-pill {
+    position: absolute;
+    height: 10px;
+    background: #4A0612;
+    border-radius: 5px;
+    pointer-events: none;
+    top: 0;
+    left: 0;
+    width: 10px;
+  }
+  .carousel-pill.animate {
+    transition: left 0.25s cubic-bezier(0.5, 0, 0.5, 1), width 0.25s cubic-bezier(0.5, 0, 0.5, 1);
   }
 
   .step-footer {
@@ -1233,6 +1336,17 @@
 </style>
 </head>
 <body>
+<svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden;">
+  <defs>
+    <filter id="gooey-indicator">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="4" />
+      <feColorMatrix type="matrix" values="1 0 0 0 0
+                                           0 1 0 0 0
+                                           0 0 1 0 0
+                                           0 0 0 22 -10" />
+    </filter>
+  </defs>
+</svg>
 <div id="app">
 
 <!-- Preload videos (hidden, just to warm the browser cache) -->
@@ -1324,35 +1438,7 @@
   </div>
   <div class="step-card">
     <p class="step-card-subtitle" id="stepCardSubtitle">Confirm all accessories are included</p>
-    <div class="accordion">
-      <div class="accordion-item" onclick="toggleAccordion(this)">
-        <div class="accordion-head">
-          <div class="accordion-head-left">
-            <img class="accordion-icon" src="icon/%E9%97%AE%E5%8F%B7icon.png" alt="" draggable="false">
-            <span>How to do it</span>
-          </div>
-          <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-        </div>
-        <div class="accordion-body">
-          <div class="accordion-body-img">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
-          </div>
-          <div id="howToText">Parts overview: main unit, collection cups, flanges, membranes, valves, power cable, etc. Use the checklist to verify each item.</div>
-        </div>
-      </div>
-      <div class="accordion-item" onclick="toggleAccordion(this)">
-        <div class="accordion-head">
-          <div class="accordion-head-left">
-            <img class="accordion-icon" src="icon/%E6%84%9F%E5%8F%B9%E5%8F%B7icon.png" alt="" draggable="false">
-            <span>What to watch out for</span>
-          </div>
-          <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-        </div>
-        <div class="accordion-body">
-          <div id="watchOutText">Missing or damaged parts? contact customer support and have your order number and proof of purchase ready.</div>
-        </div>
-      </div>
-    </div>
+    <div class="accordion" id="stepAccordion"></div>
   </div>
   <div class="step-footer">
     <button class="btn-back" id="stepBackBtn" onclick="prevStep()">Back</button>
@@ -1646,6 +1732,14 @@
       <svg class="tip-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18l6-6-6-6"/></svg>
     </div>
     <div class="tip-card" onclick="openTipStep(1)">
+      <img class="tip-icon" src="icon/Property%201%3D04-find-your-flange-size%201.png" alt="" draggable="false">
+      <div class="tip-text">
+        <h4>Measure Flange Size</h4>
+        <p>Measure your nipple diameter and match it to the right flange size.</p>
+      </div>
+      <svg class="tip-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18l6-6-6-6"/></svg>
+    </div>
+    <div class="tip-card" onclick="openTipStep(2)">
       <img class="tip-icon" src="icon/Property%201%3D02-know-what-to-wash%201.png" alt="" draggable="false">
       <div class="tip-text">
         <h4>Disassemble Parts</h4>
@@ -1653,19 +1747,11 @@
       </div>
       <svg class="tip-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18l6-6-6-6"/></svg>
     </div>
-    <div class="tip-card" onclick="openTipStep(2)">
-      <img class="tip-icon" src="icon/Property%201%3D04-find-your-flange-size%201.png" alt="" draggable="false">
-      <div class="tip-text">
-        <h4>Choose Your Flange Size</h4>
-        <p>Wash all washable parts with mild soap and warm water.</p>
-      </div>
-      <svg class="tip-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18l6-6-6-6"/></svg>
-    </div>
     <div class="tip-card" onclick="openTipStep(3)">
       <img class="tip-icon" src="icon/Property%201%3D03-clean-before-first-use%201.png" alt="" draggable="false">
       <div class="tip-text">
         <h4>Clean & Sanitize</h4>
-        <p>Measure your nipple diameter and match it to a flange size.</p>
+        <p>Wash all washable parts with mild soap and warm water.</p>
       </div>
       <svg class="tip-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18l6-6-6-6"/></svg>
     </div>
@@ -1673,23 +1759,23 @@
       <img class="tip-icon" src="icon/Property%201%3D05-assemble-your-pump%201.png" alt="" draggable="false">
       <div class="tip-text">
         <h4>Assemble the Pump</h4>
-        <p>Install the valve, assemble the milk collector, attach the diaphragm, connect the motor.</p>
+        <p>Install the valve, fit the diaphragm, and connect everything to the main unit.</p>
       </div>
       <svg class="tip-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18l6-6-6-6"/></svg>
     </div>
     <div class="tip-card" onclick="openTipStep(5)">
-      <img class="tip-icon" src="icon/Property%201%3D06-check-the-seal%201.png" alt="" draggable="false">
+      <img class="tip-icon" src="icon/Property%201%3D09-wear-it-right%201.png" alt="" draggable="false">
       <div class="tip-text">
-        <h4>Fit Check & Latch</h4>
-        <p>Press the assembled pump to your palm and turn it on.</p>
+        <h4>Wear It Right</h4>
+        <p>Slip the pump into your bra and check the seal before pumping.</p>
       </div>
       <svg class="tip-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18l6-6-6-6"/></svg>
     </div>
     <div class="tip-card" onclick="openTipStep(6)">
       <img class="tip-icon" src="icon/Property%201%3D10-start-your-first-session%201.png" alt="" draggable="false">
       <div class="tip-text">
-        <h4>Start Your First Session</h4>
-        <p>Air One has 8 components. Tap each one to learn its name before you start.</p>
+        <h4>First Session</h4>
+        <p>Connect via the app, stay relaxed, and start your first session.</p>
       </div>
       <svg class="tip-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18l6-6-6-6"/></svg>
     </div>
@@ -1787,34 +1873,118 @@
 <script>
 // ====== STATE ======
 const STEPS = [
-  { num: 1, title: 'Unbox & Inspect', subtitle: 'Confirm all accessories are included',
-    howTo: 'Parts overview: main unit, collection cups, flanges, membranes, valves, power cable, etc. Use the checklist to verify each item.',
-    watch: 'Missing or damaged parts? contact customer support and have your order number and proof of purchase ready.',
-    videoTitle: 'Unbox & Inspect', videoSub: '1. Open the box carefully and lay out all parts. Verify each accessory against the checklist before continuing.' },
-  { num: 2, title: 'Disassemble Parts', subtitle: 'Remove parts in the correct order',
-    howTo: 'Detach the flange, milk collector, diaphragm, and valve from the main unit in the correct sequence.',
-    watch: 'Do not force any parts. If something is stuck, refer to the video guide.',
-    videoTitle: 'Disassemble Parts', videoSub: '2. Detach the flange, milk collector, diaphragm, and valve in the order shown.' },
-  { num: 3, title: 'Choose Your Flange Size', subtitle: 'Measure and match',
-    howTo: 'Measure your nipple diameter and choose the flange size that matches.',
-    watch: 'Wrong size may cause discomfort or reduce milk output.',
-    videoTitle: 'Choose Your Flange Size', videoSub: '3. Measure and match the flange size correctly.' },
-  { num: 4, title: 'Clean & Sanitize', subtitle: 'Wash all washable parts',
-    howTo: 'Wash all washable parts with mild soap and warm water. Sanitize before first use.',
-    watch: 'Do not use harsh chemicals or dishwasher detergent.',
-    videoTitle: 'Clean & Sanitize', videoSub: '4. Wash all parts thoroughly and let them air-dry.' },
-  { num: 5, title: 'Assemble the Pump', subtitle: 'Put parts together',
-    howTo: 'Install the valve, assemble the milk collector, attach the diaphragm, connect the motor.',
-    watch: 'Ensure all seals are tight to avoid air leaks.',
-    videoTitle: 'Assemble the Breast Pump', videoSub: '6. Connect the milk collector assembly to the main unit, ensuring the flange or insert is the correct size and properly fitted.' },
-  { num: 6, title: 'Fit Check & Latch', subtitle: 'Press to your palm and turn it on',
-    howTo: 'Press the assembled pump to your palm and turn it on to test suction.',
-    watch: 'No suction? Recheck the valve and diaphragm orientation.',
-    videoTitle: 'Fit Check & Latch', videoSub: '7. Press the pump to your palm and turn it on to verify suction.' },
-  { num: 7, title: 'Start Your First Session', subtitle: 'Begin pumping',
-    howTo: 'Wear it, connect via app, and start pumping. The first session will help calibrate.',
-    watch: 'Stay relaxed for the best output.',
-    videoTitle: 'Start Your First Session', videoSub: '8. Wear the pump comfortably and begin your first session.' }
+  {
+    num: 1,
+    title: 'Unbox & Inspect',
+    subtitle: 'Confirm all accessories are included',
+    videoTitle: 'Unbox & Inspect',
+    videoSub: '1. Open the box carefully and lay out all parts. Verify each accessory against the checklist before continuing.',
+    tips: [
+      { type: 'image', icon: 'question', title: "What's in the box",
+        body: "Your Air One package includes the main pump unit, collection cups, flanges in multiple sizes, membranes, valves, a charging cable, and a quick-start guide. Lay everything on a clean surface and tick each item off the checklist.",
+        image: 'images/steps/01-unbox-inspect/tip-1.png' },
+      { type: 'text', icon: 'question', title: 'Missing or damaged parts',
+        body: 'If anything is missing or looks damaged, contact Momcozy customer support. Have your order number and proof of purchase ready.' }
+    ]
+  },
+  {
+    num: 2,
+    title: 'Measure Flange Size',
+    subtitle: 'Find the size that fits you',
+    videoTitle: 'Measure Flange Size',
+    videoSub: '2. Measure your nipple diameter and match it to the correct flange size.',
+    tips: [
+      { type: 'image', icon: 'question', title: 'How to measure',
+        body: 'Use the included measuring tool. Place it across the base of your nipple (not the areola) right after a feed or pump, then read the closest millimeter mark.',
+        image: 'images/steps/02-measure-flange/tip-1.png' },
+      { type: 'image', icon: 'question', title: 'Pick your size',
+        body: 'Add 2-3mm to your measurement and match the result to a flange size from the included options. Air One ships with 17 / 19 / 21 / 24 mm flanges.',
+        image: 'images/steps/02-measure-flange/tip-2.png' },
+      { type: 'image', icon: 'question', title: 'When in doubt, try smaller',
+        body: 'If your measurement falls between two sizes, start with the smaller one. Comfort and full milk output are the signs you have the right fit.',
+        image: 'images/steps/02-measure-flange/tip-3.png' }
+    ]
+  },
+  {
+    num: 3,
+    title: 'Disassemble Parts',
+    subtitle: 'Take it apart in order',
+    videoTitle: 'Disassemble Parts',
+    videoSub: '3. Detach the flange, milk collector, diaphragm, and valve in the order shown.',
+    tips: [
+      { type: 'carousel', icon: 'question', title: 'Disassembly sequence',
+        sharedIntro: '[Shared intro for swiping]',
+        slides: [
+          { image: 'images/steps/03-disassemble/slide-1.png', caption: 'Pull the flange away from the milk collector.' },
+          { image: 'images/steps/03-disassemble/slide-2.png', caption: 'Pop off the diaphragm cap and lift out the silicone diaphragm.' },
+          { image: 'images/steps/03-disassemble/slide-3.png', caption: 'Remove the duckbill valve from inside the collector.' }
+        ] }
+    ]
+  },
+  {
+    num: 4,
+    title: 'Clean & Sanitize',
+    subtitle: 'Wash all washable parts',
+    videoTitle: 'Clean & Sanitize',
+    videoSub: '4. Wash all parts thoroughly and let them air-dry.',
+    tips: [
+      { type: 'image', icon: 'question', title: 'Wash before first use',
+        body: 'Hand-wash all detachable parts (flange, collector, diaphragm, valve) with mild dish soap and warm water. Rinse thoroughly and let them air-dry on a clean cloth.',
+        image: 'images/steps/04-clean-sanitize/tip-1.png' },
+      { type: 'image', icon: 'question', title: 'Sanitize for safety',
+        body: 'Once a day, sanitize the washable parts by boiling for 5 minutes or steaming. Skip harsh chemicals and dishwasher detergent — they damage the silicone over time.',
+        image: 'images/steps/04-clean-sanitize/tip-2.png' }
+    ]
+  },
+  {
+    num: 5,
+    title: 'Assemble the Pump',
+    subtitle: 'Snap the parts together',
+    videoTitle: 'Assemble the Pump',
+    videoSub: '5. Install the valve, fit the diaphragm, then connect everything to the main unit.',
+    tips: [
+      { type: 'carousel', icon: 'question', title: 'Assembly sequence',
+        sharedIntro: '[Shared intro for swiping]',
+        slides: [
+          { image: 'images/steps/05-assemble/slide-1.png', caption: 'Push the duckbill valve into the base of the collector.' },
+          { image: 'images/steps/05-assemble/slide-2.png', caption: 'Stretch the silicone diaphragm over the collector opening.' },
+          { image: 'images/steps/05-assemble/slide-3.png', caption: 'Close the diaphragm cap firmly until you hear a click.' },
+          { image: 'images/steps/05-assemble/slide-4.png', caption: 'Press the assembled collector onto the main unit.' }
+        ] }
+    ]
+  },
+  {
+    num: 6,
+    title: 'Wear It Right',
+    subtitle: 'Position for a good seal',
+    videoTitle: 'Wear It Right',
+    videoSub: '6. Slip the pump into your bra and check the seal.',
+    tips: [
+      { type: 'image', icon: 'question', title: 'Position the pump',
+        body: 'Slip the assembled pump into your bra so the flange centers over your nipple. Adjust until the nipple sits comfortably inside the tunnel — it should not rub the walls.',
+        image: 'images/steps/06-wear/tip-1.png' },
+      { type: 'image', icon: 'question', title: 'Check the seal',
+        body: 'A good seal feels gentle and consistent. If you hear hissing or feel cool air, reposition the flange and check that the diaphragm is fully seated.',
+        image: 'images/steps/06-wear/tip-2.png' }
+    ]
+  },
+  {
+    num: 7,
+    title: 'First Session',
+    subtitle: 'Begin pumping',
+    videoTitle: 'First Session',
+    videoSub: '7. Connect via the app and start your first session.',
+    tips: [
+      { type: 'image', icon: 'question', title: 'Connect to the app',
+        body: 'Open the Momcozy app, tap "Add device", and follow the on-screen pairing prompts. Your Air One will appear in the device list once paired.',
+        image: 'images/steps/07-first-session/tip-1.png' },
+      { type: 'text', icon: 'question', title: 'Stay relaxed',
+        body: 'Sit comfortably and breathe slowly. A photo of your baby, soft music, or a warm drink all help letdown. Give the first session 5-10 minutes to find your rhythm.' },
+      { type: 'image', icon: 'question', title: 'Read the rhythm',
+        body: 'Air One starts in stimulation mode — fast, light suction to trigger letdown. When milk starts flowing, switch to expression mode in the app for slower, deeper draws.',
+        image: 'images/steps/07-first-session/tip-3.png' }
+    ]
+  }
 ];
 
 let currentStep = 1;
@@ -2042,6 +2212,70 @@ function goStep(n) {
   navigate('step');
 }
 
+const ICON_SRC = {
+  question: 'icon/%E9%97%AE%E5%8F%B7icon.png',
+  alert: 'icon/%E6%84%9F%E5%8F%B9%E5%8F%B7icon.png'
+};
+const CHEVRON_SVG = '<svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>';
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+function buildTipBody(tip) {
+  if (tip.type === 'image') {
+    return `<div class="accordion-body-img"><img src="${tip.image}" alt="" draggable="false" onerror="this.style.display='none'"></div>
+            <div class="accordion-body-text">${escapeHtml(tip.body || '')}</div>`;
+  }
+  if (tip.type === 'text') {
+    return `<div class="accordion-body-text">${escapeHtml(tip.body || '')}</div>`;
+  }
+  if (tip.type === 'carousel') {
+    const slides = (tip.slides || []).map(sl =>
+      `<div class="carousel-slide"><img src="${sl.image}" alt="" draggable="false" onerror="this.style.display='none'"></div>`
+    ).join('');
+    const dots = (tip.slides || []).map((_, i) =>
+      `<div class="carousel-dot${i === 0 ? ' active' : ''}" data-idx="${i}"></div>`
+    ).join('');
+    const firstCaption = tip.slides && tip.slides[0] ? tip.slides[0].caption : '';
+    return `<div class="carousel">
+      <p class="carousel-intro">${escapeHtml(tip.sharedIntro || '')}</p>
+      <div class="carousel-frame">
+        <div class="carousel-track">${slides}</div>
+      </div>
+      <p class="carousel-caption">${escapeHtml(firstCaption)}</p>
+      <div class="carousel-dots"><div class="carousel-dots-inner">${dots}<div class="carousel-pill"></div></div></div>
+    </div>`;
+  }
+  return '';
+}
+
+function renderStepAccordion(tips) {
+  const container = document.getElementById('stepAccordion');
+  container.innerHTML = '';
+  (tips || []).forEach((tip, idx) => {
+    const item = document.createElement('div');
+    item.className = 'accordion-item';
+    item.addEventListener('click', () => toggleAccordion(item));
+    const iconSrc = ICON_SRC[tip.icon] || ICON_SRC.question;
+    item.innerHTML = `
+      <div class="accordion-head">
+        <div class="accordion-head-left">
+          <img class="accordion-icon" src="${iconSrc}" alt="" draggable="false">
+          <span>${escapeHtml(tip.title || '')}</span>
+        </div>
+        ${CHEVRON_SVG}
+      </div>
+      <div class="accordion-body">${buildTipBody(tip)}</div>
+    `;
+    container.appendChild(item);
+    if (tip.type === 'carousel') {
+      // Defer carousel setup until item is in DOM
+      setTimeout(() => setupCarousel(item.querySelector('.carousel'), tip), 0);
+    }
+  });
+}
+
 function renderStep() {
   const s = STEPS[currentStep - 1];
   document.getElementById('stepProgressLabel').textContent = `Step ${currentStep}`;
@@ -2058,14 +2292,11 @@ function renderStep() {
   }
   document.getElementById('stepCardTitle').textContent = s.title;
   document.getElementById('stepCardSubtitle').textContent = s.subtitle;
-  document.getElementById('howToText').textContent = s.howTo;
-  document.getElementById('watchOutText').textContent = s.watch;
+
+  renderStepAccordion(s.tips);
 
   document.getElementById('stepBackBtn').style.display = currentStep === 1 ? 'none' : 'block';
   document.getElementById('stepNextBtn').textContent = currentStep === 7 ? 'Finish' : 'Next';
-
-  // collapse all accordions
-  document.querySelectorAll('#step .accordion-item').forEach(it => it.classList.remove('open'));
 
   // Update video source for this step
   const videoSrc = getStepVideoSrc(currentStep);
@@ -2206,6 +2437,149 @@ function toggleAccordion(el) {
   el.classList.toggle('open');
 }
 
+// ====== CAROUSEL (with gooey indicator) ======
+function setupCarousel(root, tip) {
+  if (!root || !tip || !tip.slides || !tip.slides.length) return;
+  const track = root.querySelector('.carousel-track');
+  const frame = root.querySelector('.carousel-frame');
+  const caption = root.querySelector('.carousel-caption');
+  const dots = Array.from(root.querySelectorAll('.carousel-dot'));
+  const pill = root.querySelector('.carousel-pill');
+  if (!track || !frame || !pill) return;
+
+  const slides = tip.slides;
+  let activeIdx = 0;
+  let startX = 0;
+  let currentX = 0;
+  let dragging = false;
+  let dragStartTime = 0;
+
+  function widthOf() { return frame.offsetWidth; }
+
+  function applyTransform(offsetPx, animate) {
+    track.classList.toggle('animate', !!animate);
+    const baseX = -activeIdx * widthOf();
+    track.style.transform = `translate3d(${baseX + offsetPx}px, 0, 0)`;
+  }
+
+  function snapPill(targetIdx, prevIdx) {
+    // Wait a frame so the DOM is laid out
+    requestAnimationFrame(() => {
+      const newDot = dots[targetIdx];
+      const oldDot = dots[prevIdx];
+      if (!newDot) return;
+      const newLeft = newDot.offsetLeft;
+      const newW = newDot.offsetWidth;
+      if (!oldDot || prevIdx === targetIdx) {
+        pill.classList.remove('animate');
+        pill.style.left = newLeft + 'px';
+        pill.style.width = newW + 'px';
+        return;
+      }
+      const oldLeft = oldDot.offsetLeft;
+      const startLeft = Math.min(oldLeft, newLeft);
+      const endLeft = Math.max(oldLeft + newW, newLeft + newW);
+      // Phase 1: stretch across both
+      pill.classList.add('animate');
+      pill.style.left = startLeft + 'px';
+      pill.style.width = (endLeft - startLeft) + 'px';
+      // Phase 2: snap to target
+      setTimeout(() => {
+        pill.style.left = newLeft + 'px';
+        pill.style.width = newW + 'px';
+      }, 220);
+    });
+  }
+
+  function setActive(idx, opts = {}) {
+    idx = Math.max(0, Math.min(slides.length - 1, idx));
+    const prev = activeIdx;
+    activeIdx = idx;
+    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    applyTransform(0, opts.animate !== false);
+    // caption transition
+    if (caption) {
+      caption.style.opacity = '0';
+      setTimeout(() => {
+        caption.textContent = slides[idx].caption || '';
+        caption.style.opacity = '1';
+      }, 160);
+    }
+    snapPill(idx, prev);
+  }
+
+  // Dot click
+  dots.forEach((d, i) => d.addEventListener('click', (e) => {
+    e.stopPropagation();
+    setActive(i);
+  }));
+
+  // Touch / pointer drag
+  function onStart(x) {
+    dragging = true;
+    startX = x;
+    currentX = x;
+    dragStartTime = Date.now();
+    track.classList.remove('animate');
+  }
+  function onMove(x) {
+    if (!dragging) return;
+    currentX = x;
+    applyTransform(currentX - startX, false);
+  }
+  function onEnd() {
+    if (!dragging) return;
+    dragging = false;
+    const dx = currentX - startX;
+    const dt = Date.now() - dragStartTime;
+    const w = widthOf();
+    const threshold = Math.min(60, w * 0.18);
+    let target = activeIdx;
+    // velocity-based: fast swipe also triggers
+    const fast = Math.abs(dx) > 30 && dt < 250;
+    if (dx < -threshold || (fast && dx < 0)) target = activeIdx + 1;
+    else if (dx > threshold || (fast && dx > 0)) target = activeIdx - 1;
+    setActive(target);
+  }
+
+  frame.addEventListener('touchstart', (e) => onStart(e.touches[0].clientX), { passive: true });
+  frame.addEventListener('touchmove', (e) => onMove(e.touches[0].clientX), { passive: true });
+  frame.addEventListener('touchend', onEnd);
+  frame.addEventListener('touchcancel', onEnd);
+
+  frame.addEventListener('mousedown', (e) => {
+    e.preventDefault();
+    onStart(e.clientX);
+    const mm = (ev) => onMove(ev.clientX);
+    const mu = () => {
+      onEnd();
+      window.removeEventListener('mousemove', mm);
+      window.removeEventListener('mouseup', mu);
+    };
+    window.addEventListener('mousemove', mm);
+    window.addEventListener('mouseup', mu);
+  });
+
+  // Prevent click bubbling from carousel area collapsing the accordion
+  root.addEventListener('click', (e) => e.stopPropagation());
+
+  // Initial layout
+  applyTransform(0, false);
+  snapPill(0, 0);
+
+  // Re-snap pill when accordion opens (so offsets are valid)
+  const accordionItem = root.closest('.accordion-item');
+  if (accordionItem) {
+    const obs = new MutationObserver(() => {
+      if (accordionItem.classList.contains('open')) {
+        // Slight delay for transition to complete enough
+        setTimeout(() => snapPill(activeIdx, activeIdx), 50);
+      }
+    });
+    obs.observe(accordionItem, { attributes: true, attributeFilter: ['class'] });
+  }
+}
+
 // ====== TIPS ======
 function handleHowToUse() {
   if (setupCompleted) {
@@ -2227,8 +2601,13 @@ function openTipStep(idx) {
   const s = STEPS[idx];
   document.getElementById('tipsStepTitle').textContent = s.title;
   document.getElementById('tipsStepSubtitle').textContent = s.subtitle;
-  document.getElementById('tipsHowToText').textContent = s.howTo;
-  document.getElementById('tipsWatchOutText').textContent = s.watch;
+  // Fallback for the legacy 2-accordion tipsStep page: pull body text from new tips array
+  const tipTexts = (s.tips || []).map(t => {
+    if (t.type === 'carousel') return [t.sharedIntro || '', ...(t.slides || []).map(sl => sl.caption || '')].filter(Boolean).join(' ');
+    return t.body || '';
+  }).filter(Boolean);
+  document.getElementById('tipsHowToText').textContent = tipTexts[0] || '';
+  document.getElementById('tipsWatchOutText').textContent = tipTexts[tipTexts.length - 1] || tipTexts[0] || '';
   // pagination
   const pag = document.getElementById('tipsStepPagination');
   pag.innerHTML = '';

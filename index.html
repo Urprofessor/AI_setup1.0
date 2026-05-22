@@ -436,6 +436,9 @@
     height: 22px;
     color: #888;
     flex-shrink: 0;
+    object-fit: contain;
+    user-select: none;
+    -webkit-user-drag: none;
   }
   .accordion-chevron {
     width: 18px;
@@ -1174,7 +1177,7 @@
     transition: transform .1s;
   }
   .tip-card:active { transform: scale(0.98); }
-  .tip-icon { width: 36px; height: 36px; flex-shrink: 0; color: #1A1A1A; }
+  .tip-icon { width: 36px; height: 36px; flex-shrink: 0; color: #1A1A1A; object-fit: contain; user-select: none; -webkit-user-drag: none; display: block; }
   .tip-text { flex: 1; }
   .tip-text h4 { margin: 0 0 2px; font-size: 17px; font-weight: 600; color: #1A1A1A; }
   .tip-text p { margin: 0; font-size: 13px; color: #888; line-height: 1.45; }
@@ -1325,7 +1328,7 @@
       <div class="accordion-item" onclick="toggleAccordion(this)">
         <div class="accordion-head">
           <div class="accordion-head-left">
-            <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 2-2.5 2.5-2.5 4.5M12 17v.01"/></svg>
+            <img class="accordion-icon" src="icon/%E9%97%AE%E5%8F%B7icon.png" alt="" draggable="false">
             <span>How to do it</span>
           </div>
           <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
@@ -1340,7 +1343,7 @@
       <div class="accordion-item" onclick="toggleAccordion(this)">
         <div class="accordion-head">
           <div class="accordion-head-left">
-            <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L2 22h20L12 2z"/><path d="M12 9v5M12 18v.01"/></svg>
+            <img class="accordion-icon" src="icon/%E6%84%9F%E5%8F%B9%E5%8F%B7icon.png" alt="" draggable="false">
             <span>What to watch out for</span>
           </div>
           <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
@@ -1635,9 +1638,7 @@
       <h1 class="tips-title">Get the most from Air One</h1>
     </div>
     <div class="tip-card" onclick="openTipStep(0)">
-      <div class="tip-icon">
-        <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="18" r="3"/><circle cx="25" cy="11" r="3"/><circle cx="25" cy="25" r="3"/><path d="M13.5 16.5l9-4.5M13.5 19.5l9 4.5"/></svg>
-      </div>
+      <img class="tip-icon" src="icon/Property%201%3D01-meet-your-parts%201.png" alt="" draggable="false">
       <div class="tip-text">
         <h4>Unbox & Inspect</h4>
         <p>Air One has 8 components. Tap each one to learn its name before you start.</p>
@@ -1645,9 +1646,7 @@
       <svg class="tip-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18l6-6-6-6"/></svg>
     </div>
     <div class="tip-card" onclick="openTipStep(1)">
-      <div class="tip-icon">
-        <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 4c-4 6-8 10-8 16a8 8 0 0 0 16 0c0-6-4-10-8-16z"/><path d="M14 18l8 8M22 18l-8 8"/></svg>
-      </div>
+      <img class="tip-icon" src="icon/Property%201%3D02-know-what-to-wash%201.png" alt="" draggable="false">
       <div class="tip-text">
         <h4>Disassemble Parts</h4>
         <p>The flange, milk collector, diaphragm, and valve are washable.</p>
@@ -1655,9 +1654,7 @@
       <svg class="tip-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18l6-6-6-6"/></svg>
     </div>
     <div class="tip-card" onclick="openTipStep(2)">
-      <div class="tip-icon">
-        <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 4c-4 6-8 10-8 16a8 8 0 0 0 16 0c0-6-4-10-8-16z"/><path d="M14 20l3 3 5-5"/></svg>
-      </div>
+      <img class="tip-icon" src="icon/Property%201%3D04-find-your-flange-size%201.png" alt="" draggable="false">
       <div class="tip-text">
         <h4>Choose Your Flange Size</h4>
         <p>Wash all washable parts with mild soap and warm water.</p>
@@ -1665,9 +1662,7 @@
       <svg class="tip-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18l6-6-6-6"/></svg>
     </div>
     <div class="tip-card" onclick="openTipStep(3)">
-      <div class="tip-icon">
-        <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="18" cy="18" r="10"/><circle cx="18" cy="18" r="4"/><path d="M18 4v6M18 26v6M4 18h6M26 18h6"/></svg>
-      </div>
+      <img class="tip-icon" src="icon/Property%201%3D03-clean-before-first-use%201.png" alt="" draggable="false">
       <div class="tip-text">
         <h4>Clean & Sanitize</h4>
         <p>Measure your nipple diameter and match it to a flange size.</p>
@@ -1675,9 +1670,7 @@
       <svg class="tip-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18l6-6-6-6"/></svg>
     </div>
     <div class="tip-card" onclick="openTipStep(4)">
-      <div class="tip-icon">
-        <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6" y="10" width="24" height="6" rx="1"/><rect x="6" y="18" width="24" height="6" rx="1"/><rect x="6" y="26" width="24" height="4" rx="1"/></svg>
-      </div>
+      <img class="tip-icon" src="icon/Property%201%3D05-assemble-your-pump%201.png" alt="" draggable="false">
       <div class="tip-text">
         <h4>Assemble the Pump</h4>
         <p>Install the valve, assemble the milk collector, attach the diaphragm, connect the motor.</p>
@@ -1685,9 +1678,7 @@
       <svg class="tip-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18l6-6-6-6"/></svg>
     </div>
     <div class="tip-card" onclick="openTipStep(5)">
-      <div class="tip-icon">
-        <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 4l-12 5v9c0 7 5 12 12 14 7-2 12-7 12-14V9z"/><path d="M13 18l4 4 8-8"/></svg>
-      </div>
+      <img class="tip-icon" src="icon/Property%201%3D06-check-the-seal%201.png" alt="" draggable="false">
       <div class="tip-text">
         <h4>Fit Check & Latch</h4>
         <p>Press the assembled pump to your palm and turn it on.</p>
@@ -1695,9 +1686,7 @@
       <svg class="tip-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18l6-6-6-6"/></svg>
     </div>
     <div class="tip-card" onclick="openTipStep(6)">
-      <div class="tip-icon">
-        <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="11" width="22" height="14" rx="2"/><rect x="27" y="15" width="3" height="6" rx="1"/><path d="M14 14l-3 5h4l-2 3" stroke-linejoin="round"/></svg>
-      </div>
+      <img class="tip-icon" src="icon/Property%201%3D10-start-your-first-session%201.png" alt="" draggable="false">
       <div class="tip-text">
         <h4>Start Your First Session</h4>
         <p>Air One has 8 components. Tap each one to learn its name before you start.</p>
@@ -1741,7 +1730,7 @@
       <div class="accordion-item" onclick="toggleAccordion(this)">
         <div class="accordion-head">
           <div class="accordion-head-left">
-            <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 2-2.5 2.5-2.5 4.5M12 17v.01"/></svg>
+            <img class="accordion-icon" src="icon/%E9%97%AE%E5%8F%B7icon.png" alt="" draggable="false">
             <span>How to do it</span>
           </div>
           <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
@@ -1754,7 +1743,7 @@
       <div class="accordion-item" onclick="toggleAccordion(this)">
         <div class="accordion-head">
           <div class="accordion-head-left">
-            <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L2 22h20L12 2z"/><path d="M12 9v5M12 18v.01"/></svg>
+            <img class="accordion-icon" src="icon/%E6%84%9F%E5%8F%B9%E5%8F%B7icon.png" alt="" draggable="false">
             <span>What to watch out for</span>
           </div>
           <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>

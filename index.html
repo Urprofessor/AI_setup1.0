@@ -526,6 +526,22 @@
     -webkit-user-select: none;
     touch-action: pan-y;
   }
+  .carousel-frame--height-driven {
+    aspect-ratio: auto;
+    background: transparent;
+    border-radius: 0;
+  }
+  .carousel-frame--height-driven .carousel-slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .carousel-frame--height-driven .carousel-slide img {
+    width: auto;
+    max-width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
   .carousel-track {
     display: flex;
     height: 100%;
@@ -1907,6 +1923,7 @@ const STEPS = [
     tips: [
       { type: 'carousel', icon: 'question', title: 'Disassembly sequence',
         sharedIntro: 'Follow the steps below to safely separate the washable parts from the motor unit before cleaning.',
+        frameHeight: 173,
         slides: [
           { image: 'images/steps/03-disassemble/step3tips1.png', caption: 'Detach the flange from the pump.' },
           { image: 'images/steps/03-disassemble/step3tips2.png', caption: 'Separate the milk collector from the motor unit.' },
@@ -2244,9 +2261,12 @@ function buildTipBody(tip) {
       `<div class="carousel-dot${i === 0 ? ' active' : ''}" data-idx="${i}"></div>`
     ).join('');
     const firstCaption = tip.slides && tip.slides[0] ? tip.slides[0].caption : '';
+    const heightDriven = !!tip.frameHeight;
+    const frameClass = heightDriven ? 'carousel-frame carousel-frame--height-driven' : 'carousel-frame';
+    const frameStyle = heightDriven ? ` style="height: ${tip.frameHeight}px"` : '';
     return `<div class="carousel">
       <p class="carousel-intro">${escapeHtml(tip.sharedIntro || '')}</p>
-      <div class="carousel-frame">
+      <div class="${frameClass}"${frameStyle}>
         <div class="carousel-track">${slides}</div>
       </div>
       <p class="carousel-caption">${escapeHtml(firstCaption)}</p>

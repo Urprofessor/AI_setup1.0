@@ -220,6 +220,13 @@
   #step {
     background: #FCEFF1;
   }
+  #step.active {
+    display: flex;
+    flex-direction: column;
+  }
+  #step .step-footer {
+    margin-top: auto;
+  }
   .step-header {
     padding: 0 20px;
     display: flex;
@@ -1890,7 +1897,7 @@ const STEPS = [
       { type: 'image', icon: 'question', title: "What's in the box",
         body: "Inside the box, you'll find your Air One pump units, charging accessories, flange inserts, sizing tools, and setup guides.\nPlace all components on a clean surface and confirm everything is included before setup.",
         image: 'images/steps/01-unbox-inspect/tips1.png' },
-      { type: 'text', icon: 'question', title: 'Missing or damaged parts?',
+      { type: 'text', icon: 'alert', title: 'Missing or damaged parts?',
         body: 'If any part is missing or appears damaged, please contact Momcozy Support.\nHaving your order number ready will help us assist you faster.\n• WhatsApp: +1 (619) 848-0676\n• Email: support@momcozy.com.' }
     ]
   },
@@ -1995,10 +2002,10 @@ const STEPS = [
       { type: 'image', icon: 'question', title: 'Learn the control button',
         body: 'Open the Momcozy app, tap "Add device", and follow the on-screen pairing prompts. Your Air One will appear in the device list once paired.',
         image: 'images/steps/07-first-session/step7tips1.png' },
-      { type: 'image', icon: 'question', title: 'Remove the pump carefully',
+      { type: 'image', icon: 'alert', title: 'Remove the pump carefully',
         body: 'Sit comfortably and breathe slowly. A photo of your baby, soft music, or a warm drink all help letdown. Give the first session 5-10 minutes to find your rhythm.',
         image: 'images/steps/07-first-session/step7tips2.png' },
-      { type: 'image', icon: 'question', title: 'Pour milk slowly',
+      { type: 'image', icon: 'alert', title: 'Pour milk slowly',
         body: 'Air One starts in stimulation mode — fast, light suction to trigger letdown. When milk starts flowing, switch to expression mode in the app for slower, deeper draws.',
         image: 'images/steps/07-first-session/step7tips3.png' }
     ]

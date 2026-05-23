@@ -1975,12 +1975,15 @@ const STEPS = [
     videoTitle: 'Wear It Right',
     videoSub: '6. Slip the pump into your bra and check the seal.',
     tips: [
-      { type: 'image', icon: 'question', title: 'Position the pump',
-        body: 'Slip the assembled pump into your bra so the flange centers over your nipple. Adjust until the nipple sits comfortably inside the tunnel — it should not rub the walls.',
-        image: 'images/steps/06-wear/tip-1.png' },
-      { type: 'image', icon: 'question', title: 'Check the seal',
-        body: 'A good seal feels gentle and consistent. If you hear hissing or feel cool air, reposition the flange and check that the diaphragm is fully seated.',
-        image: 'images/steps/06-wear/tip-2.png' }
+      { type: 'image', icon: 'question', title: 'Center and align the flange',
+        body: 'Center your nipple inside the flange tunnel and keep the pump sitting flat against the breast.\nIf the pump tilts or gaps appear around the flange, reposition it before pumping.',
+        images: [
+          'images/steps/06-wear/step6tips1-1.png',
+          'images/steps/06-wear/step6tips1-2.png'
+        ] },
+      { type: 'image', icon: 'question', title: 'Wear securely inside your bra',
+        body: 'Place the assembled pump inside a supportive nursing bra and adjust until it feels secure and balanced.\nA proper fit should feel gentle, stable, and evenly sealed during pumping.\nIf you hear air leakage or lose suction, reposition the pump and check that all parts are fully assembled.',
+        image: 'images/steps/06-wear/step6tips2.png' }
     ]
   },
   {
@@ -2247,7 +2250,11 @@ function buildWarning(text) {
 
 function buildTipBody(tip) {
   if (tip.type === 'image') {
-    return `<div class="accordion-body-img"><img src="${tip.image}" alt="" draggable="false" onerror="this.style.display='none'"></div>
+    const images = tip.images || (tip.image ? [tip.image] : []);
+    const imgHtml = images.map(src =>
+      `<div class="accordion-body-img"><img src="${src}" alt="" draggable="false" onerror="this.style.display='none'"></div>`
+    ).join('');
+    return `${imgHtml}
             <div class="accordion-body-text">${escapeHtml(tip.body || '')}</div>
             ${buildWarning(tip.warning)}`;
   }

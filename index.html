@@ -700,6 +700,57 @@
     transition: transform .2s, opacity .2s;
   }
   .overlay.show .alert { transform: scale(1); opacity: 1; }
+
+  /* === Skip tutorial dialog === */
+  .skip-dialog {
+    background: #fff;
+    border-radius: 22px;
+    padding: 22px 22px 18px;
+    width: 320px;
+    max-width: calc(100vw - 48px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+    transform: scale(0.94);
+    opacity: 0;
+    transition: transform .2s, opacity .2s;
+  }
+  .overlay.show .skip-dialog { transform: scale(1); opacity: 1; }
+  .skip-dialog-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1A1A1A;
+    margin: 0 0 8px;
+  }
+  .skip-dialog-body {
+    font-size: 15px;
+    color: #5C5C5C;
+    line-height: 1.4;
+    margin: 0 0 20px;
+  }
+  .skip-dialog-actions {
+    display: flex;
+    gap: 10px;
+  }
+  .skip-dialog-btn {
+    flex: 1;
+    padding: 14px;
+    border-radius: 100px;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: inherit;
+    border: none;
+    cursor: pointer;
+    transition: opacity .15s, background .15s;
+  }
+  .skip-dialog-btn--secondary {
+    background: #EEEEEE;
+    color: #1A1A1A;
+  }
+  .skip-dialog-btn--secondary:active { background: #DDDDDD; }
+  .skip-dialog-btn--primary {
+    background: #1A73E8;
+    color: #fff;
+  }
+  .skip-dialog-btn--primary:active { opacity: 0.85; }
   .alert-content {
     padding: 20px 16px 18px;
     text-align: center;
@@ -1862,14 +1913,12 @@
 
 <!-- =========== OVERLAYS =========== -->
 <div class="overlay overlay-center" id="skipOverlay">
-  <div class="alert">
-    <div class="alert-content">
-      <div class="alert-title">"Momcozy" Wants to Use "google.com" to Sign In</div>
-      <p class="alert-msg">This allows the app and website to share information about you.</p>
-    </div>
-    <div class="alert-actions">
-      <button class="alert-btn" onclick="closeSkipDialog()">Cancel</button>
-      <button class="alert-btn bold" onclick="confirmSkip()">Continue</button>
+  <div class="skip-dialog">
+    <h2 class="skip-dialog-title">Skip tutorial?</h2>
+    <p class="skip-dialog-body">You can always find it in Help Center &gt; Tutorials &amp; Guides</p>
+    <div class="skip-dialog-actions">
+      <button class="skip-dialog-btn skip-dialog-btn--secondary" onclick="confirmSkip()">Skip</button>
+      <button class="skip-dialog-btn skip-dialog-btn--primary" onclick="closeSkipDialog()">Continue</button>
     </div>
   </div>
 </div>

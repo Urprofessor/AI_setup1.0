@@ -399,6 +399,31 @@
     margin: 0 16px 16px;
     padding: 24px 22px;
     box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+    position: relative;
+  }
+  .moms-agree-badge {
+    position: absolute;
+    top: -14px;
+    right: 16px;
+    height: 28px;
+    padding: 0 14px 0 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(90deg, #FF4DA6 0%, #FF8470 55%, #FFB070 100%);
+    color: #fff;
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    border-radius: 6px 16px 16px 16px;
+    box-shadow: 0 6px 16px rgba(255, 100, 130, 0.32);
+    z-index: 3;
+  }
+  .moms-agree-badge svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
   }
   .step-card-num {
     font-size: 14px;
@@ -417,7 +442,6 @@
     display: none;
   }
   .accordion {
-    border-top: 1px solid #F0E5E7;
   }
   .accordion-item {
     border-bottom: 1px solid #F0E5E7;
@@ -1529,6 +1553,10 @@
     <div class="video-progress-line" id="stepVideoProgress"></div>
   </div>
   <div class="step-card">
+    <div class="moms-agree-badge">
+      <svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2l2.2 5.6L20 9.2l-4 3.5 1.2 5.5L12 15.3 6.8 18.2 8 12.7 4 9.2l5.8-1.6L12 2z"/></svg>
+      <span>70% Moms Agree</span>
+    </div>
     <p class="step-card-subtitle" id="stepCardSubtitle">Confirm all accessories are included</p>
     <div class="accordion" id="stepAccordion"></div>
   </div>

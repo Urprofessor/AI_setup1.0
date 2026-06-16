@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e \"try { require.resolve\\('docx'\\); console.log\\('docx available'\\) } catch\\(e\\) { console.log\\('docx NOT available globally'\\) }\")",
+      "Bash(python -c \"import docx; print\\('python-docx available'\\)\")",
+      "Read(//c/Users/user/AppData/Roaming/Claude/local-agent-mode-sessions/skills-plugin/e46dddbb-d16f-42cf-bdad-39ad9aa345fa/eed0aa95-3c3a-42d8-836e-c894e89ab35a/**)",
+      "Read(//c/Users/user/AppData/Roaming/Claude/**)",
+      "PowerShell(Get-Command python, node, pwsh, pandoc -ErrorAction SilentlyContinue)",
+      "PowerShell(Get-Command \"C:\\\\Program Files\\\\Microsoft Office\\\\root\\\\Office16\\\\WINWORD.EXE\" -ErrorAction SilentlyContinue)",
+      "PowerShell($tools = @\\(\"python\", \"node\", \"pandoc\", \"npm\", \"py\"\\); foreach \\($t in $tools\\) { $c = Get-Command $t -ErrorAction SilentlyContinue; if \\($c\\) { Write-Output \"$t : $\\($c.Source\\)\" } else { Write-Output \"$t : NOT FOUND\" } })",
+      "PowerShell($word = $false; try { $w = New-Object -ComObject Word.Application; $word = $true; $w.Quit\\(\\) } catch {}; if \\($word\\) { Write-Output \"Word COM available\" } else { Write-Output \"Word COM not available\" })",
+      "Bash(cp \"C:\\\\Users\\\\user\\\\Desktop\\\\指标预审卡_设备助手_已填版.html\" \"C:\\\\Users\\\\user\\\\Downloads\\\\指标预审卡_设备助手_已填版.html\")",
+      "Read(//c/Users/user/Downloads/**)"
+    ]
+  }
+}

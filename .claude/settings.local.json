@@ -10,7 +10,8 @@
       "PowerShell($tools = @\\(\"python\", \"node\", \"pandoc\", \"npm\", \"py\"\\); foreach \\($t in $tools\\) { $c = Get-Command $t -ErrorAction SilentlyContinue; if \\($c\\) { Write-Output \"$t : $\\($c.Source\\)\" } else { Write-Output \"$t : NOT FOUND\" } })",
       "PowerShell($word = $false; try { $w = New-Object -ComObject Word.Application; $word = $true; $w.Quit\\(\\) } catch {}; if \\($word\\) { Write-Output \"Word COM available\" } else { Write-Output \"Word COM not available\" })",
       "Bash(cp \"C:\\\\Users\\\\user\\\\Desktop\\\\指标预审卡_设备助手_已填版.html\" \"C:\\\\Users\\\\user\\\\Downloads\\\\指标预审卡_设备助手_已填版.html\")",
-      "Read(//c/Users/user/Downloads/**)"
+      "Read(//c/Users/user/Downloads/**)",
+      "Bash(cp \"C:\\\\Users\\\\user\\\\Desktop\\\\指标预审卡_设备助手_已填版.html\" \"C:\\\\Users\\\\user\\\\Downloads\\\\指标预审卡_设备助手_已填版.html\" && ls -la \"C:\\\\Users\\\\user\\\\Downloads\\\\指标预审卡_设备助手_已填版.html\")"
     ]
   }
 }

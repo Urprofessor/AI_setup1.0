@@ -383,13 +383,15 @@
     transition: width .1s linear;
   }
 
+  .step-card-wrap {
+    position: relative;
+    margin: 0 16px 16px;
+  }
   .step-card {
     background: #fff;
     border-radius: 20px;
-    margin: 0 16px 16px;
     padding: 24px 22px;
     box-shadow: 0 1px 0 rgba(0,0,0,0.02);
-    position: relative;
   }
   .moms-agree-badge {
     position: absolute;
@@ -1545,13 +1547,15 @@
     <div class="video-label"><span id="stepVideoLabel">How-to video</span> · <span id="stepVideoDuration">15s</span></div>
     <div class="video-progress-line" id="stepVideoProgress"></div>
   </div>
-  <div class="step-card">
+  <div class="step-card-wrap">
     <div class="moms-agree-badge">
       <svg class="badge-icon" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2 C12.6 7.4 16.6 11.4 22 12 C16.6 12.6 12.6 16.6 12 22 C11.4 16.6 7.4 12.6 2 12 C7.4 11.4 11.4 7.4 12 2 Z"/></svg>
       <span id="momsAgreeText">65% of Moms Asked About This</span>
     </div>
-    <p class="step-card-subtitle" id="stepCardSubtitle">Confirm all accessories are included</p>
-    <div class="accordion" id="stepAccordion"></div>
+    <div class="step-card">
+      <p class="step-card-subtitle" id="stepCardSubtitle">Confirm all accessories are included</p>
+      <div class="accordion" id="stepAccordion"></div>
+    </div>
   </div>
   <div class="step-footer">
     <button class="btn-back" id="stepBackBtn" onclick="prevStep()">Back</button>

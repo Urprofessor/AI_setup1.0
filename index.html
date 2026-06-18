@@ -2490,6 +2490,86 @@ function prevStep(fromFs) {
   }
 }
 
+function setupPageSwipe(pageEl, { onSwipeLeft, onSwipeRight }) {
+  if (!pageEl) return;
+
+  let startX = 0;
+  let startY = 0;
+  let currentX = 0;
+  let currentY = 0;
+  let dragging = false;
+  let ignored = false;
+  let startTime = 0;
+
+  function shouldIgnoreTarget(target) {
+    if (!target) return true;
+    return !!target.closest('.carousel, .carousel-frame, button, a, .step-progress-bar, .tipsstep-pagination');
+  }
+
+  function onStart(x, y, target) {
+    ignored = shouldIgnoreTarget(target);
+    if (ignored) return;
+    dragging = true;
+    startX = currentX = x;
+    startY = currentY = y;
+    startTime = Date.now();
+  }
+
+  function onMove(x, y) {
+    if (!dragging || ignored) return;
+    currentX = x;
+    currentY = y;
+  }
+
+  function onEnd() {
+    if (!dragging || ignored) {
+      dragging = false;
+      return;
+    }
+    dragging = false;
+    const dx = currentX - startX;
+    const dy = currentY - startY;
+    const dt = Date.now() - startTime;
+    const threshold = 60;
+    const fast = Math.abs(dx) > 30 && dt < 250;
+    if (Math.abs(dx) <= Math.abs(dy) && !fast) return;
+    if (dx < -threshold || (fast && dx < 0)) onSwipeLeft?.();
+    else if (dx > threshold || (fast && dx > 0)) onSwipeRight?.();
+  }
+
+  pageEl.addEventListener('touchstart', (e) => onStart(e.touches[0].clientX, e.touches[0].clientY, e.target), { passive: true });
+  pageEl.addEventListener('touchmove', (e) => onMove(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
+  pageEl.addEventListener('touchend', onEnd);
+  pageEl.addEventListener('touchcancel', onEnd);
+
+  pageEl.addEventListener('mousedown', (e) => {
+    if (e.button !== 0) return;
+    onStart(e.clientX, e.clientY, e.target);
+    const mm = (ev) => onMove(ev.clientX, ev.clientY);
+    const mu = () => {
+      onEnd();
+      window.removeEventListener('mousemove', mm);
+      window.removeEventListener('mouseup', mu);
+    };
+    window.addEventListener('mousemove', mm);
+    window.addEventListener('mouseup', mu);
+  });
+}
+
+setupPageSwipe(document.getElementById('step'), {
+  onSwipeLeft: () => nextStep(),
+  onSwipeRight: () => prevStep()
+});
+
+setupPageSwipe(document.getElementById('tipsStep'), {
+  onSwipeLeft: () => {
+    if (currentTipStepIdx < 6) openTipStep(currentTipStepIdx + 1);
+  },
+  onSwipeRight: () => {
+    if (currentTipStepIdx > 0) openTipStep(currentTipStepIdx - 1);
+  }
+});
+
 function openVideoFullscreen(fromTips) {
   isVideoFs = true;
   renderVideoFs();

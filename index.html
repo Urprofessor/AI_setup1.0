@@ -52,19 +52,9 @@
   }
   .page.active { display: block; }
 
-  /* Status bar (fake) */
+  /* Status bar (fake) - hidden */
   .status-bar {
-    height: 44px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 24px 0 28px;
-    font-size: 17px;
-    font-weight: 600;
-    color: #000;
-    flex-shrink: 0;
-    padding-top: env(safe-area-inset-top);
-    box-sizing: content-box;
+    display: none;
   }
   .status-bar .right { display: flex; gap: 6px; align-items: center; }
   .status-icon { width: 17px; height: 11px; }
@@ -414,15 +404,14 @@
     align-items: center;
     justify-content: center;
     gap: 5px;
-    padding: 0 16px 6px 28px;
+    padding: 0;
     color: #fff;
     font-size: 12.5px;
     font-weight: 700;
     letter-spacing: 0.01em;
     white-space: nowrap;
     z-index: 3;
-    border-top-right-radius: 20px;
-    overflow: hidden;
+    padding-left: 30px;
   }
   .moms-agree-badge .badge-icon {
     width: 14px;

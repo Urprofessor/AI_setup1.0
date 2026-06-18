@@ -1425,10 +1425,13 @@
     font-size: 17px; font-weight: 600; color: #4A0612;
   }
   #tipsStep .step-video { flex-shrink: 0; }
+  .tipsstep-card-wrap {
+    position: relative;
+    margin: 8px 16px 16px;
+  }
   .tipsstep-card {
     background: #fff;
     border-radius: 20px;
-    margin: 8px 16px 16px;
     padding: 24px 22px;
     box-shadow: 0 1px 0 rgba(0,0,0,0.02);
   }
@@ -1929,10 +1932,16 @@
     <div class="video-label"><span id="tipsVideoLabel">How-to video</span> · <span id="tipsVideoDuration">15s</span></div>
     <div class="video-progress-line" id="tipsVideoProgress"></div>
   </div>
-  <div class="tipsstep-card">
-    <h2 class="step-card-title" id="tipsStepTitle">Unbox & Inspect</h2>
-    <p class="step-card-subtitle" id="tipsStepSubtitle">Confirm all accessories are included</p>
-    <div class="accordion" id="tipsStepAccordion"></div>
+  <div class="tipsstep-card-wrap">
+    <div class="moms-agree-badge">
+      <svg class="badge-icon" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2 C12.6 7.4 16.6 11.4 22 12 C16.6 12.6 12.6 16.6 12 22 C11.4 16.6 7.4 12.6 2 12 C7.4 11.4 11.4 7.4 12 2 Z"/></svg>
+      <span id="tipsMomsAgreeText">65% of Moms Asked About This</span>
+    </div>
+    <div class="tipsstep-card">
+      <h2 class="step-card-title" id="tipsStepTitle">Unbox & Inspect</h2>
+      <p class="step-card-subtitle" id="tipsStepSubtitle">Confirm all accessories are included</p>
+      <div class="accordion" id="tipsStepAccordion"></div>
+    </div>
   </div>
   <div class="tipsstep-pagination" id="tipsStepPagination"></div>
 </div>
@@ -2732,6 +2741,14 @@ function openTipStep(idx) {
   document.getElementById('tipsStepSubtitle').textContent = s.subtitle;
   const tipsLabel = document.getElementById('tipsVideoLabel');
   if (tipsLabel) tipsLabel.textContent = s.videoTitle || s.title;
+
+  // Update Moms Asked badge percentage (same per-step values as the step page)
+  const momsAgreePercentages = [65, 76, 72, 53, 78, 62, 68];
+  const tipsMomsAgreeText = document.getElementById('tipsMomsAgreeText');
+  if (tipsMomsAgreeText) {
+    const pct = momsAgreePercentages[idx] ?? 70;
+    tipsMomsAgreeText.textContent = `${pct}% of Moms Asked About This`;
+  }
 
   // Mirror the step page's tips structure (supports image/text/carousel)
   renderStepAccordion(s.tips, 'tipsStepAccordion');

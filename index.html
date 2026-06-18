@@ -1396,9 +1396,17 @@
   }
   .tip-card:active { transform: scale(0.98); }
   .tip-icon { width: 36px; height: 36px; flex-shrink: 0; color: #1A1A1A; object-fit: contain; user-select: none; -webkit-user-drag: none; display: block; }
-  .tip-text { flex: 1; }
+  .tip-text { flex: 1; min-width: 0; }
   .tip-text h4 { margin: 0 0 2px; font-size: 17px; font-weight: 600; color: #1A1A1A; }
-  .tip-text p { margin: 0; font-size: 13px; color: #888; line-height: 1.45; }
+  .tip-text p {
+    margin: 0;
+    font-size: 13px;
+    color: #888;
+    line-height: 1.45;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   .tip-chevron { color: #999; width: 16px; height: 16px; }
 
   /* === TIPS STEP PAGE === */
@@ -1812,7 +1820,7 @@
       <img class="tip-icon" src="icon/Property%201%3D01-meet-your-parts%201.png" alt="" draggable="false">
       <div class="tip-text">
         <h4>Unbox & Inspect</h4>
-        <p>Air One has 8 components. Tap each one to learn its name before you start.</p>
+        <p>Meet all parts.</p>
       </div>
       <svg class="tip-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18l6-6-6-6"/></svg>
     </div>
@@ -1820,7 +1828,7 @@
       <img class="tip-icon" src="icon/Property%201%3D04-find-your-flange-size%201.png" alt="" draggable="false">
       <div class="tip-text">
         <h4>Measure Flange Size</h4>
-        <p>Measure your nipple diameter and match it to the right flange size.</p>
+        <p>Find your perfect fit.</p>
       </div>
       <svg class="tip-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18l6-6-6-6"/></svg>
     </div>
@@ -1828,7 +1836,7 @@
       <img class="tip-icon" src="icon/Property%201%3D02-know-what-to-wash%201.png" alt="" draggable="false">
       <div class="tip-text">
         <h4>Disassemble Parts</h4>
-        <p>The flange, milk collector, diaphragm, and valve are washable.</p>
+        <p>Take it apart safely.</p>
       </div>
       <svg class="tip-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18l6-6-6-6"/></svg>
     </div>
@@ -1836,7 +1844,7 @@
       <img class="tip-icon" src="icon/Property%201%3D03-clean-before-first-use%201.png" alt="" draggable="false">
       <div class="tip-text">
         <h4>Clean & Sanitize</h4>
-        <p>Wash all washable parts with mild soap and warm water.</p>
+        <p>Keep every part clean.</p>
       </div>
       <svg class="tip-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18l6-6-6-6"/></svg>
     </div>
@@ -1844,7 +1852,7 @@
       <img class="tip-icon" src="icon/Property%201%3D05-assemble-your-pump%201.png" alt="" draggable="false">
       <div class="tip-text">
         <h4>Assemble the Pump</h4>
-        <p>Install the valve, fit the diaphragm, and connect everything to the main unit.</p>
+        <p>Put it all together.</p>
       </div>
       <svg class="tip-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18l6-6-6-6"/></svg>
     </div>
@@ -1852,7 +1860,7 @@
       <img class="tip-icon" src="icon/Property%201%3D09-wear-it-right%201.png" alt="" draggable="false">
       <div class="tip-text">
         <h4>Wear It Right</h4>
-        <p>Slip the pump into your bra and check the seal before pumping.</p>
+        <p>Position and seal correctly.</p>
       </div>
       <svg class="tip-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18l6-6-6-6"/></svg>
     </div>
@@ -1860,7 +1868,7 @@
       <img class="tip-icon" src="icon/Property%201%3D10-start-your-first-session%201.png" alt="" draggable="false">
       <div class="tip-text">
         <h4>First Session</h4>
-        <p>Connect via the app, stay relaxed, and start your first session.</p>
+        <p>Connect and start pumping.</p>
       </div>
       <svg class="tip-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18l6-6-6-6"/></svg>
     </div>

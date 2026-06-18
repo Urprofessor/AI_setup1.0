@@ -158,22 +158,27 @@
     padding-bottom: 32px;
   }
   .phase:last-child { padding-bottom: 0; }
-  .phase-number {
+  .phase-icon {
     width: 36px;
     height: 36px;
     border-radius: 50%;
     background: #4A0612;
-    color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
-    font-weight: 500;
     flex-shrink: 0;
     z-index: 2;
     position: relative;
   }
-  .phase:not(:last-child) .phase-number::after {
+  .phase-icon img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    display: block;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+  .phase:not(:last-child) .phase-icon::after {
     content: '';
     position: absolute;
     top: 36px;
@@ -1462,7 +1467,9 @@
     </div>
     <div class="phases">
       <div class="phase">
-        <div class="phase-number">1</div>
+        <div class="phase-icon">
+          <img src="icon/Welcome-1.png" alt="" draggable="false">
+        </div>
         <div class="phase-content">
           <h3 class="phase-title">Unboxing</h3>
           <p class="phase-desc">Open the box and get to know your parts</p>
@@ -1470,7 +1477,9 @@
         </div>
       </div>
       <div class="phase">
-        <div class="phase-number">2</div>
+        <div class="phase-icon">
+          <img src="icon/Welcome-2.png" alt="" draggable="false">
+        </div>
         <div class="phase-content">
           <h3 class="phase-title">Clean & Assemble</h3>
           <p class="phase-desc">Wash, dry, and put your pump together</p>
@@ -1478,7 +1487,9 @@
         </div>
       </div>
       <div class="phase">
-        <div class="phase-number">3</div>
+        <div class="phase-icon">
+          <img src="icon/Welcome-3.png" alt="" draggable="false">
+        </div>
         <div class="phase-content">
           <h3 class="phase-title">First Use</h3>
           <p class="phase-desc">Wear it and start your first session</p>

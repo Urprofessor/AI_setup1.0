@@ -954,6 +954,16 @@
     border-radius: 2px;
     cursor: pointer;
     position: relative;
+    touch-action: none;
+    padding: 14px 0;
+    margin: -14px 0;
+    background-clip: content-box;
+  }
+  .vfs-progress-bar.is-dragging {
+    cursor: grabbing;
+  }
+  .vfs-progress-bar.is-dragging .vfs-progress-bar-fill {
+    transition: none;
   }
   .vfs-progress-bar-fill {
     height: 100%;
@@ -998,6 +1008,13 @@
     border-radius: 2px;
     position: relative;
     cursor: pointer;
+    touch-action: none;
+    padding: 14px 0;
+    margin: -14px 0;
+    background-clip: content-box;
+  }
+  .vfs-volume-slider.is-dragging {
+    cursor: grabbing;
   }
   .vfs-volume-fill {
     height: 100%;
@@ -2203,6 +2220,53 @@ if (tipsExpandBtn) {
 }
 
 // === fullscreen video ===
+function setupDragSlider(trackEl, onValue, { onDragStart, onDragEnd } = {}) {
+  if (!trackEl) return;
+  let dragging = false;
+
+  function clientX(e) {
+    if (e.touches && e.touches.length) return e.touches[0].clientX;
+    if (e.changedTouches && e.changedTouches.length) return e.changedTouches[0].clientX;
+    return e.clientX;
+  }
+
+  function updateFromEvent(e) {
+    e.stopPropagation();
+    const rect = trackEl.getBoundingClientRect();
+    const x = clientX(e) - rect.left;
+    const pct = Math.max(0, Math.min(1, x / rect.width));
+    onValue(pct);
+  }
+
+  function startDrag(e) {
+    dragging = true;
+    onDragStart?.();
+    updateFromEvent(e);
+  }
+
+  function moveDrag(e) {
+    if (!dragging) return;
+    if (e.cancelable) e.preventDefault();
+    updateFromEvent(e);
+  }
+
+  function endDrag(e) {
+    if (!dragging) return;
+    dragging = false;
+    onDragEnd?.();
+    updateFromEvent(e);
+  }
+
+  trackEl.addEventListener('mousedown', startDrag);
+  window.addEventListener('mousemove', moveDrag);
+  window.addEventListener('mouseup', endDrag);
+
+  trackEl.addEventListener('touchstart', startDrag, { passive: false });
+  trackEl.addEventListener('touchmove', moveDrag, { passive: false });
+  trackEl.addEventListener('touchend', endDrag);
+  trackEl.addEventListener('touchcancel', endDrag);
+}
+
 if (vfsVideo) {
   vfsPlayBtn.addEventListener('click', (e) => {
     e.stopPropagation();
@@ -2247,27 +2311,27 @@ if (vfsVideo) {
     vfsVolumeFill.style.width = vfsVideo.muted ? '0%' : (vfsVideo.volume * 100) + '%';
   });
 
-  // Progress bar seek
-  function seekFromEvent(e) {
-    e.stopPropagation();
-    const rect = vfsProgressBar.getBoundingClientRect();
-    const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-    const pct = Math.max(0, Math.min(1, x / rect.width));
-    if (vfsVideo.duration) vfsVideo.currentTime = pct * vfsVideo.duration;
-  }
-  vfsProgressBar.addEventListener('click', seekFromEvent);
+  // Progress bar seek (click + drag)
+  setupDragSlider(vfsProgressBar, (pct) => {
+    vfsProgressFill.style.width = (pct * 100) + '%';
+    if (vfsVideo.duration) {
+      vfsVideo.currentTime = pct * vfsVideo.duration;
+      vfsTime.textContent = formatTime(vfsVideo.currentTime) + ' / ' + formatTime(vfsVideo.duration);
+    }
+  }, {
+    onDragStart: () => vfsProgressBar.classList.add('is-dragging'),
+    onDragEnd: () => vfsProgressBar.classList.remove('is-dragging')
+  });
 
-  // Volume slider
-  function volumeFromEvent(e) {
-    e.stopPropagation();
-    const rect = vfsVolumeSlider.getBoundingClientRect();
-    const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-    const pct = Math.max(0, Math.min(1, x / rect.width));
+  // Volume slider (click + drag)
+  setupDragSlider(vfsVolumeSlider, (pct) => {
     vfsVideo.volume = pct;
     vfsVideo.muted = pct === 0;
     vfsVolumeFill.style.width = (pct * 100) + '%';
-  }
-  vfsVolumeSlider.addEventListener('click', volumeFromEvent);
+  }, {
+    onDragStart: () => vfsVolumeSlider.classList.add('is-dragging'),
+    onDragEnd: () => vfsVolumeSlider.classList.remove('is-dragging')
+  });
 }
 
 // ====== NAV ======

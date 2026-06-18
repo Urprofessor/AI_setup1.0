@@ -405,26 +405,26 @@
     position: absolute;
     top: 0;
     right: 0;
-    width: 220px;
-    height: 44px;
+    width: 280px;
+    height: 56px;
     background-image: url('images/rectangleBg.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    padding: 0 18px 6px 30px;
+    gap: 6px;
+    padding: 0 18px 8px 32px;
     color: #fff;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     letter-spacing: 0.01em;
     white-space: nowrap;
     z-index: 3;
   }
   .moms-agree-badge .badge-icon {
-    width: 16px;
-    height: 16px;
+    width: 15px;
+    height: 15px;
     flex-shrink: 0;
   }
   .step-card-num {
@@ -1557,7 +1557,7 @@
   <div class="step-card">
     <div class="moms-agree-badge">
       <svg class="badge-icon" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2 C12.6 7.4 16.6 11.4 22 12 C16.6 12.6 12.6 16.6 12 22 C11.4 16.6 7.4 12.6 2 12 C7.4 11.4 11.4 7.4 12 2 Z"/></svg>
-      <span>70% Moms Agree</span>
+      <span id="momsAgreeText">65% of Moms Asked About This</span>
     </div>
     <p class="step-card-subtitle" id="stepCardSubtitle">Confirm all accessories are included</p>
     <div class="accordion" id="stepAccordion"></div>
@@ -2415,6 +2415,14 @@ function renderStep() {
   document.getElementById('stepCardSubtitle').textContent = s.subtitle;
   const stepLabel = document.getElementById('stepVideoLabel');
   if (stepLabel) stepLabel.textContent = s.videoTitle || s.title;
+
+  // Update Moms Asked badge percentage per step (1-7: 65, 76, 72, 53, 78, 62, 68)
+  const momsAgreePercentages = [65, 76, 72, 53, 78, 62, 68];
+  const momsAgreeText = document.getElementById('momsAgreeText');
+  if (momsAgreeText) {
+    const pct = momsAgreePercentages[currentStep - 1] ?? 70;
+    momsAgreeText.textContent = `${pct}% of Moms Asked About This`;
+  }
 
   renderStepAccordion(s.tips);
 

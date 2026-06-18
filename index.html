@@ -159,16 +159,12 @@
   }
   .phase:last-child { padding-bottom: 0; }
   .phase-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: #4A0612;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
-    z-index: 2;
-    position: relative;
   }
   .phase-icon img {
     width: 24px;
@@ -177,16 +173,6 @@
     display: block;
     user-select: none;
     -webkit-user-drag: none;
-  }
-  .phase:not(:last-child) .phase-icon::after {
-    content: '';
-    position: absolute;
-    top: 36px;
-    left: 50%;
-    width: 1.5px;
-    height: 64px;
-    background: #4A0612;
-    transform: translateX(-50%);
   }
   .phase-content { flex: 1; padding-top: 4px; }
   .phase-title {

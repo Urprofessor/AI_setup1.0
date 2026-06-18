@@ -2536,12 +2536,16 @@ function setupPageSwipe(pageEl, { onSwipeLeft, onSwipeRight }) {
 }
 
 setupPageSwipe(document.getElementById('step'), {
-  onSwipeLeft: () => nextStep(),
+  onSwipeLeft: () => {
+    if (currentStep < 7) nextStep();
+  },
   onSwipeRight: () => prevStep()
 });
 
 setupPageSwipe(document.getElementById('tipsStep'), {
-  onSwipeLeft: () => nextTipStep(),
+  onSwipeLeft: () => {
+    if (currentTipStepIdx < 6) nextTipStep();
+  },
   onSwipeRight: () => prevTipStep()
 });
 

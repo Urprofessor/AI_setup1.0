@@ -2547,17 +2547,22 @@ function renderStep() {
   stepVideo.play().catch(() => {});
 }
 
+function getFsStepNum() {
+  return vfsFromTips ? (currentTipStepIdx + 1) : currentStep;
+}
+
 function renderVideoFs() {
-  const s = STEPS[currentStep - 1];
-  document.getElementById('vfsCount').textContent = `${currentStep}/7`;
-  document.getElementById('vfsStepText').textContent = `Step ${currentStep}`;
-  document.getElementById('vfsBackBtn').classList.toggle('hidden', currentStep === 1);
-  document.getElementById('vfsNextLabel').textContent = currentStep === 7 ? 'Finish' : 'Next Step';
+  const stepNum = getFsStepNum();
+  document.getElementById('vfsCount').textContent = `${stepNum}/7`;
+  document.getElementById('vfsStepText').textContent = `Step ${stepNum}`;
+  document.getElementById('vfsBackBtn').classList.toggle('hidden', stepNum === 1);
+  const isLast = stepNum === 7;
+  document.getElementById('vfsNextLabel').textContent = isLast ? (vfsFromTips ? 'Done' : 'Finish') : 'Next Step';
 }
 
 function refreshFsVideoSource() {
   if (!vfsVideo) return;
-  const src = getStepVideoSrc(currentStep);
+  const src = getStepVideoSrc(getFsStepNum());
   setVideoSrc(vfsVideo, src);
   vfsVideo.muted = false;
   vfsVideo.loop = true;
@@ -2568,6 +2573,18 @@ function refreshFsVideoSource() {
 }
 
 function nextStep(fromFs) {
+  if (fromFs && vfsFromTips) {
+    if (currentTipStepIdx === 6) {
+      closeVideoFullscreen();
+      navigate('tips');
+      return;
+    }
+    currentTipStepIdx++;
+    renderTipStep();
+    renderVideoFs();
+    refreshFsVideoSource();
+    return;
+  }
   if (currentStep === 7) {
     setupCompleted = true;
     navigate('complete');
@@ -2583,6 +2600,14 @@ function nextStep(fromFs) {
   }
 }
 function prevStep(fromFs) {
+  if (fromFs && vfsFromTips) {
+    if (currentTipStepIdx === 0) return;
+    currentTipStepIdx--;
+    renderTipStep();
+    renderVideoFs();
+    refreshFsVideoSource();
+    return;
+  }
   if (currentStep === 1) return;
   currentStep--;
   if (fromFs) {

@@ -2791,7 +2791,7 @@ function confirmSkip() {
 }
 
 function openBackDialog() {
-  document.getElementById('backDialogSub').textContent = `You're on Step ${currentStep} of 7.`;
+  document.getElementById('backDialogSub').textContent = `Your progress is saved at Step ${currentStep} of 7. Continue later from Manage Device > How to Use.`;
   document.getElementById('backOverlay').classList.add('show');
 }
 function closeBackDialog() {
@@ -2802,7 +2802,6 @@ function exitToControl() {
   // setupCompleted remains false (this counts as mid-exit)
   setTimeout(() => {
     navigate('control');
-    showGlobalToast();
   }, 300);
 }
 

@@ -613,31 +613,24 @@
   .carousel-dots-inner {
     position: relative;
     display: flex;
-    gap: 16px;
+    gap: 8px;
     height: 18px;
     align-items: center;
-    filter: url(#gooey-indicator);
   }
   .carousel-dot {
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
-    background: #4A0612;
+    background: #E0D5D7;
     flex-shrink: 0;
     cursor: pointer;
+    transition: background 0.2s ease;
+  }
+  .carousel-dot.active {
+    background: #4A0612;
   }
   .carousel-pill {
-    position: absolute;
-    height: 16px;
-    background: #4A0612;
-    border-radius: 8px;
-    pointer-events: none;
-    top: 1px;
-    left: 0;
-    width: 10px;
-  }
-  .carousel-pill.animate {
-    transition: left 0.25s cubic-bezier(0.5, 0, 0.5, 1), width 0.25s cubic-bezier(0.5, 0, 0.5, 1);
+    display: none;
   }
 
   .step-footer {

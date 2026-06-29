@@ -605,11 +605,17 @@
     white-space: pre-line;
   }
   .carousel-dots {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 10px;
     display: flex;
     justify-content: center;
-    margin-top: 8px;
     height: 18px;
+    pointer-events: none;
+    z-index: 2;
   }
+  .carousel-dots-inner { pointer-events: auto; }
   .carousel-dots-inner {
     position: relative;
     display: flex;
@@ -2432,9 +2438,9 @@ function buildTipBody(tip) {
       <p class="carousel-intro">${escapeHtml(tip.sharedIntro || '')}</p>
       <div class="${frameClass}"${frameStyle}>
         <div class="carousel-track">${slides}</div>
+        <div class="carousel-dots"><div class="carousel-dots-inner">${dots}<div class="carousel-pill"></div></div></div>
       </div>
       <p class="carousel-caption">${escapeHtml(firstCaption)}</p>
-      <div class="carousel-dots"><div class="carousel-dots-inner">${dots}<div class="carousel-pill"></div></div></div>
     </div>`;
   }
   return '';

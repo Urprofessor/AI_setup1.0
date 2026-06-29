@@ -774,43 +774,6 @@
   }
   .skip-dialog-btn--primary:active { opacity: 0.85; }
 
-  /* === Global Toast (top of screen) === */
-  .global-toast {
-    position: absolute;
-    top: calc(12px + env(safe-area-inset-top));
-    left: 16px;
-    right: 16px;
-    z-index: 9999;
-    pointer-events: none;
-    background: rgba(255, 255, 255, 0.78);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    backdrop-filter: blur(24px) saturate(180%);
-    border-radius: 22px;
-    padding: 16px 20px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
-    border: 0.5px solid rgba(255, 255, 255, 0.6);
-    opacity: 0;
-    transform: translateY(-16px);
-    transition: opacity .28s ease, transform .28s ease;
-  }
-  .global-toast.show {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  .global-toast-title {
-    font-size: 17px;
-    font-weight: 700;
-    color: #1A1A1A;
-    margin: 0 0 4px;
-    line-height: 1.25;
-  }
-  .global-toast-body {
-    font-size: 15px;
-    color: #1A1A1A;
-    line-height: 1.35;
-    margin: 0;
-  }
-
   .alert-content {
     padding: 20px 16px 18px;
     text-align: center;
@@ -2026,12 +1989,6 @@
   </div>
 </div>
 
-<!-- =========== GLOBAL TOAST =========== -->
-<div class="global-toast" id="globalToast" role="status" aria-live="polite">
-  <h4 class="global-toast-title" id="globalToastTitle">You're all saved</h4>
-  <p class="global-toast-body" id="globalToastBody">Continue setup from Device &rarr; "How to use your Pump?"</p>
-</div>
-
 </div>
 
 <script>
@@ -2786,7 +2743,6 @@ function confirmSkip() {
   closeSkipDialog();
   setTimeout(() => {
     navigate('control');
-    showGlobalToast();
   }, 200);
 }
 
@@ -2805,25 +2761,8 @@ function exitToControl() {
   }, 300);
 }
 
-// ====== GLOBAL TOAST ======
-let _toastHideTimer = null;
-function showGlobalToast({ title, body, duration = 2000 } = {}) {
-  const el = document.getElementById('globalToast');
-  if (!el) return;
-  if (title) document.getElementById('globalToastTitle').textContent = title;
-  if (body) document.getElementById('globalToastBody').textContent = body;
-  if (_toastHideTimer) clearTimeout(_toastHideTimer);
-  el.classList.add('show');
-  _toastHideTimer = setTimeout(() => el.classList.remove('show'), duration);
-}
-
-let firstCompletionToastShown = false;
 function finishOnboarding() {
   navigate('control');
-  if (!firstCompletionToastShown) {
-    firstCompletionToastShown = true;
-    showGlobalToast();
-  }
 }
 
 // ====== ACCORDION ======

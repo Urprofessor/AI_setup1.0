@@ -3051,6 +3051,11 @@ function openTipStep(idx) {
 
 // init
 renderStep();
+
+// Service Worker for offline cache
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js');
+}
 </script>
 </body>
 </html>

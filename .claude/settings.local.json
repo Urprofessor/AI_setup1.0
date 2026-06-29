@@ -11,7 +11,12 @@
       "PowerShell($word = $false; try { $w = New-Object -ComObject Word.Application; $word = $true; $w.Quit\\(\\) } catch {}; if \\($word\\) { Write-Output \"Word COM available\" } else { Write-Output \"Word COM not available\" })",
       "Bash(cp \"C:\\\\Users\\\\user\\\\Desktop\\\\指标预审卡_设备助手_已填版.html\" \"C:\\\\Users\\\\user\\\\Downloads\\\\指标预审卡_设备助手_已填版.html\")",
       "Read(//c/Users/user/Downloads/**)",
-      "Bash(cp \"C:\\\\Users\\\\user\\\\Desktop\\\\指标预审卡_设备助手_已填版.html\" \"C:\\\\Users\\\\user\\\\Downloads\\\\指标预审卡_设备助手_已填版.html\" && ls -la \"C:\\\\Users\\\\user\\\\Downloads\\\\指标预审卡_设备助手_已填版.html\")"
+      "Bash(cp \"C:\\\\Users\\\\user\\\\Desktop\\\\指标预审卡_设备助手_已填版.html\" \"C:\\\\Users\\\\user\\\\Downloads\\\\指标预审卡_设备助手_已填版.html\" && ls -la \"C:\\\\Users\\\\user\\\\Downloads\\\\指标预审卡_设备助手_已填版.html\")",
+      "Bash(npx tsc *)",
+      "PowerShell(Get-Command node, npm, npx -ErrorAction SilentlyContinue)",
+      "PowerShell(Get-ChildItem -Path \"C:/Program Files/nodejs\", \"$env:APPDATA/npm\", \"$env:LOCALAPPDATA/Programs/nodejs\", \"$env:ProgramFiles/nodejs\" -Filter \"node.exe\" -ErrorAction SilentlyContinue | Select-Object FullName)",
+      "Bash(cmd.exe /c \"npx tsc --noEmit 2>&1\")",
+      "Bash(cmd.exe /c \"npm run typecheck 2>&1\")"
     ]
   }
 }

@@ -1513,7 +1513,7 @@
 
 <!-- Preload first step video to warm the cache (other steps load on demand) -->
 <div aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;left:-9999px;top:-9999px">
-  <video id="preloadStep1" muted playsinline preload="auto" src="videos/step1.mp4"></video>
+  <video id="preloadStep1" muted playsinline preload="auto" src="https://res.cloudinary.com/dzx4efbjn/video/upload/step1_tdmfvp.mp4"></video>
 </div>
 
 <!-- =========== WELCOME PAGE =========== -->
@@ -2162,9 +2162,18 @@ let vfsFromTips = false;
 let currentTipStepIdx = 0;
 
 // ====== VIDEO CONFIG ======
-// Per-step videos: videos/step1.mp4 ... videos/step7.mp4
+const CDN = 'https://res.cloudinary.com/dzx4efbjn/video/upload/';
+const VIDEO_IDS = {
+  1: 'step1_tdmfvp',
+  2: 'step2_twcggj',
+  3: 'step3_gryveo',
+  4: 'step4_t1birk',
+  5: 'step5_atyve4',
+  6: 'step6_devkw4',
+  7: 'step7_gs3rdt',
+};
 function getStepVideoSrc(stepNum) {
-  return `videos/step${stepNum}.mp4`;
+  return CDN + VIDEO_IDS[stepNum] + '.mp4';
 }
 
 // ====== VIDEO REFS ======

@@ -1445,6 +1445,273 @@
   }
   .tip-chevron { color: #999; width: 16px; height: 16px; }
 
+  /* === COZY AI ENTRY BUTTON (on step/tips/tipsStep) === */
+  .cozy-entry-btn {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: #fff;
+    box-shadow: 0 2px 10px rgba(74,6,18,0.12);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    padding: 0;
+  }
+  .cozy-entry-btn img { width: 26px; height: 26px; display: block; }
+  .step-header .cozy-entry-btn { margin-left: auto; }
+  .tips-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px 0;
+  }
+  .tips-header-row .tips-back { margin: 0; }
+
+  /* === COZY AI: shared === */
+  .cozy-page { background: #FFFBFB; }
+  .cozy-page.active { display: flex; flex-direction: column; }
+  .cozy-bg {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 320px;
+    background-image: url('images/Background.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .cozy-topbar {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 56px;
+    padding: 0 8px;
+    flex-shrink: 0;
+  }
+  .cozy-topbar-back {
+    position: absolute;
+    left: 12px;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255,255,255,0.7);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+  .cozy-topbar-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #4A0612;
+    opacity: 0.8;
+  }
+  .cozy-disclaimer {
+    text-align: center;
+    font-size: 11px;
+    color: #B8939A;
+    padding: 8px 24px calc(10px + env(safe-area-inset-bottom));
+    flex-shrink: 0;
+  }
+  .cozy-inputbar-wrap {
+    position: relative;
+    z-index: 1;
+    padding: 0 16px;
+    flex-shrink: 0;
+  }
+  .cozy-inputbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fff;
+    border-radius: 100px;
+    padding: 14px 18px;
+    box-shadow: 0 4px 18px rgba(74,6,18,0.08);
+  }
+  .cozy-inputbar input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 16px;
+    font-family: inherit;
+    color: #1A1A1A;
+  }
+  .cozy-inputbar input::placeholder { color: #B0AAAC; }
+  .cozy-inputbar .plus-icon {
+    width: 20px; height: 20px;
+    flex-shrink: 0;
+    color: #1A1A1A;
+  }
+  .cozy-send-btn {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    border: none;
+    background: #4A0612;
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    cursor: pointer;
+    opacity: 0;
+    transform: scale(0.7);
+    transition: opacity .15s, transform .15s;
+    pointer-events: none;
+  }
+  .cozy-inputbar.has-text .cozy-send-btn {
+    opacity: 1; transform: scale(1); pointer-events: auto;
+  }
+
+  /* === COZY AI WELCOME PAGE === */
+  #cozyWelcome .cozy-content {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 24px 0;
+    overflow-y: auto;
+  }
+  .cozy-ip-avatar {
+    width: 96px; height: 96px;
+    object-fit: contain;
+    margin: 6px 0 18px;
+  }
+  .cozy-greeting {
+    text-align: center;
+    margin: 0 0 28px;
+  }
+  .cozy-greeting .cozy-greet-line1 {
+    font-size: 26px;
+    color: #4A0612;
+    margin: 0;
+  }
+  .cozy-greeting .cozy-greet-line2 {
+    font-family: 'Denton', serif;
+    font-size: 30px;
+    font-weight: 700;
+    color: #1A1A1A;
+    margin: 2px 0 0;
+  }
+  .cozy-pills {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: auto;
+    padding-bottom: 18px;
+  }
+  .cozy-pill {
+    width: 100%;
+    text-align: left;
+    background: rgba(255,255,255,0.7);
+    border: 1px solid rgba(74,6,18,0.08);
+    border-radius: 20px;
+    padding: 14px 18px;
+    font-size: 15px;
+    color: #4A0612;
+    font-family: inherit;
+    cursor: pointer;
+    line-height: 1.35;
+  }
+  .cozy-pill:active { background: rgba(255,255,255,0.95); }
+
+  /* === COZY AI CHAT PAGE === */
+  #cozyChat .cozy-messages {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px 16px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .cozy-msg-row { display: flex; flex-direction: column; max-width: 86%; }
+  .cozy-msg-row.from-user { align-self: flex-end; align-items: flex-end; }
+  .cozy-msg-row.from-ai { align-self: flex-start; align-items: flex-start; }
+  .cozy-msg-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+  .cozy-msg-avatar { width: 24px; height: 24px; object-fit: contain; }
+  .cozy-msg-name { font-size: 12px; font-weight: 600; color: #4A0612; opacity: 0.75; }
+  .cozy-msg-bubble {
+    font-size: 15.5px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .cozy-msg-row.from-user .cozy-msg-bubble {
+    background: #F5F2F2;
+    color: #1A1A1A;
+    border-radius: 18px 18px 4px 18px;
+    padding: 12px 16px;
+  }
+  .cozy-msg-row.from-ai .cozy-msg-bubble {
+    color: #1A1A1A;
+    padding: 0 2px;
+  }
+  .cozy-thinking {
+    display: flex;
+    gap: 4px;
+    padding: 4px 2px;
+  }
+  .cozy-thinking span {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #C99AA4;
+    animation: cozyDot 1.2s infinite ease-in-out;
+  }
+  .cozy-thinking span:nth-child(2) { animation-delay: .15s; }
+  .cozy-thinking span:nth-child(3) { animation-delay: .3s; }
+  @keyframes cozyDot {
+    0%, 80%, 100% { transform: scale(0.6); opacity: .4; }
+    40% { transform: scale(1); opacity: 1; }
+  }
+  .cozy-reference {
+    margin-top: 8px;
+    font-size: 12px;
+    color: #9B8488;
+    border-top: 1px solid rgba(74,6,18,0.08);
+    padding-top: 6px;
+  }
+  .cozy-reference a { color: #8A4A56; }
+
+  /* handoff card */
+  .cozy-handoff-card {
+    background: #fff;
+    border-radius: 18px;
+    padding: 18px 18px 16px;
+    box-shadow: 0 4px 18px rgba(74,6,18,0.08);
+    width: 100%;
+    text-align: center;
+  }
+  .cozy-handoff-avatar {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 10px;
+    display: block;
+    background: #F5C8CE;
+  }
+  .cozy-handoff-text { font-size: 14.5px; color: #1A1A1A; font-weight: 600; margin: 0 0 4px; line-height: 1.4; }
+  .cozy-handoff-sub { font-size: 12.5px; color: #9B8488; margin: 0 0 14px; }
+  .cozy-handoff-btn {
+    width: 100%;
+    background: #4A0612;
+    color: #fff;
+    border: none;
+    border-radius: 100px;
+    padding: 13px;
+    font-size: 14.5px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+  }
+  .cozy-handoff-btn:disabled { opacity: .6; }
+
   /* === TIPS STEP PAGE === */
   #tipsStep { background: #FEF5F5; }
   #tipsStep.active {
@@ -1548,6 +1815,9 @@
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
     <span class="step-title">Air One Setup</span>
+    <button class="cozy-entry-btn" onclick="openCozyAI({from:'step', stepIndex: currentStep})" aria-label="Ask CozyAI">
+      <img src="images/IP_%E9%AB%98%E5%85%B4.png" alt="" draggable="false">
+    </button>
   </div>
   <div class="step-progress">
     <div class="step-progress-label" id="stepProgressLabel">Step 1</div>
@@ -1848,9 +2118,12 @@
       <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3" stroke="currentColor"/><rect x="2" y="2" width="18" height="8" rx="1.5" fill="currentColor"/><rect x="22" y="4" width="1.5" height="4" rx="0.5" fill="currentColor"/></svg>
     </span>
   </div>
-  <div style="padding: 12px 20px 0;">
+  <div class="tips-header-row">
     <button class="tips-back" onclick="navigate('settings')">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <button class="cozy-entry-btn" onclick="openCozyAI({from:'tips'})" aria-label="Ask CozyAI">
+      <img src="images/IP_%E9%AB%98%E5%85%B4.png" alt="" draggable="false">
     </button>
   </div>
   <div class="content">
@@ -1932,6 +2205,9 @@
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg>
     </button>
     <span class="step-title">Air One Tips</span>
+    <button class="cozy-entry-btn" onclick="openCozyAI({from:'tipsStep', stepIndex: currentTipStepIdx})" aria-label="Ask CozyAI">
+      <img src="images/IP_%E9%AB%98%E5%85%B4.png" alt="" draggable="false">
+    </button>
   </div>
   <div class="step-progress">
     <div class="step-progress-label" id="tipsStepProgressLabel">Step 1</div>
@@ -1963,6 +2239,57 @@
     <button class="btn-back" id="tipsStepBackBtn" onclick="prevTipStep()">Back</button>
     <button class="btn-primary" id="tipsStepNextBtn" onclick="nextTipStep()">Next</button>
   </div>
+</div>
+
+<!-- =========== COZY AI: WELCOME =========== -->
+<div class="page cozy-page" id="cozyWelcome">
+  <div class="cozy-bg"></div>
+  <div class="cozy-topbar">
+    <button class="cozy-topbar-back" onclick="closeCozyAI()" aria-label="Back">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4A0612" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <span class="cozy-topbar-title">CozyAI</span>
+  </div>
+  <div class="cozy-content">
+    <img class="cozy-ip-avatar" src="images/IP_%E9%AB%98%E5%85%B4.png" alt="CozyAI" draggable="false">
+    <div class="cozy-greeting">
+      <p class="cozy-greet-line1" id="cozyGreetName">Good day, Sara</p>
+      <p class="cozy-greet-line2">How can I help?</p>
+    </div>
+    <div class="cozy-pills" id="cozyPills"></div>
+  </div>
+  <div class="cozy-inputbar-wrap">
+    <div class="cozy-inputbar" id="cozyWelcomeInputBar">
+      <svg class="plus-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      <input id="cozyWelcomeInput" type="text" placeholder="Ask anything" autocomplete="off" oninput="onCozyWelcomeInput()" onkeydown="if(event.key==='Enter') sendFromWelcome()">
+      <button class="cozy-send-btn" onclick="sendFromWelcome()" aria-label="Send">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+      </button>
+    </div>
+  </div>
+  <p class="cozy-disclaimer">AI-generated, not professional advice.</p>
+</div>
+
+<!-- =========== COZY AI: CHAT =========== -->
+<div class="page cozy-page" id="cozyChat">
+  <div class="cozy-bg"></div>
+  <div class="cozy-topbar">
+    <button class="cozy-topbar-back" onclick="closeCozyAI()" aria-label="Back">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4A0612" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <span class="cozy-topbar-title">CozyAI</span>
+  </div>
+  <div class="cozy-messages" id="cozyMessages"></div>
+  <div class="cozy-inputbar-wrap">
+    <div class="cozy-inputbar" id="cozyChatInputBar">
+      <svg class="plus-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      <input id="cozyChatInput" type="text" placeholder="Ask anything" autocomplete="off" oninput="onCozyChatInput()" onkeydown="if(event.key==='Enter') sendFromChat()">
+      <button class="cozy-send-btn" onclick="sendFromChat()" aria-label="Send">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+      </button>
+    </div>
+  </div>
+  <p class="cozy-disclaimer">AI-generated, not professional advice.</p>
 </div>
 
 <!-- =========== OVERLAYS =========== -->
@@ -3001,6 +3328,342 @@ renderStep();
 // Service Worker for offline cache
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js');
+}
+// ====== COZY AI ======
+const COZY_HANDOFF_TAG = '[[HANDOFF]]';
+const COZY_EXIT_TAG = '[[EXIT_HANDOFF]]';
+const COZY_KEYWORDS = [
+  'refund', 'broken', 'damaged', 'complaint', 'complain', 'allergic', 'allergy',
+  'bleeding', 'blood', 'infection', 'emergency', 'lawyer', 'recall', 'defective',
+  '退款', '损坏', '投诉', '过敏', '出血', '感染', '紧急'
+];
+
+let cozyEntryContext = null;
+let cozyHistory = [];        // [{role:'user'|'assistant', content, persona}]
+let cozyPersona = 'qa';      // 'qa' | 'support'
+let cozyStreaming = false;
+let cozyHistoryLoaded = false;
+let cozyReturnPage = 'welcome';
+
+function getCozyDeviceId() {
+  let id = localStorage.getItem('cozyDeviceId');
+  if (!id) {
+    id = 'dev_' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+    localStorage.setItem('cozyDeviceId', id);
+  }
+  return id;
+}
+
+function cozyGreeting() {
+  const h = new Date().getHours();
+  if (h < 12) return 'Good morning';
+  if (h < 18) return 'Good afternoon';
+  return 'Good evening';
+}
+
+const COZY_PILL_SETS = {
+  step: [
+    'How do I know the flange fits?',
+    'What if the suction feels weak?',
+    'Connection issues.'
+  ],
+  tipsStep: [
+    'How do I know the flange fits?',
+    'What if the suction feels weak?',
+    'Connection issues.'
+  ],
+  tips: [
+    'How do I clean the parts after each use?',
+    'How often should I replace parts?',
+    'Any tips before my first session?'
+  ],
+  default: [
+    'How do I get started?',
+    'What if the suction feels weak?',
+    'Connection issues.'
+  ]
+};
+
+function buildCozyPills(ctx) {
+  const set = (ctx && COZY_PILL_SETS[ctx.from]) || COZY_PILL_SETS.default;
+  return set;
+}
+
+function openCozyAI(ctx) {
+  cozyEntryContext = ctx || null;
+  cozyReturnPage = document.querySelector('.page.active') ? document.querySelector('.page.active').id : 'welcome';
+  document.getElementById('cozyGreetName').textContent = cozyGreeting();
+  const pillsWrap = document.getElementById('cozyPills');
+  pillsWrap.innerHTML = '';
+  buildCozyPills(ctx).forEach(text => {
+    const btn = document.createElement('button');
+    btn.className = 'cozy-pill';
+    btn.type = 'button';
+    btn.textContent = text;
+    btn.onclick = () => { enterCozyChat(); sendCozyMessage(text); };
+    pillsWrap.appendChild(btn);
+  });
+  document.getElementById('cozyWelcomeInput').value = '';
+  onCozyWelcomeInput();
+  navigate('cozyWelcome');
+  setupCozySwipeDown();
+  prefetchCozyHistory();
+}
+
+function closeCozyAI() {
+  navigate(cozyReturnPage || 'welcome');
+}
+
+function setupCozySwipeDown() {
+  const el = document.getElementById('cozyWelcome');
+  if (el.dataset.swipeBound) return;
+  el.dataset.swipeBound = '1';
+  let startY = 0, tracking = false;
+  el.addEventListener('touchstart', (e) => {
+    if (el.scrollTop > 4) return;
+    startY = e.touches[0].clientY;
+    tracking = true;
+  }, { passive: true });
+  el.addEventListener('touchend', (e) => {
+    if (!tracking) return;
+    tracking = false;
+    const dy = e.changedTouches[0].clientY - startY;
+    if (dy > 70 && cozyHistory.length > 0) {
+      enterCozyChat();
+    }
+  }, { passive: true });
+}
+
+async function prefetchCozyHistory() {
+  if (cozyHistoryLoaded) return;
+  try {
+    const res = await fetch('/api/history?deviceId=' + encodeURIComponent(getCozyDeviceId()));
+    if (!res.ok) return;
+    const data = await res.json();
+    if (Array.isArray(data.messages) && data.messages.length) {
+      cozyHistory = data.messages;
+      cozyHistoryLoaded = true;
+    }
+  } catch (e) { /* no history backend configured yet — ignore */ }
+}
+
+function onCozyWelcomeInput() {
+  const bar = document.getElementById('cozyWelcomeInputBar');
+  bar.classList.toggle('has-text', document.getElementById('cozyWelcomeInput').value.trim().length > 0);
+}
+function onCozyChatInput() {
+  const bar = document.getElementById('cozyChatInputBar');
+  bar.classList.toggle('has-text', document.getElementById('cozyChatInput').value.trim().length > 0);
+}
+
+function sendFromWelcome() {
+  const input = document.getElementById('cozyWelcomeInput');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  enterCozyChat();
+  sendCozyMessage(text);
+}
+function sendFromChat() {
+  const input = document.getElementById('cozyChatInput');
+  const text = input.value.trim();
+  if (!text || cozyStreaming) return;
+  input.value = '';
+  onCozyChatInput();
+  sendCozyMessage(text);
+}
+
+function enterCozyChat() {
+  navigate('cozyChat');
+  renderCozyMessages();
+}
+
+// ---- rendering ----
+function cozyAvatarFor(persona) {
+  return persona === 'support'
+    ? { img: 'images/IP_%E9%AB%98%E5%85%B4.png', name: 'Cozy Agent' }
+    : { img: 'images/IP_%E9%AB%98%E5%85%B4.png', name: 'CozyAI' };
+}
+
+function renderCozyMessages() {
+  const wrap = document.getElementById('cozyMessages');
+  wrap.innerHTML = '';
+  cozyHistory.forEach(m => appendCozyMessageEl(m));
+  wrap.scrollTop = wrap.scrollHeight;
+}
+
+function appendCozyMessageEl(m) {
+  const wrap = document.getElementById('cozyMessages');
+  const row = document.createElement('div');
+  row.className = 'cozy-msg-row ' + (m.role === 'user' ? 'from-user' : 'from-ai');
+
+  if (m.role === 'assistant') {
+    const av = cozyAvatarFor(m.persona || 'qa');
+    const meta = document.createElement('div');
+    meta.className = 'cozy-msg-meta';
+    meta.innerHTML = `<img class="cozy-msg-avatar" src="${av.img}" alt=""><span class="cozy-msg-name">${av.name}</span>`;
+    row.appendChild(meta);
+  }
+  const bubble = document.createElement('div');
+  bubble.className = 'cozy-msg-bubble';
+  bubble.textContent = m.content;
+  row.appendChild(bubble);
+
+  if (m.reference) {
+    const ref = document.createElement('div');
+    ref.className = 'cozy-reference';
+    ref.textContent = 'Reference: ' + m.reference;
+    row.appendChild(ref);
+  }
+  wrap.appendChild(row);
+  wrap.scrollTop = wrap.scrollHeight;
+  return { row, bubble };
+}
+
+function appendCozyThinking() {
+  const wrap = document.getElementById('cozyMessages');
+  const av = cozyAvatarFor(cozyPersona);
+  const row = document.createElement('div');
+  row.className = 'cozy-msg-row from-ai';
+  row.innerHTML = `<div class="cozy-msg-meta"><img class="cozy-msg-avatar" src="${av.img}" alt=""><span class="cozy-msg-name">${av.name}</span></div>
+    <div class="cozy-thinking"><span></span><span></span><span></span></div>`;
+  wrap.appendChild(row);
+  wrap.scrollTop = wrap.scrollHeight;
+  return row;
+}
+
+function appendCozyHandoffCard() {
+  const wrap = document.getElementById('cozyMessages');
+  const row = document.createElement('div');
+  row.className = 'cozy-msg-row from-ai';
+  row.style.maxWidth = '92%';
+  row.innerHTML = `
+    <div class="cozy-handoff-card">
+      <img class="cozy-handoff-avatar" src="images/%E4%BA%BA%E5%B7%A5%E5%AE%A2%E6%9C%8D%E6%A0%B7%E5%BC%8F.png" alt="">
+      <p class="cozy-handoff-text">Connect you with a human customer service agent?</p>
+      <p class="cozy-handoff-sub">Service hours: 9:00 AM–6:00 PM</p>
+      <button class="cozy-handoff-btn" onclick="confirmCozyHandoff(this)">Contact an agent</button>
+    </div>`;
+  wrap.appendChild(row);
+  wrap.scrollTop = wrap.scrollHeight;
+}
+
+function confirmCozyHandoff(btn) {
+  btn.disabled = true;
+  btn.textContent = 'Connecting...';
+  setTimeout(() => {
+    cozyPersona = 'support';
+    btn.textContent = 'Connected';
+    saveCozyHistory();
+  }, 400);
+}
+
+// ---- sending / streaming ----
+function cozyDetectKeywordTrigger(text) {
+  const low = text.toLowerCase();
+  return COZY_KEYWORDS.some(k => low.includes(k.toLowerCase()));
+}
+
+async function sendCozyMessage(text) {
+  const userMsg = { role: 'user', content: text, persona: cozyPersona };
+  cozyHistory.push(userMsg);
+  appendCozyMessageEl(userMsg);
+  saveCozyHistory();
+
+  if (cozyPersona === 'qa' && cozyDetectKeywordTrigger(text)) {
+    appendCozyHandoffCard();
+    return;
+  }
+
+  await cozyStreamReply();
+}
+
+async function cozyStreamReply() {
+  cozyStreaming = true;
+  const thinkingRow = appendCozyThinking();
+  let assistantText = '';
+  let bubbleEl = null;
+  const personaAtStart = cozyPersona;
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        persona: personaAtStart,
+        messages: cozyHistory.map(m => ({ role: m.role, content: m.content }))
+      })
+    });
+    if (!res.ok || !res.body) throw new Error('AI request failed');
+
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let buf = '';
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      buf += decoder.decode(value, { stream: true });
+      const lines = buf.split('\n');
+      buf = lines.pop();
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed.startsWith('data:')) continue;
+        const payload = trimmed.slice(5).trim();
+        if (payload === '[DONE]') continue;
+        try {
+          const json = JSON.parse(payload);
+          const delta = json.choices && json.choices[0] && json.choices[0].delta && json.choices[0].delta.content;
+          if (delta) {
+            if (!bubbleEl) {
+              thinkingRow.remove();
+              const placeholder = appendCozyMessageEl({ role: 'assistant', content: '', persona: personaAtStart });
+              bubbleEl = placeholder.bubble;
+            }
+            assistantText += delta;
+            bubbleEl.textContent = assistantText.replace(COZY_HANDOFF_TAG, '').replace(COZY_EXIT_TAG, '');
+            document.getElementById('cozyMessages').scrollTop = document.getElementById('cozyMessages').scrollHeight;
+          }
+        } catch (e) { /* ignore malformed SSE chunk */ }
+      }
+    }
+  } catch (e) {
+    thinkingRow.remove();
+    assistantText = "Sorry, I couldn't reach the assistant right now. Please try again.";
+    const placeholder = appendCozyMessageEl({ role: 'assistant', content: assistantText, persona: personaAtStart });
+    bubbleEl = placeholder.bubble;
+  }
+
+  cozyStreaming = false;
+  if (!bubbleEl) thinkingRow.remove();
+
+  const hasHandoff = assistantText.includes(COZY_HANDOFF_TAG);
+  const hasExit = assistantText.includes(COZY_EXIT_TAG);
+  const cleanText = assistantText.replace(COZY_HANDOFF_TAG, '').replace(COZY_EXIT_TAG, '').trim();
+  if (bubbleEl) bubbleEl.textContent = cleanText;
+
+  cozyHistory.push({ role: 'assistant', content: cleanText, persona: personaAtStart });
+  saveCozyHistory();
+
+  if (personaAtStart === 'qa' && hasHandoff) {
+    appendCozyHandoffCard();
+  }
+  if (personaAtStart === 'support' && hasExit) {
+    cozyPersona = 'qa';
+  }
+}
+
+let cozySaveTimer = null;
+function saveCozyHistory() {
+  clearTimeout(cozySaveTimer);
+  cozySaveTimer = setTimeout(async () => {
+    try {
+      await fetch('/api/history', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ deviceId: getCozyDeviceId(), messages: cozyHistory })
+      });
+    } catch (e) { /* best-effort persistence */ }
+  }, 400);
 }
 </script>
 </body>
